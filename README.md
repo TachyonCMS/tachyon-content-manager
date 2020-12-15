@@ -43,6 +43,12 @@ You should ignore the note about running `npm run build`, let Amplify handle tha
   To create a production build, run npm run build.
   ```
 
+## Install Vue linter
+
+```bash
+npm install -D eslint eslint-loader
+```
+
 ## Install Vue modules to aid rapid development
 
 ### Add Vue Router
@@ -58,7 +64,7 @@ Choose "No" to use history mode. I may or may not want to setup the server for t
 ```
 ### Install MDB Bootstrap
 
-Material Design Bootstrap might have its limitations but it makes for rapid development of performant sites that behave how people have come to expect sites to behave. I use the free versionm, the paid verison would enable much slicker visual controls. It's important the base works well with free components.
+Material Design Bootstrap might have its limitations but it makes for rapid development of performant sites that behave how people have come to expect sites to behave. I use the free version, the paid version would enable much slicker visual controls. It's important the base works well with free components.
 
 ```bash
 vue add mdb
@@ -161,7 +167,7 @@ These are the pages and sub-views we'll need to provide the full experience. I'l
       * Files
       * Camera
 
-### Create Page Component files
+### Create Page View files
 
 Creating these avoids Vue complaining they don't exist when we include.
 
@@ -182,14 +188,13 @@ export default {
 ```
 
 ```bash
-src/components
+src/views
 ├── Accounts.vue
 ├── Albums.vue
 ├── Assets.vue
 ├── ContentTypes.vue
 ├── Entries.vue
 ├── Environments.vue
-├── HelloWorld.vue (created by Vue Router as example)
 ├── Organizations.vue
 └── Spaces.vue
 ```
@@ -202,3 +207,53 @@ src/components
 ```
 
 ```javascript
+<template>
+<mdb-navbar color="indigo" dark class="navbar navbar-expand-lg navbar-dark align-top fixed-top" hamburger expand="xl">
+    <mdb-navbar-toggler>
+        <mdb-navbar-nav>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Accounts' }">Account</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Organizations' }">Orgs</router-link>
+            </mdb-nav-item>
+        </mdb-navbar-nav>
+    </mdb-navbar-toggler>
+</mdb-navbar>
+</template>
+
+<script>
+import {
+    mdbNavbar,
+    mdbNavbarToggler,
+    mdbNavbarNav,
+    mdbNavItem,
+
+} from 'mdbvue';
+export default {
+    name: 'Navbar',
+    components: {
+        mdbNavbar,
+                mdbNavbarToggler,
+        mdbNavbarNav,
+        mdbNavItem,
+    }
+}
+</script>
+
+<style scoped>
+.router-link-exact-active {
+    color: white
+}
+
+a {
+    color: lightblue
+}
+</style>
+```
+
+### Edit Router
+
+**/router/index.js**
+
+```
