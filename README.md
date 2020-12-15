@@ -43,8 +43,19 @@ You should ignore the note about running `npm run build`, let Amplify handle tha
   To create a production build, run npm run build.
   ```
 
-## Install UI modules to aid rapid development
+## Install Vue modules to aid rapid development
 
+### Add Vue Router
+
+```bash 
+vue add router
+```
+
+Choose "No" to use history mode. I may or may not want to setup the server for that.
+
+```bash
+? Use history mode for router? (Requires proper server setup for index fallback in production) No
+```
 ### Install MDB Bootstrap
 
 Material Design Bootstrap might have its limitations but it makes for rapid development of performant sites that behave how people have come to expect sites to behave. I use the free versionm, the paid verison would enable much slicker visual controls. It's important the base works well with free components.
@@ -99,5 +110,19 @@ main.js
 +import 'bootstrap-css-only/css/bootstrap.min.css'
 +import 'mdbvue/lib/mdbvue.css'
 ```
+
+You should see some route links at the top of the page now.
+
+```html
+Home | About
+```
+
+The "About" link should show new content with the "About" link highlighted.
+
+```bash
+http://localhost:8080/#/about
+```
+
+
 
 
