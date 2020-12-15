@@ -49,6 +49,55 @@ You should ignore the note about running `npm run build`, let Amplify handle tha
 
 Material Design Bootstrap might have its limitations but it makes for rapid development of performant sites that behave how people have come to expect sites to behave. I use the free versionm, the paid verison would enable much slicker visual controls. It's important the base works well with free components.
 
-```
+```bash
 vue add mdb
 ```
+
+Choose existing application, we created one above.
+
+```bash
+? Please choose type of installation:
+  New app
+❯ Existing app
+```
+
+Choose "free" unless you want the advantages of the paid plans.
+
+```bash
+? Free or Pro version? (Use arrow keys)
+❯ Free 
+  Basic 
+  Pro 
+```
+
+Choose the following options:
+
+```bash
+? Select the styling option: Editable in your project (SCSS)
+? Add Roboto font? Yes
+? Add Font Awesome 5? Yes
+```
+
+You'll see a lot of files in a new `/mdb/` directory.
+There will also be changes to the App.vue and main.js files.
+
+App.vue
+
+```bash
+-<style>
++<style lang="scss">
++@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
++
++$image-path: '~@/../mdb/mdbvue/img';
++@import '~@/../mdb/mdbvue/scss/mdb-free.scss';
+```
+
+main.js
+
+```bash
++import '@fortawesome/fontawesome-free/css/all.min.css'
++import 'bootstrap-css-only/css/bootstrap.min.css'
++import 'mdbvue/lib/mdbvue.css'
+```
+
+
