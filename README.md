@@ -8,7 +8,7 @@ npm install -g @aws-amplify/cli
 npm install -g @vue/cli
 ````
 
-## Create a Vue 3 App
+## Create a Vue 2 App
 
 ```bash
 vue create cms-web-app
@@ -123,6 +123,82 @@ The "About" link should show new content with the "About" link highlighted.
 http://localhost:8080/#/about
 ```
 
+## Basic App Layout
 
+We want a simple, easy to use app that doesn't require much instruction.
 
+I won't document all the changes here, I'll just hit the high points.
 
+I use a seprate file in the `/components/` directory for each "page" in the app.
+Elements used on multiple pages are broken out into their own components.
+
+These are the pages and sub-views we'll need to provide the full experience. I'll create a top level componet for each page with sub components as needed.
+
+* Account / Profile
+* Orgs
+  * List
+  * Add
+  * Manage
+* Spaces
+  * List
+  * Add
+  * Manage
+    * Deploy
+      * List deploy branches
+      * Create deploy branch
+    * Content Types (Models)
+      * List
+      * Add
+      * Manage
+    * Entries
+      * List
+      * Add
+      * Manage
+      * Translations
+    * Media Assets
+      * Albums
+      * Album
+      * Files
+      * Camera
+
+### Create Page Component files
+
+Creating these avoids Vue complaining they don't exist when we include.
+
+For now we'll create each with a minalmalist format with enough information we know we are getting to the page. This example format is for the **Accounts** page.
+
+```javascript
+<template>
+<div class="container">
+    <h1>Accounts</h1>
+</div>
+</template>
+
+<script>
+export default {
+    name: 'Accounts'
+};
+</script>
+```
+
+```bash
+src/components
+├── Accounts.vue
+├── Albums.vue
+├── Assets.vue
+├── ContentTypes.vue
+├── Entries.vue
+├── Environments.vue
+├── HelloWorld.vue (created by Vue Router as example)
+├── Organizations.vue
+└── Spaces.vue
+```
+
+### Create a Navbar Component
+
+```bash
+src/components
+└── Navbar.vue
+```
+
+```javascript
