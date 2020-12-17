@@ -420,3 +420,61 @@ export default {
 }
 </style>
 ```
+
+## Amplify your Efforts
+
+### Initialize a new Amplify app
+
+```bash
+amplify init
+```
+
+The choices shown below were used.
+
+```bash
+Note: It is recommended to run this command from the root of your app directory
+? Enter a name for the project cmswebapp
+? Enter a name for the environment dev
+? Choose your default editor: Visual Studio Code
+? Choose the type of app that you're building javascript
+Please tell us about your project
+? What javascript framework are you using vue
+? Source Directory Path:  src
+? Distribution Directory Path: dist
+? Build Command:  npm run-script build
+? Start Command: npm run-script serve
+Using default provider  awscloudformation
+...
+? Do you want to use an AWS profile? Yes
+? Please choose the profile you want to use (Use arrow keys)
+❯ default 
+```
+
+When it is done yuo should see something similar to this:
+
+```bash
+Some next steps:
+"amplify status" will show you what you've added already and if it's locally configured or deployed
+"amplify add <category>" will allow you to add features like user login or a backend API
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify console" to open the Amplify Console and view your project status
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+Pro tip:
+Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything
+```
+
+It's a great `Pro tip` but even more `Pro tip` is to add auth to start with security. To do that we'll add auth before adding any functionality.
+
+### Add Cognito Authentication to Amplify
+
+```bash
+amplify add auth
+```
+
+#### Push those changes up to AWS
+
+
+```bash
+amplify publish
+```
