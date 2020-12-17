@@ -140,14 +140,10 @@ Elements used on multiple pages are broken out into their own components.
 
 These are the pages and sub-views we'll need to provide the full experience. I'll create a top level componet for each page with sub components as needed.
 
-* Account / Profile
-* Orgs
-  * List
-  * Add
-  * Manage
 * Spaces
   * List
   * Add
+  * Upload exported Contentful Space
   * Manage
     * Deploy
       * List deploy branches
@@ -171,31 +167,32 @@ These are the pages and sub-views we'll need to provide the full experience. I'l
 
 Creating these avoids Vue complaining they don't exist when we include.
 
-For now we'll create each with a minalmalist format with enough information we know we are getting to the page. This example format is for the **Accounts** page.
+For now we'll create each with a minalmalist format with enough information we know we are getting to the page. This example format is for the **Spaces** page.
 
 ```javascript
 <template>
 <div class="container">
-    <h1>Accounts</h1>
+    <h1>Spaces</h1>
 </div>
 </template>
 
 <script>
 export default {
-    name: 'Accounts'
+    name: 'Spaces'
 };
 </script>
 ```
 
 ```bash
 src/views
-├── Accounts.vue
 ├── Albums.vue
-├── Assets.vue
-├── ContentTypes.vue
+├── Auth.vue
 ├── Entries.vue
 ├── Environments.vue
-├── Organizations.vue
+├── Home.vue
+├── Media.vue
+├── Models.vue
+├── Profile.vue
 └── Spaces.vue
 ```
 
@@ -212,10 +209,19 @@ src/components
     <mdb-navbar-toggler>
         <mdb-navbar-nav>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Accounts' }">Account</router-link>
+                <router-link :to="{ name: 'Spaces' }">Spaces</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Organizations' }">Orgs</router-link>
+                <router-link :to="{ name: 'Entries' }">Entries</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Models' }">Models</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Media' }">Media</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Profile' }">Profile</router-link>
             </mdb-nav-item>
         </mdb-navbar-nav>
     </mdb-navbar-toggler>
@@ -229,12 +235,12 @@ import {
     mdbNavbarNav,
     mdbNavItem,
 
-} from 'mdbvue';
+} from 'mdbvue'
 export default {
     name: 'Navbar',
     components: {
         mdbNavbar,
-                mdbNavbarToggler,
+        mdbNavbarToggler,
         mdbNavbarNav,
         mdbNavItem,
     }
@@ -254,6 +260,163 @@ a {
 
 ### Edit Router
 
+We use route level code splitting to help give us the smallest possible initial loads. This may not be as importnat in an internal CMS but I believe writing good code consitsently makes life easier.
+
 **/router/index.js**
 
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/spaces',
+    name: 'Spaces',
+    // route level code-splitting
+    // this generates a separate chunk (spaces.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "spaces" */ '../views/Spaces.vue')
+  },
+  {
+    path: '/entries',
+    name: 'Entries',
+    // route level code-splitting
+    // this generates a separate chunk (entries.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "entries" */ '../views/Entries.vue')
+  },
+  {
+    path: '/media',
+    name: 'Media',
+    // route level code-splitting
+    // this generates a separate chunk (media.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "media" */ '../views/Media.vue')
+  },
+  {
+    path: '/models',
+    name: 'Models',
+    // route level code-splitting
+    // this generates a separate chunk (models.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "models" */ '../views/Models.vue')
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    // route level code-splitting
+    // this generates a separate chunk (profile.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "profile" */ '../views/Profile.vue')
+  },
+  {
+    path: '/auth',
+    name: 'Auth',
+    // route level code-splitting
+    // this generates a separate chunk (profile.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "auth" */ '../views/Auth.vue')
+  }
+]
+
+const router = new VueRouter({
+  routes
+})
+
+export default router
+```
+
+
+### Edit App.vue
+
+#### Replace the template
+
+```javascript
+<template>
+<div id="app" class="container">
+    <div id="nav">
+        <Navbar />
+        <router-view></router-view>
+        <div class='sign-out'>
+            <amplify-sign-out v-if="signedIn"></amplify-sign-out>
+        </div>
+    </div>
+</div>
+</template>
+```
+
+#### Add a script element
+
+```javascript
+<script>
+import Navbar from '@/components/Navbar.vue'
+import {
+    Auth,
+    Hub
+} from 'aws-amplify'
+
+export default {
+    name: 'app',
+    components: {
+        Navbar
+    },
+    data() {
+        return {
+            signedIn: false
+        }
+    },
+    beforeCreate() {
+        Hub.listen('auth', data => {
+            console.log('data:', data)
+            const {
+                payload
+            } = data
+            if (payload.event === 'signIn') {
+                this.signedIn = true
+                this.$router.push('/profile')
+            }
+            if (payload.event === 'signOut') {
+                this.$router.push('/auth')
+                this.signedIn = false
+            }
+        })
+        Auth.currentAuthenticatedUser()
+            .then(() => {
+                this.signedIn = true
+            })
+            .catch(() => this.signedIn = false)
+    }
+}
+</script>
+```
+
+### Update Auth page
+
+```javascript
+<template>
+<div class="auth">
+    <amplify-authenticator></amplify-authenticator>
+</div>
+</template>
+
+<script>
+export default {
+    name: 'Auth'
+}
+</script>
+
+<style>
+.auth {
+    margin: 0 auto;
+    width: 460px;
+}
+</style>
 ```

@@ -1,12 +1,55 @@
 <template>
-  <div id="app">
+<div id="app" class="container">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+        <Navbar />
+        <router-view></router-view>
+        <div class='sign-out'>
+            <amplify-sign-out v-if="signedIn"></amplify-sign-out>
+        </div>
     </div>
-    <router-view/>
-  </div>
+</div>
 </template>
+
+<script>
+import Navbar from '@/components/Navbar.vue'
+import {
+    Auth,
+    Hub
+} from 'aws-amplify'
+
+export default {
+    name: 'app',
+    components: {
+        Navbar
+    },
+    data() {
+        return {
+            signedIn: false
+        }
+    },
+    beforeCreate() {
+        Hub.listen('auth', data => {
+            console.log('data:', data)
+            const {
+                payload
+            } = data
+            if (payload.event === 'signIn') {
+                this.signedIn = true
+                this.$router.push('/profile')
+            }
+            if (payload.event === 'signOut') {
+                this.$router.push('/auth')
+                this.signedIn = false
+            }
+        })
+        Auth.currentAuthenticatedUser()
+            .then(() => {
+                this.signedIn = true
+            })
+            .catch(() => this.signedIn = false)
+    }
+}
+</script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');

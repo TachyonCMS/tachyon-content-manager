@@ -3,10 +3,19 @@
     <mdb-navbar-toggler>
         <mdb-navbar-nav>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Accounts' }">Account</router-link>
+                <router-link :to="{ name: 'Spaces' }">Spaces</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Organizations' }">Orgs</router-link>
+                <router-link :to="{ name: 'Entries' }">Entries</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Models' }">Models</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Media' }">Media</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Profile' }">Profile</router-link>
             </mdb-nav-item>
         </mdb-navbar-nav>
     </mdb-navbar-toggler>
@@ -20,7 +29,7 @@ import {
     mdbNavbarNav,
     mdbNavItem,
 
-} from 'mdbvue';
+} from 'mdbvue'
 export default {
     name: 'Navbar',
     components: {

@@ -9,6 +9,7 @@
     "start": "vue-cli-service serve --open"
   },
   "dependencies": {
+    "aws-amplify": "^3.3.12",
     "core-js": "^3.6.5",
     "mdbvue": "6.7.2",
     "vue": "^2.6.11",
