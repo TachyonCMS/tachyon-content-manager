@@ -423,6 +423,12 @@ export default {
 
 ## Amplify your Efforts
 
+### Add the Amplify Vue module
+
+```bash
+npm install --save @aws-amplify/ui-vue
+```
+
 ### Initialize a new Amplify app
 
 ```bash
@@ -472,9 +478,29 @@ It's a great `Pro tip` but even more `Pro tip` is to add auth to start with secu
 amplify add auth
 ```
 
-#### Push those changes up to AWS
+```bash
+ Do you want to use the default authentication and security configurat
+ion? Default configuration
+ Warning: you will not be able to edit these selections. 
+ How do you want users to be able to sign in? Username
+ Do you want to configure advanced settings? No, I am done.
+Successfully added auth resource cmswebapp1580b47c locally
+```
 
+#### Push the changes up to AWS
 
 ```bash
-amplify publish
+amplify push
+```
+
+#### Add the Amplify config to the Vue app
+
+Edit main.js and add the following:
+
+```javascript
+import '@aws-amplify/ui-vue';
+import Amplify from 'aws-amplify';
+import aws_exports from './aws-exports';
+
+Amplify.configure(aws_exports);
 ```

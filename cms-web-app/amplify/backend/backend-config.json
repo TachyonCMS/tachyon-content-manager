@@ -1,1 +1,10 @@
-{}
+{
+  "auth": {
+    "cmswebapp1580b47c": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
