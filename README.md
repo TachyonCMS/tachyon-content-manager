@@ -504,3 +504,44 @@ import aws_exports from './aws-exports';
 
 Amplify.configure(aws_exports);
 ```
+
+#### Update the Auth view to use thre default Amplify auth screens.
+
+I'll customize these later.
+
+```javasript
+<template>
+<div class="auth">
+    <amplify-authenticator></amplify-authenticator>
+</div>
+</template>
+
+<script>
+export default {
+    name: 'Auth'
+}
+</script>
+
+<style>
+.auth {
+    margin: 0 auto;
+    width: 460px;
+}
+</style>
+```
+
+#### Secure paths with auth
+
+Add a `meta: { requiresAuth: true}` element to any path that you want to secure.
+
+```javascript
+  {
+    path: '/spaces',
+    name: 'Spaces',
+    // route level code-splitting
+    // this generates a separate chunk (spaces.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "spaces" */ '../views/Spaces.vue'),
+    meta: { requiresAuth: true}
+  },
+  ```
