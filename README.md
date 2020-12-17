@@ -545,3 +545,61 @@ Add a `meta: { requiresAuth: true}` element to any path that you want to secure.
     meta: { requiresAuth: true}
   },
   ```
+
+  ## Publish our secure app to the cloud
+
+  We want to test end-to-end functionality early, let's make sure this works for the public. We'll add hosting and publish it. That should allow us to access the same `dev` backend we use locally from a public web site.
+
+  ```bash
+  amplify add hosting
+  ```
+
+  S3 and Cloudfront might seem the best choice, but we want to use the console so we can wire up git based deploys to update the Amplify app.
+
+  ```bash
+  ? Select the plugin module to execute (Use arrow keys)
+❯ Hosting with Amplify Console (Managed hosting with custom domains, Continuous deployment) 
+  Amazon CloudFront and S3 
+```
+
+Choose Continuous deployment as a best practice.
+
+```bash
+? Choose a type 
+❯ Continuous deployment (Git-based deployments) 
+  Manual deployment 
+  Learn more 
+```
+
+Use the docs here to connect your Git repo to Amplify.
+https://docs.aws.amazon.com/amplify/latest/userguide/getting-started.html
+
+While it's building the front end you'll see this at the fuure URL:
+
+```bash
+Welcome
+Your app will appear here once you complete your first deployment.
+Deployment didn't work? Here are some options:
+
+Check out our docs
+Click the Feedback button in the bottom-left corner of the service page
+Quick tips:
+
+Have you checked your build settings? The baseDirectory parameter in the artifacts step of your YAML file should match your build output directory
+Building your app should produce an index.html file. Try building your app locally and check a file with that name exists in the artifacts base directory.
+```
+
+Back in the console you can continue and and Amplify will spit out something similar to:
+
+```bash
+? Continuous deployment is configured in the Amplify Console. Please hit enter once you connect your repo
+sitory 
+Amplify hosting urls: 
+┌──────────────┬────────────────────────────────────────────┐
+│ FrontEnd Env │ Domain                                     │
+├──────────────┼────────────────────────────────────────────┤
+│ main         │ https://main.d2kogb9r476vn4.amplifyapp.com │
+└──────────────┴────────────────────────────────────────────┘
+```
+
+Relax, grab some coffee this step takes a bit.
