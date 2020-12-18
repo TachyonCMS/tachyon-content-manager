@@ -209,6 +209,9 @@ src/components
     <mdb-navbar-toggler>
         <mdb-navbar-nav>
             <mdb-nav-item>
+                <router-link :to="{ name: 'Home' }">Home</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
                 <router-link :to="{ name: 'Spaces' }">Spaces</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
@@ -413,12 +416,6 @@ export default {
 }
 </script>
 
-<style>
-.auth {
-    margin: 0 auto;
-    width: 460px;
-}
-</style>
 ```
 
 ## Amplify your Efforts
@@ -603,3 +600,34 @@ Amplify hosting urls:
 ```
 
 Relax, grab some coffee this step takes a bit.
+When it's done you will be able to visit the URL provided and login using the same users and see thre asme data as you do locally.
+
+## Get some Style
+
+We built basic auth auth and navigation in a few hours, now we can really start building the fun parts. First we'll add some moew styling to our pages.
+
+### Disable invalid nav elements
+
+If we haven't chosen a space then the Entries, Models and Media nav items should be disabled. We'll start with them disabled and programtaically enable them when we have chosen a space.
+
+```javascript
+<mdb-nav-item>
+    <router-link :to="{ name: 'Entries' }" class="disabled">Entries</router-link>
+</mdb-nav-item>
+<mdb-nav-item>
+    <router-link :to="{ name: 'Models' }" class="disabled">Models</router-link>
+</mdb-nav-item>
+<mdb-nav-item>
+    <router-link :to="{ name: 'Media' }" class="disabled">Media</router-link>
+</mdb-nav-item>
+```
+
+We'll add some sytling to make it more obvious that the button is inactive.
+
+```javascript
+<style>
+.disabled {
+  color: lightgray;
+}
+</style>
+```

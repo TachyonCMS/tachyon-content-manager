@@ -3,16 +3,19 @@
     <mdb-navbar-toggler>
         <mdb-navbar-nav>
             <mdb-nav-item>
+                <router-link :to="{ name: 'Home' }">Home</router-link>
+            </mdb-nav-item>
+            <mdb-nav-item>
                 <router-link :to="{ name: 'Spaces' }">Spaces</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Entries' }">Entries</router-link>
+                <router-link :to="{ name: 'Entries' }" class="disabled">Entries</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Models' }">Models</router-link>
+                <router-link :to="{ name: 'Models' }" class="disabled">Models</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Media' }">Media</router-link>
+                <router-link :to="{ name: 'Media' }" class="disabled">Media</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
                 <router-link :to="{ name: 'Profile' }">Profile</router-link>
@@ -41,12 +44,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.router-link-exact-active {
-    color: white
-}
-
-a {
-    color: lightblue
-}
-</style>

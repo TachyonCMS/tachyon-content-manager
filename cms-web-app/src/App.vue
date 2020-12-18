@@ -63,6 +63,7 @@ $image-path: '~@/../mdb/mdbvue/img';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top: 40px;
 }
 
 #nav {
@@ -70,11 +71,16 @@ $image-path: '~@/../mdb/mdbvue/img';
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: lightgray;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
+    }
+
+    .disabled {
+      color: blueviolet;
     }
   }
 }
+
 </style>
