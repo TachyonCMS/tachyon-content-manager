@@ -12,6 +12,24 @@ const routes = [
     component: Home
   },
   {
+    path: '/albums',
+    name: 'Albums',
+    // route level code-splitting
+    // this generates a separate chunk (albums.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "albums" */ '../views/Albums.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/albums/:id',
+    name: 'Album',
+    // route level code-splitting
+    // this generates a separate chunk (album.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "album" */ '../views/Album.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
     path: '/spaces',
     name: 'Spaces',
     // route level code-splitting
@@ -24,9 +42,9 @@ const routes = [
     path: '/spaces/:id',
     name: 'Space',
     // route level code-splitting
-    // this generates a separate chunk (spaces.[hash].js) for this route
+    // this generates a separate chunk (space.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "spaces" */ '../views/Space.vue'),
+    component: () => import(/* webpackChunkName: "space" */ '../views/Space.vue'),
     meta: { requiresAuth: true}
   },
   {
@@ -42,9 +60,18 @@ const routes = [
     path: '/spaces/:id/entries/:id',
     name: 'Entry',
     // route level code-splitting
-    // this generates a separate chunk (entries.[hash].js) for this route
+    // this generates a separate chunk (entry.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "entries" */ '../views/Entry.vue'),
+    component: () => import(/* webpackChunkName: "entry" */ '../views/Entry.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:id/albums/:id',
+    name: 'Entry',
+    // route level code-splitting
+    // this generates a separate chunk (entry.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "entry" */ '../views/Entry.vue'),
     meta: { requiresAuth: true}
   },
   {
