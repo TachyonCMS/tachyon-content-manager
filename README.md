@@ -699,3 +699,21 @@ sted] 2
 2. Get Photos by Album
 3. Get Entry by Id and Locale
 4. Get Entry by Id and Locale, with references populated to _n_ level (max 3)
+
+## Use Vue Formulate for forms
+
+### Install module
+
+```bash
+npm install --save @braid/vue-formulate
+```
+
+### Integrate Formulate with Vue
+
+Add the following in `main.js`
+
+```javascript
+import VueFormulate from '@braid/vue-formulate'
+
+Vue.use(VueFormulate)
+```
