@@ -3,17 +3,26 @@
     <h1>Org Spaces - {{user.username}}</h1>
     <div class="row mb-4">
         <div class="col">
-            <form>
-                <div class="form-outline mb-4">
-                    <input type="name" id="space-name" class="form-control" />
-                    <label class="form-label" for="space-name">Name</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="password" id="space-description" class="form-control" />
-                    <label class="form-label" for="space-description">Description</label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block mb-4">Add Space</button>
-            </form>
+            <FormulateForm
+                class="login-form"
+                name="create-album"
+                @submit="submitHandler"
+                v-model="formValues">
+
+                <FormulateInput
+                    name="name"
+                    type="text"
+                    label="Space Name"
+                    placeholder="A short name for the Space."
+                    validation="required"
+                />
+                
+                <FormulateInput
+                    type="submit"
+                    label="Create Space"
+                />
+            
+            </FormulateForm>
         </div>
     </div>
 </div>
