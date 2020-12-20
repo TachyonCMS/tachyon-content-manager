@@ -1,6 +1,6 @@
 type Space 
 @model
-@auth(rules: [{allow: owner},{allow: private}]) {
+@auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
     id: ID!
     name: String!
     albums: [Album] @connection(keyName: "bySpace", fields: ["id"])

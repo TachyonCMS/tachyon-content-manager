@@ -717,3 +717,96 @@ import VueFormulate from '@braid/vue-formulate'
 
 Vue.use(VueFormulate)
 ```
+
+## Integrate Amplify GraphQL API with Vue App
+
+### Import the API and GraphQL mopdules from Amplify
+
+```javascript
+import { API, graphqlOperation } from 'aws-amplify'
+```
+
+### Import the GraphQL code created by Amplify
+
+```javascript
+import { createSpace } from '@/graphql/mutations'
+import { listSpaces } from '@/graphql/queries'
+import { onCreateSpace } from '@/graphql/subscriptions';
+```
+
+## Display new records as they get created
+
+### Create the view element to list the data
+
+```html
+<div v-for="space in spaces" :key="space.id">
+  <h3><router-link :to="{ name: 'Space' ,  params: { id: space.id }}">{{ space.name }}</router-link></h3>
+</div>
+```
+
+Create an async Vue "created" function.
+Get the current spaces.
+Subscribe to changes to the spaces list.
+
+```javascript
+export default {
+  name: 'Spaces',
+  async created() {
+      this.getSpaces();
+      this.subscribe();
+  },
+  ...
+```
+
+### Define Vue data element
+
+Ensure `spaces` is in the retuirned data elements.
+
+```javascript
+  data() {
+      return {
+          user: {},
+          formValues: {},
+          spaces: {}
+      }
+  }
+```
+
+### Create JavaScript methods
+
+```javascript
+methods: {
+    async submitHandler (data) {
+        await API.graphql({
+            query: createSpace,
+            variables: {input: data},
+        });
+        this.$formulate.reset('create-space')
+
+    },
+    async getSpaces() {
+        const spaces = await API.graphql({
+            query: listSpaces
+        });
+        console.log(spaces)
+        this.spaces = spaces.data.listSpaces.items;
+    },
+    async subscribe() {
+        const owner = await Auth.currentAuthenticatedUser()
+        API.graphql(
+            graphqlOperation(onCreateSpace,
+                {
+                owner: owner.username
+                }
+            )
+        )
+            .subscribe({
+            next: (eventData) => {
+                let space = eventData.value.data.onCreateSpace;
+                if (this.spaces.some(item => item.name === space.name)) return; // remove duplications
+                this.spaces = [...this.spaces, space];
+            }
+        });
+    }
+}
+```

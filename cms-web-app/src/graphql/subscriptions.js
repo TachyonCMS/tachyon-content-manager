@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateSpace = /* GraphQL */ `
-  subscription OnCreateSpace {
-    onCreateSpace {
+  subscription OnCreateSpace($owner: String!) {
+    onCreateSpace(owner: $owner) {
       id
       name
       albums {
@@ -70,8 +70,8 @@ export const onCreateSpace = /* GraphQL */ `
   }
 `;
 export const onUpdateSpace = /* GraphQL */ `
-  subscription OnUpdateSpace {
-    onUpdateSpace {
+  subscription OnUpdateSpace($owner: String!) {
+    onUpdateSpace(owner: $owner) {
       id
       name
       albums {
@@ -138,8 +138,8 @@ export const onUpdateSpace = /* GraphQL */ `
   }
 `;
 export const onDeleteSpace = /* GraphQL */ `
-  subscription OnDeleteSpace {
-    onDeleteSpace {
+  subscription OnDeleteSpace($owner: String!) {
+    onDeleteSpace(owner: $owner) {
       id
       name
       albums {
