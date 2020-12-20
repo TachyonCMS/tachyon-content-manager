@@ -810,3 +810,11 @@ methods: {
     }
 }
 ```
+
+## Handle a route with ID's
+
+```javascript
+const albumId = this.$route.params.id
+this.albumId = albumId
+this.getAlbum(albumId)
+```

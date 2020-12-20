@@ -60,7 +60,7 @@ type Entry
 type Album 
 @model 
 @key(name: "bySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
-@auth(rules: [{allow: owner},{allow: private}]) {
+@auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
     id: ID!
     spaceId: ID!
     space: Space @connection(fields: ["spaceId"])

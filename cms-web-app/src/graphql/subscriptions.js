@@ -962,8 +962,8 @@ export const onDeleteEntry = /* GraphQL */ `
   }
 `;
 export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum {
-    onCreateAlbum {
+  subscription OnCreateAlbum($owner: String!) {
+    onCreateAlbum(owner: $owner) {
       id
       spaceId
       space {
@@ -1007,8 +1007,8 @@ export const onCreateAlbum = /* GraphQL */ `
   }
 `;
 export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum {
-    onUpdateAlbum {
+  subscription OnUpdateAlbum($owner: String!) {
+    onUpdateAlbum(owner: $owner) {
       id
       spaceId
       space {
@@ -1052,8 +1052,8 @@ export const onUpdateAlbum = /* GraphQL */ `
   }
 `;
 export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum {
-    onDeleteAlbum {
+  subscription OnDeleteAlbum($owner: String!) {
+    onDeleteAlbum(owner: $owner) {
       id
       spaceId
       space {
