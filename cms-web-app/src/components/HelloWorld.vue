@@ -7,7 +7,7 @@
       <li>Import Contentful export files to get up and running instantly.</li>
       <li>Git based workflow for content and code.</li>
       <li>The performance of DynamoDB.</li>
-      <li>All services use cosnumption based billing.</li>
+      <li>All services use consumption based billing.</li>
       <li>Written in Vue, its easy to modify.</li>
       <li>AWS Amplify provides the infrastructure.</li>
     </ul>

@@ -622,12 +622,80 @@ If we haven't chosen a space then the Entries, Models and Media nav items should
 </mdb-nav-item>
 ```
 
-We'll add some sytling to make it more obvious that the button is inactive.
+## Add Amplify GraphQL / AppSync API
 
-```javascript
-<style>
-.disabled {
-  color: lightgray;
-}
-</style>
+### Add API with Amplify CLI
+
+```bash
+amplify add api
 ```
+
+I use the options below:
+
+```bash
+? Please select from one of the below mentioned services: GraphQL
+? Provide API name: cmswebapp
+? Choose the default authorization type for the API Amazon Cognito User Pool
+Use a Cognito user pool configured as a part of this project.
+? Do you want to configure advanced settings for the GraphQL API No, I am done.
+? Do you have an annotated GraphQL schema? No
+? Choose a schema template: Objects with fine-grained access control (e.g., a pr
+oject management app with owner-based authorization)
+```
+
+### Use the Tachyon CMS Schema
+
+```json
+
+```
+
+### Push the API and Schema changes to AWS
+
+```bash
+amplify push
+```
+
+Acknowledge ytou want to create the new resources.
+
+```bash
+Current Environment: dev
+
+| Category | Resource name     | Operation | Provider plugin   |
+| -------- | ----------------- | --------- | ----------------- |
+| Api      | cmswebapp         | Create    | awscloudformation |
+| Auth     | cmswebapp1580b47c | No Change | awscloudformation |
+| Hosting  | amplifyhosting    | No Change |                   |
+? Are you sure you want to continue? (Y/n) Y
+```
+
+I use the choices below. I know, I know... I should switch to Typescript.
+
+```bash
+? Do you want to generate code for your newly created GraphQL API Yes
+? Choose the code generation language target javascript
+? Enter the file name pattern of graphql queries, mutations and subscriptions src/
+graphql/**/*.js
+? Do you want to generate/update all possible GraphQL operations - queries, mutati
+ons and subscriptions Yes
+? Enter maximum statement depth [increase from default if your schema is deeply ne
+sted] 2
+```
+
+### Supported Query Patterns
+
+##### Management API
+
+1. Get Spaces by User
+2. Get ContentTypes by Space
+3. Get Albums by Space
+4. Get Entries by ContentType
+5. Get Photos by Album
+6. Get Entry by Id
+7. Get Entry by Id and Locale
+
+##### Accelerator API
+
+1. Get Albums by Space
+2. Get Photos by Album
+3. Get Entry by Id and Locale
+4. Get Entry by Id and Locale, with references populated to _n_ level (max 3)
