@@ -343,3 +343,33 @@ npm install --save \
 aws-amplify \
 vue-web-cam
 ```
+
+## Add Ampplify hosting
+
+```bash
+amplify add hosting
+```
+
+Use these options:
+
+```bash
+? Select the plugin module to execute (Use arrow keys)
+❯ Hosting with Amplify Console (Managed hosting with custom domains, Continuous deployment) 
+  Amazon CloudFront and S3 
+? Choose a type 
+❯ Continuous deployment (Git-based deployments) 
+  Manual deployment 
+  Learn more 
+? Continuous deployment is configured in the Amplify Console. Please hit enter once you connect your repository
+```
+
+The output will be something like that.
+
+```bash
+Amplify hosting urls: 
+┌──────────────┬────────────────────────────────────────────┐
+│ FrontEnd Env │ Domain                                     │
+├──────────────┼────────────────────────────────────────────┤
+│ main         │ https://main.d2z7boj98f726o.amplifyapp.com │
+└──────────────┴────────────────────────────────────────────┘
+```
