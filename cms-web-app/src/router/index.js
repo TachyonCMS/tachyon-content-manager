@@ -30,6 +30,12 @@ const routes = [
     meta: { requiresAuth: true}
   },
   {
+    path: '/albums/:id/camera',
+    name: 'AlbumCamera',
+    component: () => import(/* webpackChunkName: "camera" */ '../views/Camera.vue'),
+    meta: { requiresAuth: true} 
+  },
+  {
     path: '/spaces',
     name: 'Spaces',
     // route level code-splitting
@@ -48,30 +54,12 @@ const routes = [
     meta: { requiresAuth: true}
   },
   {
-    path: '/spaces/:id/entries',
+    path: '/entries',
     name: 'Entries',
     // route level code-splitting
     // this generates a separate chunk (entries.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "entries" */ '../views/Entries.vue'),
-    meta: { requiresAuth: true}
-  },
-  {
-    path: '/spaces/:id/entries/:id',
-    name: 'Entry',
-    // route level code-splitting
-    // this generates a separate chunk (entry.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "entry" */ '../views/Entry.vue'),
-    meta: { requiresAuth: true}
-  },
-  {
-    path: '/spaces/:id/albums/:id',
-    name: 'Entry',
-    // route level code-splitting
-    // this generates a separate chunk (entry.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "entry" */ '../views/Entry.vue'),
     meta: { requiresAuth: true}
   },
   {

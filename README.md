@@ -818,3 +818,9 @@ const albumId = this.$route.params.id
 this.albumId = albumId
 this.getAlbum(albumId)
 ```
+
+### Install Vue Web Cam
+
+```bash
+npm install --save vue-web-cam
+```
