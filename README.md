@@ -280,8 +280,22 @@ Configure additional auth types to add IAM auth for the Lambda.
  ◯ OpenID Connect
 ```
 
-### Push S3 and auth changes to AWS
+### Push S3 Lambda trigger auth changes to AWS
 
 ```bash
 amplify push
+```
+
+```bash
+✔ Successfully pulled backend environment dev from the cloud.
+
+Current Environment: dev
+
+| Category | Resource name     | Operation | Provider plugin   |
+| -------- | ----------------- | --------- | ----------------- |
+| Function | S3Trigger711d2e6f | Update    | awscloudformation |
+| Auth     | cmsappd3663833    | No Change | awscloudformation |
+| Api      | cmsapp            | No Change | awscloudformation |
+| Storage  | cmsfiles          | No Change | awscloudformation |
+? Are you sure you want to continue? Yes
 ```
