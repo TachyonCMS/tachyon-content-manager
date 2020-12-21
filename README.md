@@ -122,6 +122,28 @@ type PhotoS3Info {
 amplify push
 ```
 
+```bash
+amplify push
+✔ Successfully pulled backend environment dev from the cloud.
+
+Current Environment: dev
+
+| Category | Resource name  | Operation | Provider plugin   |
+| -------- | -------------- | --------- | ----------------- |
+| Api      | cmsapp         | Create    | awscloudformation |
+| Auth     | cmsappd3663833 | No Change | awscloudformation |
+? Are you sure you want to continue? Yes
+
+GraphQL schema compiled successfully.
+
+Edit your schema at /home/brian/sandbox/tachyon-content-manager/cms-app/amplify/backend/api/cmsapp/schema.graphql or place .graphql files in a directory at /home/brian/sandbox/tachyon-content-manager/cms-app/amplify/backend/api/cmsapp/schema
+? Do you want to generate code for your newly created GraphQL API Yes
+? Choose the code generation language target javascript
+? Enter the file name pattern of graphql queries, mutations and subscriptions src/graphql/**/*.js
+? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions Yes
+? Enter maximum statement depth [increase from default if your schema is deeply nested] 2
+```
+
 ## Add Amplify S3 Storage
 
 ### Update Function perms
