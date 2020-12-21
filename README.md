@@ -299,3 +299,38 @@ Current Environment: dev
 | Storage  | cmsfiles          | No Change | awscloudformation |
 ? Are you sure you want to continue? Yes
 ```
+
+## Install Vue Router
+
+```bash
+vue add router
+```
+
+Use these options:
+
+```bash
+
+```
+
+## Install Vue Material Design Bootstrap
+
+```bash
+vue add mdb
+```
+
+Use these options:
+
+```bash
+
+```
+
+## Install Vue and JS modules 
+
+```bash
+npm install --save \
+@aws-amplify/ui-vue, \
+@braid/vue-formulate, \ 
+aws-amplify, \
+vue-router, \
+vue-web-cam
+```
