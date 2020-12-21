@@ -51,10 +51,59 @@ Choose these auth options:
  Do you want to configure advanced settings? No, I am done.
 ```
 
+### Push Auth to AWS
+
+```bash
+amplify push
+```
+
 ## Add Amplify GraphQL API
+
+### Add API via CLI
+
+```bash
+amplify add api
+```
+
+Use these options:
+
+```bash
+? Please select from one of the below mentioned services: GraphQL
+? Provide API name: cmsapp
+? Choose the default authorization type for the API Amazon Cognito 
+User Pool
+Use a Cognito user pool configured as a part of this project.
+? Do you want to configure advanced settings for the GraphQL API No
+, I am done.
+? Do you have an annotated GraphQL schema? No
+? Choose a schema template: One-to-many relationship (e.g., “Blogs” with “Posts” and “Comments”)
+```
+
+Use this simple schema to start.
+
+```javascript
+type Space @model {
+  @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
+    id: ID!
+    name: String!
+  }
+}
+```
+
+### Push API to AWS
+
+```bash
+amplify push
+```
 
 ## Add Amplify S3 Storage
 
 ### Update Function perms
 
 ### Update API perms
+
+### Push S3 Storage changesto AWS
+
+```bash
+amplify push
+```
