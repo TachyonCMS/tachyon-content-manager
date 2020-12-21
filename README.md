@@ -146,6 +146,30 @@ Edit your schema at /home/brian/sandbox/tachyon-content-manager/cms-app/amplify/
 
 ## Add Amplify S3 Storage
 
+```bash
+amplify add storage
+```
+
+Choose these options:
+
+```bash
+? Please select from one of the below mentioned services: Content (Images, audio, video, etc.)
+? Please provide a friendly name for your resource that will be used to label this category in the project: cmsfiles
+? Please provide bucket name: tachyon-cms-files
+? Who should have access: Auth users only
+? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection)
+❯◉ create/update
+ ◉ read
+ ◉ delete
+ ? Do you want to add a Lambda Trigger for your S3 Bucket? Yes
+? Select from the following options 
+  Choose an existing function from the project 
+❯ Create a new function 
+Successfully added resource S3Trigger711d2e6f locally
+? Do you want to edit the local S3Trigger711d2e6f lambda function now? No
+Successfully added resource cmsfiles locally
+```
+
 ### Update Function perms
 
 ### Update API perms
