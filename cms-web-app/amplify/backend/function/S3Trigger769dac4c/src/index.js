@@ -1,3 +1,11 @@
+/* Amplify Params - DO NOT EDIT
+  AUTH_CMSWEBAPP1580B47C_USERPOOLID
+	API_CMSWEBAPP_GRAPHQLAPIENDPOINTOUTPUT
+	API_CMSWEBAPP_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */
+
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 const AWS = require('aws-sdk');
@@ -19,8 +27,6 @@ async function storePhotoInfo(item) {
   console.log('storePhotoItem', JSON.stringify(item))
   const createPhoto = gql`
     mutation CreatePhoto(
-      $input: CreatePhotoInput!
-      $condition: ModelPhotoConditionInput
     ) {
       createPhoto(input: $input, condition: $condition) {
         id
@@ -129,7 +135,7 @@ async function processRecord(record) {
 	const metadata = originalPhoto.Metadata
   console.log('metadata', JSON.stringify(metadata))
   console.log('resize')
-	const sizes = await resize(originalPhoto.Body, bucketName, key);    
+	const sizes = await resize(originalPhoto.Body, bucketName, key);
   console.log('sizes', JSON.stringify(sizes))
 	const id = await ulid.ulid();
 	const item = {
@@ -158,7 +164,7 @@ exports.handler = function(event, context, callback) {
   console.log('Received S3 event:', JSON.stringify(event, null, 2));
   // Get the object from the event and show its content type
   client = new AWSAppSyncClient({
-    url: process.env.API_TACHYONCAMERAAPP_GRAPHQLAPIENDPOINTOUTPUT,
+    url: process.env.API_CMSWEBAPP_GRAPHQLAPIENDPOINTOUTPUT,
     region: process.env.REGION,
     auth: {
       type: AUTH_TYPE.AWS_IAM,

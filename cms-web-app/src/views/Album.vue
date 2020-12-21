@@ -49,17 +49,16 @@ export default {
             console.log(album.data.getAlbum)
             this.album = album.data.getAlbum
         },    
-        async uploadToS3 (file, progress, error, option) {
+        async uploadToS3 (file, progress, error, options) {
             const user = await Auth.currentAuthenticatedUser();
             console.log(user)
-            console.log('made it' + file + progress + error + option)
+            console.log('made it' + file + progress + error + options)
             const uid = await uuidv4()
             console.log(uid)
 
             const metadata = {
                     albumId: this.albumId,
-                    owner: user.username,
-                    ownerId: user.id,
+                    owner: user.username
                 }
 
             console.log(metadata)
@@ -70,8 +69,15 @@ export default {
 
                 metadata: metadata
             })
-            .then (result => console.log(result))
-            .catch(err => console.log(err));
+            .then (result => {
+                progress(100)
+                console.log(result)
+                //return result.json
+            })
+            .catch(err => {
+                console.log(err) 
+                error('Unable to upload to S3')
+            });
         }
     }
 };

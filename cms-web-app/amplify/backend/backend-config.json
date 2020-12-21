@@ -26,7 +26,11 @@
               "userPoolId": "authcmswebapp1580b47c"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }
@@ -35,7 +39,45 @@
     "S3Trigger769dac4c": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
-      "build": true
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "cmswebapp",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "cmswebapp1580b47c",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "uploadProcessor": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "cmswebapp",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "cmsmedia",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
     }
   },
   "storage": {

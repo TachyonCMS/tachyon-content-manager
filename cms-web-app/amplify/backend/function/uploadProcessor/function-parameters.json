@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "storage": {
+      "ContentType:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Locale:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Entry:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Album:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Photo:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
