@@ -309,7 +309,7 @@ vue add router
 Use these options:
 
 ```bash
-
+? Use history mode for router? (Requires proper server setup for index fallback in production) (Y/n) n
 ```
 
 ## Install Vue Material Design Bootstrap
@@ -321,7 +321,18 @@ vue add mdb
 Use these options:
 
 ```bash
-
+? Please choose type of installation: 
+  New app 
+❯ Existing app 
+? Free or Pro version? (Use arrow keys)
+❯ Free 
+  Basic 
+  Pro 
+? Select the styling option: 
+  Compiled in the mdbvue package (CSS) 
+❯ Editable in your project (SCSS) 
+? Add Roboto font? Yes
+? Add Font Awesome 5? Yes
 ```
 
 ## Install Vue and JS modules 
