@@ -39,6 +39,16 @@ Using default provider  awscloudformation
 
 ## Add Amplify Auth
 
+```bash
+amplify add auth
+```
+
+Choose these auth options:
+
+```bash
+
+```
+
 ## Add Amplify GraphQL API
 
 ## Add Amplify S3 Storage

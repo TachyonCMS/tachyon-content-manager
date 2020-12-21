@@ -10,6 +10,11 @@
       "StackName": "amplify-cmsapp-dev-221203",
       "StackId": "arn:aws:cloudformation:us-east-1:934684196725:stack/amplify-cmsapp-dev-221203/75614e70-4353-11eb-9484-12704013453b",
       "AmplifyAppId": "d2z7boj98f726o"
+    },
+    "categories": {
+      "auth": {
+        "cmsappd3663833": {}
+      }
     }
   }
 }
