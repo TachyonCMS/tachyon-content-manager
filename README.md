@@ -170,11 +170,117 @@ Successfully added resource S3Trigger711d2e6f locally
 Successfully added resource cmsfiles locally
 ```
 
-### Update Function perms
+### Grant S3 Trigger Function access to API
 
-### Update API perms
+```bash
+amplify update function
+```
 
-### Push S3 Storage changesto AWS
+Now with lambda layers available you have to choose Lambda function.
+
+```bash
+? Select which capability you want to update: (Use arrow keys)
+❯ Lambda function (serverless function) 
+  Lambda layer (shared code & resource used across functions) 
+```
+
+Select the trigger function created when adding S3 Storage to Amplify.
+
+```bash
+? Select the Lambda function you want to update S3Trigger711d2e6f
+General information
+| Name: S3Trigger711d2e6f
+| Runtime: nodejs
+```
+
+Choose to update the Resource acess permissions.
+
+```bash
+? Which setting do you want to update? (Use arrow keys)
+❯ Resource access permissions 
+  Scheduled recurring invocation 
+  Lambda layers configuration 
+```
+
+Choose to edit the API category.
+
+```bash
+? Select the category 
+ ◯ auth
+❯◉ api
+ ◯ function
+ ◯ storage
+ ```
+
+ Choose all the auth options. (press `a` to select all)
+
+ ```bash
+? Select the operations you want to permit for cmsapp (Press <space> to select, <a> to toggle all, <i> to invert sel
+ection)
+❯◉ create
+ ◉ read
+ ◉ update
+ ◉ delete
+ ```
+
+ Note:
+
+ ```bash
+ You can access the following resource attributes as environment variables from your Lambda function
+        API_CMSAPP_GRAPHQLAPIENDPOINTOUTPUT
+        API_CMSAPP_GRAPHQLAPIIDOUTPUT
+```
+
+Skip editing the Lambda for now.
+
+```bash
+Do you want to edit the local lambda function now? (y/N) n
+```
+
+### Update API to supp[ort IAM Auth from Lambda]
+
+```bash
+amplify update api
+```
+
+Select GraphQL.
+
+```bash
+? Please select from one of the below mentioned services: (Use arrow keys)
+❯ GraphQL 
+  REST 
+```
+
+Select "Update auth settings".
+
+```bash
+? Select from the options below 
+  Walkthrough all configurations 
+❯ Update auth settings 
+  Enable DataStore for entire API 
+```
+
+*Keep Amazon Cognito User Pool as the default*
+
+```bash
+? Choose the default authorization type for the API (Use arrow keys)
+  API key 
+❯ Amazon Cognito User Pool 
+  IAM 
+  OpenID Connect 
+```
+
+Configure additional auth types to add IAM auth for the Lambda.
+
+```bash
+? Configure additional auth types? (y/N) y
+? Choose the additional authorization types you want to configure for the API 
+ ◯ API key
+❯◉ IAM
+ ◯ OpenID Connect
+```
+
+### Push S3 and auth changes to AWS
 
 ```bash
 amplify push

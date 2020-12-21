@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "cmsapp": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
