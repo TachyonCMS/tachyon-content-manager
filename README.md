@@ -2,6 +2,10 @@
 
 ## Create Vue project
 
+```bash
+vue create cms-app
+```
+
 ## Initialize Amplify
 
 ## Add Amplify Auth
