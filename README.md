@@ -340,8 +340,6 @@ Use these options:
 ```bash
 npm install --save \
 @aws-amplify/ui-vue, \
-@braid/vue-formulate, \ 
 aws-amplify, \
-vue-router, \
 vue-web-cam
 ```
