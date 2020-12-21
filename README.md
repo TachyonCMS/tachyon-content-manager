@@ -339,7 +339,7 @@ Use these options:
 
 ```bash
 npm install --save \
-@aws-amplify/ui-vue, \
-aws-amplify, \
+@aws-amplify/ui-vue \
+aws-amplify \
 vue-web-cam
 ```

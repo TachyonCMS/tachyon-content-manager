@@ -9,10 +9,13 @@
     "start": "vue-cli-service serve --open"
   },
   "dependencies": {
+    "@aws-amplify/ui-vue": "^0.2.32",
+    "aws-amplify": "^3.3.13",
     "core-js": "^3.6.5",
     "mdbvue": "6.7.2",
     "vue": "^2.6.11",
-    "vue-router": "^3.2.0"
+    "vue-router": "^3.2.0",
+    "vue-web-cam": "^1.9.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
