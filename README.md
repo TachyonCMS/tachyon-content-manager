@@ -824,3 +824,12 @@ this.getAlbum(albumId)
 ```bash
 npm install --save vue-web-cam
 ```
+
+## Add S3 Storage
+
+### Add via Amplify CLI
+
+```bash
+ amplify add storage
+ ```
+s
