@@ -123,7 +123,7 @@ async function processRecord(record) {
   console.log('processRecord', JSON.stringify(record))
 
   if (record.eventName !== "ObjectCreated:Put") { console.log('Is not a new file'); return; }
-  if (! key.includes('upload/photos')) { console.log('Does not look like a photo upload from user'); return; }
+  if (! key.includes('/upload/photo/')) { console.log('Does not look like a photo upload from user'); return; }
 
 
   const originalPhoto = await S3.getObject({ Bucket: bucketName, Key: key }).promise()
