@@ -35,21 +35,10 @@ export const onDeleteSpace = /* GraphQL */ `
   }
 `;
 export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum($owner: String!) {
+  subscription OnCreateAlbum($owner: String) {
     onCreateAlbum(owner: $owner) {
       id
       name
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -61,25 +50,25 @@ export const onCreateAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
 export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum($owner: String!) {
+  subscription OnUpdateAlbum($owner: String) {
     onUpdateAlbum(owner: $owner) {
       id
       name
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -91,25 +80,25 @@ export const onUpdateAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
 export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum($owner: String!) {
+  subscription OnDeleteAlbum($owner: String) {
     onDeleteAlbum(owner: $owner) {
       id
       name
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -121,32 +110,25 @@ export const onDeleteAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
-    }
-  }
-`;
-export const onCreatePhoto = /* GraphQL */ `
-  subscription OnCreatePhoto($owner: String!) {
-    onCreatePhoto(owner: $owner) {
-      id
-      albumId
-      album {
-        id
-        name
-        photos {
-          nextToken
-        }
-        spaceId
-        space {
+      photos {
+        items {
           id
-          name
+          albumId
+          bucket
           createdAt
           updatedAt
           owner
         }
-        createdAt
-        updatedAt
-        owner
+        nextToken
       }
+    }
+  }
+`;
+export const onCreatePhoto = /* GraphQL */ `
+  subscription OnCreatePhoto($owner: String) {
+    onCreatePhoto(owner: $owner) {
+      id
+      albumId
       bucket
       fullsize {
         key
@@ -160,33 +142,33 @@ export const onCreatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
 `;
 export const onUpdatePhoto = /* GraphQL */ `
-  subscription OnUpdatePhoto($owner: String!) {
+  subscription OnUpdatePhoto($owner: String) {
     onUpdatePhoto(owner: $owner) {
       id
       albumId
-      album {
-        id
-        name
-        photos {
-          nextToken
-        }
-        spaceId
-        space {
-          id
-          name
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -200,33 +182,33 @@ export const onUpdatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
 `;
 export const onDeletePhoto = /* GraphQL */ `
-  subscription OnDeletePhoto($owner: String!) {
+  subscription OnDeletePhoto($owner: String) {
     onDeletePhoto(owner: $owner) {
       id
       albumId
-      album {
-        id
-        name
-        photos {
-          nextToken
-        }
-        spaceId
-        space {
-          id
-          name
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -240,6 +222,24 @@ export const onDeletePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
