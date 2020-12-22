@@ -7,10 +7,13 @@ type Space
 
 type Album 
 @model 
+@key(name: "bySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
 @auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
     id: ID!
     name: String!
     photos: [Photo] @connection(keyName: "byAlbum", fields: ["id"])
+    spaceId: ID!
+    space: Space @connection(fields: ["spaceId"])
 }
 
 type Photo 

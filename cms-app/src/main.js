@@ -4,6 +4,16 @@ import 'mdbvue/lib/mdbvue.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import "@aws-amplify/ui-vue";
+
+import Amplify from 'aws-amplify';
+
+import aws_exports from './aws-exports';
+import VueFormulate from '@braid/vue-formulate'
+
+Amplify.configure(aws_exports);
+
+Vue.use(VueFormulate)
 
 Vue.config.productionTip = false
 
