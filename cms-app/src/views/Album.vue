@@ -63,7 +63,7 @@ export default {
 
             console.log(metadata)
 
-            const fileName = '/upload/photo/' + uid 
+            const fileName = 'upload/photo/' + uid 
 
             await Storage.vault.put(fileName, file, {
 

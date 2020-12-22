@@ -167,7 +167,7 @@ export default {
             const user = await Auth.currentAuthenticatedUser()
             const uid = await uuidv4()
             const image = await this.dataURItoBlob(file)
-            const fileName = 'uploads/' + uid + '.jpg'
+            const fileName = 'upload/photo/' + uid + '.jpg'
 
             console.log(user)
 

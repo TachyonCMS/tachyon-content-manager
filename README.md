@@ -373,3 +373,26 @@ Amplify hosting urls:
 │ main         │ https://main.d2z7boj98f726o.amplifyapp.com │
 └──────────────┴────────────────────────────────────────────┘
 ```
+
+## Create an Authenticated page framework
+
+### Install Vue Formulate
+
+```bash
+npm install --save @braid/vue-formulate
+```
+
+`
+### Update the  main.js
+
+Add the following:
+
+```javascript
+import Amplify from 'aws-amplify';
+import aws_exports from './aws-exports';
+import VueFormulate from '@braid/vue-formulate'
+
+Amplify.configure(aws_exports);
+
+Vue.use(VueFormulate)
+```

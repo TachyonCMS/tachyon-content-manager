@@ -46,6 +46,14 @@ export const getAlbum = /* GraphQL */ `
         }
         nextToken
       }
+      spaceId
+      space {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -65,6 +73,14 @@ export const listAlbums = /* GraphQL */ `
         photos {
           nextToken
         }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
         createdAt
         updatedAt
         owner
@@ -83,6 +99,14 @@ export const getPhoto = /* GraphQL */ `
         name
         photos {
           nextToken
+        }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
         }
         createdAt
         updatedAt
@@ -118,6 +142,7 @@ export const listPhotos = /* GraphQL */ `
         album {
           id
           name
+          spaceId
           createdAt
           updatedAt
           owner
@@ -132,6 +157,43 @@ export const listPhotos = /* GraphQL */ `
           key
           width
           height
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listAlbumsBySpace = /* GraphQL */ `
+  query ListAlbumsBySpace(
+    $spaceId: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelAlbumFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAlbumsBySpace(
+      spaceId: $spaceId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        photos {
+          nextToken
+        }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
         }
         createdAt
         updatedAt
@@ -162,6 +224,7 @@ export const listPhotosByAlbum = /* GraphQL */ `
         album {
           id
           name
+          spaceId
           createdAt
           updatedAt
           owner

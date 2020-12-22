@@ -62,6 +62,14 @@ export const createAlbum = /* GraphQL */ `
         }
         nextToken
       }
+      spaceId
+      space {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -86,6 +94,14 @@ export const updateAlbum = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      spaceId
+      space {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
       }
       createdAt
       updatedAt
@@ -112,6 +128,14 @@ export const deleteAlbum = /* GraphQL */ `
         }
         nextToken
       }
+      spaceId
+      space {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -131,6 +155,14 @@ export const createPhoto = /* GraphQL */ `
         name
         photos {
           nextToken
+        }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
         }
         createdAt
         updatedAt
@@ -167,6 +199,14 @@ export const updatePhoto = /* GraphQL */ `
         photos {
           nextToken
         }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
         createdAt
         updatedAt
         owner
@@ -201,6 +241,14 @@ export const deletePhoto = /* GraphQL */ `
         name
         photos {
           nextToken
+        }
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
         }
         createdAt
         updatedAt
