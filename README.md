@@ -396,3 +396,40 @@ Amplify.configure(aws_exports);
 
 Vue.use(VueFormulate)
 ```
+
+## Process uploaded images
+
+### Modify the index.js
+
+It probably goes without saying but don't edit the comment at the top of the file.
+It will look similar to this.
+
+```javascript
+Amplify Params - DO NOT EDIT
+	API_CMSAPP_GRAPHQLAPIENDPOINTOUTPUT
+	API_CMSAPP_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */// eslint-disable-next-line
+```
+
+Replace the rest of file with this.
+
+```javascript
+
+```
+
+### Modify package.json
+
+Add these dependencies to the `package.json` file.
+
+```json
+"dependencies": {
+  "aws-appsync": "^3.0.2",
+  "es6-promise": "^4.2.8",
+  "graphql-tag": "^2.10.1",
+  "isomorphic-fetch": "^2.2.1",
+  "sharp": "^0.24.0",
+  "ulid": "^2.3.0"
+}
+```
