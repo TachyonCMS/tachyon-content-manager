@@ -4,14 +4,14 @@
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */// eslint-disable-next-line
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
 const AWS = require('aws-sdk');
-const S3 = new AWS.S3({ signatureVersion: 'v4' });
-const AUTH_TYPE = require('aws-appsync').AUTH_TYPE;
-const AWSAppSyncClient = require('aws-appsync').default;
-const ulid = require('ulid');
-const gql = require('graphql-tag');
+const S3 = new AWS.S3({ signatureVersion: 'v4' })
+const AUTH_TYPE = require('aws-appsync').AUTH_TYPE
+const AWSAppSyncClient = require('aws-appsync').default
+const ulid = require('ulid')
+const gql = require('graphql-tag')
 
 const Sharp = require('sharp');
 
