@@ -43,16 +43,21 @@
           ]
         }
       ]
+    },
+    "S3Triggerbb401a3d": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
     }
   },
   "storage": {
-    "cmsfiles": {
+    "tachyoncmsfiles": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "S3Trigger711d2e6f",
+          "resourceName": "S3Triggerbb401a3d",
           "attributes": [
             "Name",
             "Arn",

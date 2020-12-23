@@ -3,6 +3,7 @@
 	API_CMSAPP_GRAPHQLAPIIDOUTPUT
 	ENV
 	REGION
+	STORAGE_CMSFILES_BUCKETNAME
 Amplify Params - DO NOT EDIT */// eslint-disable-next-line
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
