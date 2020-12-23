@@ -76,7 +76,7 @@
         "Runtime": "nodejs12.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-cmsapp-dev-221203-deployment",
+          "S3Bucket": "amplify-cmsapp-prod-220252-deployment",
           "S3Key": "amplify-builds/S3Triggerbb401a3d-652b4962386a74563362-build.zip"
         }
       }
