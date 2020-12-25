@@ -1,30 +1,39 @@
 <template>
 <div class="container">
-    <h1>Album {{album.name}}</h1>
+    <h1>{{album.name}}</h1>
     <div id="album">
-    
-        <FormulateInput
-            type="image"
-            name="uploadImage"
-            label="Select an image to upload"
-            help="Select a png, jpg or gif to upload."
-            validation="mime:image/jpeg,image/png,image/gif"
-            :uploader="uploadToS3"
-        />
-    </div>
+         <amplify-s3-image-picker 
+            path="upload/photo/" 
+            level="private"
+            track="true"
+            header-title=""
+            header-hint=""
+            button-text="Upload"
+            />
     <div>
         <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
+        |
+        <router-link :to="{ name: 'AlbumScreenCap', params: { id: this.$route.params.id } }">Screen Cap</router-link>
     </div>
+     
+    </div>
+    
 </div>
 </template>
 
 <script>
-import Amplify, { API, Auth, Storage } from 'aws-amplify'
+import Amplify, { API, Auth, Storage, I18n } from 'aws-amplify'
 import awsconfig from '@/aws-exports';
 Amplify.configure(awsconfig);
 
 import { getAlbum } from '@/graphql/queries'
 import { v4 as uuidv4 } from 'uuid';
+
+import { Translations } from "@aws-amplify/ui-components";
+
+I18n.putVocabulariesForLanguage("en-US", {
+  [Translations.IMAGE_PICKER_TITLE]: "Device image"
+});
 
 export default {
     name: 'Album',
@@ -50,6 +59,7 @@ export default {
             this.album = album.data.getAlbum
         },    
         async uploadToS3 (file, progress, error, options) {
+           
             const user = await Auth.currentAuthenticatedUser();
             console.log(user)
             console.log('made it' + file + progress + error + options)
@@ -66,13 +76,14 @@ export default {
             const fileName = 'upload/photo/' + uid 
 
             await Storage.vault.put(fileName, file, {
-
+                progressCallback(progress) {
+                    console.log(`Uploading: ${progress.loaded}/${progress.total}`)
+                },
                 metadata: metadata
             })
             .then (result => {
-                progress(100)
                 console.log(result)
-                //return result.json
+                return [{"path": "test"}]
             })
             .catch(err => {
                 console.log(err) 

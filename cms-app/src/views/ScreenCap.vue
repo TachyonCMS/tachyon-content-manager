@@ -11,56 +11,22 @@
         <mdb-btn color="primary"  @click="onSave">Upload</mdb-btn>
       </mdb-modal-footer>
     </mdb-modal>
-   <div>
-        <div>
-            <div class="border">
-                <vue-web-cam
-                    ref="webcam"
-                    :device-id="deviceId"
-                    width="100%"
-                    autoplay="autoplay"
-                    @started="onStarted"
-                    @stopped="onStopped"
-                    @error="onError"
-                    @cameras="onCameras"
-                    @camera-change="onCameraChange"
-                />
-            </div>
-
-            <div >
-                <div>
-                    <select v-model="camera">
-                        <option>-- Select Device --</option>
-                        <option
-                            v-for="device in devices"
-                            :key="device.deviceId"
-                            :value="device.deviceId"
-                        >{{ device.label }}</option>
-                    </select>
-                </div>
-                <!-- Default switch -->
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="cameraToggle" checked="true" @change="onToggle" >
-                    <label class="custom-control-label" for="cameraToggle">ON</label>   
-                    <button type="button" class="btn btn-primary" @click="onCapture">Capture Photo</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div>
+         <div class="custom-control custom-switch">
+            <button type="button" class="btn btn-primary" @click="startCapture">Capture Photo</button>
+        </div>
         <router-link :to="{ name: 'Album', params: { id: this.$route.params.id } }">Files</router-link>
         |
-        <router-link :to="{ name: 'AlbumScreenCap', params: { id: this.$route.params.id } }">Screen cap</router-link>
+        <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
     </div>
 </div>
+ 
 </template>
 
 <script>
 import Amplify, { Auth, Storage } from 'aws-amplify'
 import awsconfig from '@/aws-exports'
 Amplify.configure(awsconfig)
-
-import { WebCam } from "vue-web-cam"
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -73,7 +39,7 @@ import {
 } from 'mdbvue';
 
 export default {
-    name: 'Camera',
+    name: 'ScreenCap',
     beforeCreate() {
         Auth.currentAuthenticatedUser()
             .then(user => {
@@ -87,7 +53,6 @@ export default {
         this.albumId = albumId
     },
     components: {
-        'vue-web-cam': WebCam,
         mdbModal,
         mdbModalBody,
         mdbModalFooter,

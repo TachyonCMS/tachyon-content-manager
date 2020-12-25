@@ -44,6 +44,12 @@ const routes = [
     meta: { requiresAuth: true} 
   },
   {
+    path: '/albums/:id/screen-cap',
+    name: 'AlbumScreenCap',
+    component: () => import(/* webpackChunkName: "screenCap" */ '../views/ScreenCap.vue'),
+    meta: { requiresAuth: true} 
+  },
+  {
     path: '/spaces',
     name: 'Spaces',
     // route level code-splitting
