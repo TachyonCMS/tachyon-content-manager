@@ -30,9 +30,14 @@ Amplify.configure(awsconfig);
 
 import Vue from 'vue'
 import FileSelector from 'vue-file-selector';
- 
-// then use it!
 Vue.use(FileSelector);
+
+import {
+
+    mdbBtn
+
+} from 'mdbvue';
+
 
 import { getAlbum } from '@/graphql/queries'
 import { v4 as uuidv4 } from 'uuid';
@@ -45,6 +50,10 @@ export default {
         this.albumId = albumId
         this.getAlbum(albumId)
     },
+    components: {
+
+        mdbBtn
+    },
     data() {
         return {
             user: {},
@@ -52,6 +61,9 @@ export default {
         }
     },
     methods: {
+        fileAdded: function (fileList) {
+        console.log('vfp:', fileList)
+        },
         handleFilesValidated(result, files) {
             console.log('Validated files: ')
             console.table(files)

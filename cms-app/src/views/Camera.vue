@@ -7,7 +7,7 @@
         </figure>
       </mdb-modal-body>
       <mdb-modal-footer>
-        <mdb-btn color="secondary" @click.native="modal = false">Delete</mdb-btn>
+        <mdb-btn color="secondary" @click.native="modal = false">Cancel</mdb-btn>
         <mdb-btn color="primary"  @click="onSave">Upload</mdb-btn>
       </mdb-modal-footer>
     </mdb-modal>
