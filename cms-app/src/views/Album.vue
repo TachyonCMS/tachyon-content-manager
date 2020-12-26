@@ -1,15 +1,17 @@
 <template>
 <div class="container">
     <h1>{{album.name}}</h1>
+     <file-selector
+        accept-extensions=".jpg,.gif,.png,.jpeg"
+        :multiple="true"
+        :max-file-size="5 * 1024 * 1024"
+        @validated="this.handleFilesValidated"
+        @changed="this.uploadFilesToS3"
+        >
+         <mdb-btn color="blue">Upload File</mdb-btn>
+    </file-selector>
     <div id="album">
-         <amplify-s3-image-picker 
-            path="upload/photo/" 
-            level="private"
-            track="true"
-            header-title=""
-            header-hint=""
-            button-text="Upload"
-            />
+         
     <div>
         <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
         |
@@ -22,18 +24,18 @@
 </template>
 
 <script>
-import Amplify, { API, Auth, Storage, I18n } from 'aws-amplify'
+import Amplify, { API, Auth, Storage } from 'aws-amplify'
 import awsconfig from '@/aws-exports';
 Amplify.configure(awsconfig);
 
+import Vue from 'vue'
+import FileSelector from 'vue-file-selector';
+ 
+// then use it!
+Vue.use(FileSelector);
+
 import { getAlbum } from '@/graphql/queries'
 import { v4 as uuidv4 } from 'uuid';
-
-import { Translations } from "@aws-amplify/ui-components";
-
-I18n.putVocabulariesForLanguage("en-US", {
-  [Translations.IMAGE_PICKER_TITLE]: "Device image"
-});
 
 export default {
     name: 'Album',
@@ -50,6 +52,11 @@ export default {
         }
     },
     methods: {
+        handleFilesValidated(result, files) {
+            console.log('Validated files: ')
+            console.table(files)
+            console.log(result)
+        },
         async getAlbum(albumId) {
             const album = await API.graphql({
                 query: getAlbum,
@@ -57,10 +64,18 @@ export default {
             });
             console.log(album.data.getAlbum)
             this.album = album.data.getAlbum
-        },    
+        },
+        async uploadFilesToS3 (files) {
+           
+            console.log('Selected files: ')
+            console.table(files)
+            files.forEach(file => {
+                this.uploadToS3(file)
+            })
+        },
         async uploadToS3 (file, progress, error, options) {
            
-            const user = await Auth.currentAuthenticatedUser();
+            const user = await Auth.currentAuthenticatedUser()
             console.log(user)
             console.log('made it' + file + progress + error + options)
             const uid = await uuidv4()
