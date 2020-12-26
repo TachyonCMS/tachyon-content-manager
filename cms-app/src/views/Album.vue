@@ -13,7 +13,7 @@
     <div>
         <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
         |
-        <router-link :to="{ name: 'AlbumScreenCap', params: { id: this.$route.params.id } }">Screen Cap</router-link>
+        <router-link :to="{ name: 'AlbumScreen', params: { id: this.$route.params.id } }">Screen</router-link>
     </div>
      
     </div>

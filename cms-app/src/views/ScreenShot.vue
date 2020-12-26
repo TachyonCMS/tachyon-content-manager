@@ -21,7 +21,7 @@
         |
         <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
     </div>
-    <canvas id="canvas" ref="canvas" class="img-fluid"></canvas>
+
 </div>
  
 </template>
@@ -125,18 +125,19 @@ export default {
             const video = this.$refs.video
             video.srcObject = mediaStream
 
+            //await this.onClip()
+
         },
         async onClip() {
             console.log('Capturing Image')
 
             const video = this.$refs.video
 
-            const canvas = this.$refs.canvas
+            //const canvas = this.$refs.canvas
+            const canvas = document.createElement("canvas");
 
             canvas.width = video.offsetWidth
             canvas.height = video.offsetHeight
-
-            //const canvas = document.createElement("canvas");
             const context = canvas.getContext("2d");
 
             context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);

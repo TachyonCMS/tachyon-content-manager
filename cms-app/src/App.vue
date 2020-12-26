@@ -66,16 +66,23 @@ $image-path: '~@/../mdb/mdbvue/img';
   margin-top: 40px;
 }
 
+:root {
+  --amplify-primary-color: #4285f4;
+  --amplify-primary-tint: #005ed9;
+  --amplify-primary-shade: #005ed9;
+}
+
 #nav {
   padding: 30px;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: lightgray;
 }
 
 #nav a.router-link-exact-active {
-  color: lightgray;
+  color:whitesmoke;
 }
+
 </style>
