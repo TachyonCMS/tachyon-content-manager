@@ -44,9 +44,9 @@ const routes = [
     meta: { requiresAuth: true} 
   },
   {
-    path: '/albums/:id/screen-cap',
-    name: 'AlbumScreenCap',
-    component: () => import(/* webpackChunkName: "screenCap" */ '../views/ScreenCap.vue'),
+    path: '/albums/:id/screen',
+    name: 'AlbumScreen',
+    component: () => import(/* webpackChunkName: "screenShot" */ '../views/ScreenShot.vue'),
     meta: { requiresAuth: true} 
   },
   {

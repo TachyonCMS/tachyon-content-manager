@@ -1,24 +1,27 @@
 <template>
 <div class="container">
     <mdb-modal :show="modal" @close="modal = false" fullHeight  position="top" >
-      <mdb-modal-body>
-      <figure class="figure">
-                    <img :src="img" class="img-fluid" />
-                </figure>
-      </mdb-modal-body>
-      <mdb-modal-footer>
-        <mdb-btn color="secondary" @click.native="modal = false">Delete</mdb-btn>
-        <mdb-btn color="primary"  @click="onSave">Upload</mdb-btn>
-      </mdb-modal-footer>
+        <mdb-modal-body>
+            <figure class="figure">
+                <img :src="img" class="img-fluid" />
+            </figure>
+        </mdb-modal-body>
+        <mdb-modal-footer>
+            <mdb-btn color="secondary" @click.native="modal = false">Delete</mdb-btn>
+            <mdb-btn color="primary"  @click="onSave">Upload</mdb-btn>
+        </mdb-modal-footer>
     </mdb-modal>
     <div>
          <div class="custom-control custom-switch">
-            <button type="button" class="btn btn-primary" @click="startCapture">Capture Photo</button>
+            <button type="button" class="btn btn-primary" @click="onStart">Capture Screen</button>
+            <button type="button" class="btn btn-primary" @click="onClip">Save Screen</button>
+            <video ref="video" id="video" autoplay class="img-fluid"></video>
         </div>
         <router-link :to="{ name: 'Album', params: { id: this.$route.params.id } }">Files</router-link>
         |
         <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
     </div>
+    <canvas id="canvas" ref="canvas" class="img-fluid"></canvas>
 </div>
  
 </template>
@@ -39,7 +42,7 @@ import {
 } from 'mdbvue';
 
 export default {
-    name: 'ScreenCap',
+    name: 'ScreenShot',
     beforeCreate() {
         Auth.currentAuthenticatedUser()
             .then(user => {
@@ -61,7 +64,7 @@ export default {
     data() {
         return {
             img: null,
-            camera: null,
+            video: null,
             deviceId: null,
             devices: [],
             user: {},
@@ -91,8 +94,9 @@ export default {
     },
     methods: {
         onCapture() {
-            this.img = this.$refs.webcam.capture()
-            this.modal = true
+            console.log('made it')
+            //this.img = this.$refs.webcam.capture()
+            //this.modal = true
             //console.log(this.img)
             //this.uploadToS3 (this.img)
         },
@@ -106,35 +110,51 @@ export default {
             this.cameraOn = false
             this.$refs.webcam.stop()
         },
-        onStart() {
-            this.cameraOn = true
-            this.$refs.webcam.start()
+        async onStart(displayMediaOptions) {
+            console.log('Starting screen capture')
+
+            let mediaStream = null
+
+            try {
+                mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+
+            } catch(err) {
+                console.error("Error: " + err)
+            }
+            //const video = document.body.getElementById('video')
+            const video = this.$refs.video
+            video.srcObject = mediaStream
+
         },
-        onError(error) {
-            console.log("On Error Event", error)
-        },
-        onCameras(cameras) {
-            this.devices = cameras;
-            console.log("On Cameras Event", cameras)
-        },
-        onCameraChange(deviceId) {
-            this.deviceId = deviceId;
-            this.camera = deviceId;
-            console.log("On Camera Change Event", deviceId)
-        },
-        onToggle() {
-            console.log(this.cameraOn)
-            this.cameraOn === true ?  this.onStop() : this.onStart()
+        async onClip() {
+            console.log('Capturing Image')
+
+            const video = this.$refs.video
+
+            const canvas = this.$refs.canvas
+
+            canvas.width = video.offsetWidth
+            canvas.height = video.offsetHeight
+
+            //const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+
+            context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);
+            this.img = canvas.toDataURL("image/png");
+
+            this.modal = true
+
+            console.log(this.img)
         },
         async onSave() {
-            this.uploadToS3 (this.img)
+            await this.uploadToS3(this.img)
             this.modal = false
         },
         async uploadToS3 (file) {
             const user = await Auth.currentAuthenticatedUser()
             const uid = await uuidv4()
             const image = await this.dataURItoBlob(file)
-            const fileName = 'upload/photo/' + uid + '.jpg'
+            const fileName = 'upload/photo/' + uid + '.png'
 
             console.log(user)
 

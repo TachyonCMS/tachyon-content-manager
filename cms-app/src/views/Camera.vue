@@ -2,9 +2,9 @@
 <div class="container">
     <mdb-modal :show="modal" @close="modal = false" fullHeight  position="top" >
       <mdb-modal-body>
-      <figure class="figure">
-                    <img :src="img" class="img-fluid" />
-                </figure>
+        <figure class="figure">
+            <img :src="img" class="img-fluid" />
+        </figure>
       </mdb-modal-body>
       <mdb-modal-footer>
         <mdb-btn color="secondary" @click.native="modal = false">Delete</mdb-btn>
@@ -42,7 +42,7 @@
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" id="cameraToggle" checked="true" @change="onToggle" >
                     <label class="custom-control-label" for="cameraToggle">ON</label>   
-                    <button type="button" class="btn btn-primary" @click="onCapture">Capture Photo</button>
+                    <button type="button" class="btn btn-primary" @click="onCapture">Snap</button>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
     <div>
         <router-link :to="{ name: 'Album', params: { id: this.$route.params.id } }">Files</router-link>
         |
-        <router-link :to="{ name: 'AlbumScreenCap', params: { id: this.$route.params.id } }">Screen cap</router-link>
+        <router-link :to="{ name: 'AlbumScreen', params: { id: this.$route.params.id } }">Screen</router-link>
     </div>
 </div>
 </template>
