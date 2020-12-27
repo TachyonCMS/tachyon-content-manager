@@ -6,30 +6,70 @@
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-        "SMS Text Message"
+        "SMS Text Message",
+        "TOTP"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "12",
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Uppercase",
+        "Requires Numbers",
+        "Requires Symbols"
+    ],
     "requiredAttributes": [
         "email"
     ],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
+        "address",
+        "birthdate",
+        "family_name",
+        "middle_name",
+        "gender",
+        "locale",
+        "given_name",
+        "name",
+        "nickname",
+        "phone_number",
+        "preferred_username",
+        "picture",
+        "profile",
+        "updated_at",
+        "website",
+        "zoneinfo",
         "email"
     ],
     "userpoolClientReadAttributes": [
-        "email"
+        "address",
+        "birthdate",
+        "email",
+        "family_name",
+        "middle_name",
+        "gender",
+        "locale",
+        "given_name",
+        "name",
+        "nickname",
+        "phone_number",
+        "preferred_username",
+        "picture",
+        "profile",
+        "updated_at",
+        "website",
+        "zoneinfo",
+        "email_verified",
+        "phone_number_verified"
     ],
     "userpoolClientLambdaRole": "cmsappd3663833_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "d3663833",
     "resourceName": "cmsappd3663833",
     "authSelections": "identityPoolAndUserPool",
@@ -45,8 +85,17 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
-    "dependsOn": []
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": []
 }

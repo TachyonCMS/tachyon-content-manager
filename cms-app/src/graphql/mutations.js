@@ -150,19 +150,6 @@ export const createPhoto = /* GraphQL */ `
     createPhoto(input: $input, condition: $condition) {
       id
       albumId
-      bucket
-      fullsize {
-        key
-        width
-        height
-      }
-      thumbnail {
-        key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       album {
         id
         name
@@ -181,6 +168,19 @@ export const createPhoto = /* GraphQL */ `
           nextToken
         }
       }
+      bucket
+      fullsize {
+        s3key
+        width
+        height
+      }
+      thumbnail {
+        s3key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -193,19 +193,6 @@ export const updatePhoto = /* GraphQL */ `
     updatePhoto(input: $input, condition: $condition) {
       id
       albumId
-      bucket
-      fullsize {
-        key
-        width
-        height
-      }
-      thumbnail {
-        key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       album {
         id
         name
@@ -224,6 +211,19 @@ export const updatePhoto = /* GraphQL */ `
           nextToken
         }
       }
+      bucket
+      fullsize {
+        s3key
+        width
+        height
+      }
+      thumbnail {
+        s3key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -236,19 +236,6 @@ export const deletePhoto = /* GraphQL */ `
     deletePhoto(input: $input, condition: $condition) {
       id
       albumId
-      bucket
-      fullsize {
-        key
-        width
-        height
-      }
-      thumbnail {
-        key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       album {
         id
         name
@@ -267,6 +254,19 @@ export const deletePhoto = /* GraphQL */ `
           nextToken
         }
       }
+      bucket
+      fullsize {
+        s3key
+        width
+        height
+      }
+      thumbnail {
+        s3key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       owner
     }
   }

@@ -433,3 +433,9 @@ Add these dependencies to the `package.json` file.
   "ulid": "^2.3.0"
 }
 ```
+
+## Install Vue file selector
+
+```bash
+npm install --save vue-file-selector@latest
+```

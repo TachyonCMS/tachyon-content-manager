@@ -30,35 +30,6 @@ export const listSpaces = /* GraphQL */ `
     }
   }
 `;
-export const listAlbums = /* GraphQL */ `
-  query ListAlbums(
-    $filter: ModelAlbumFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        spaceId
-        space {
-          id
-          name
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-      }
-      nextToken
-    }
-  }
-`;
 export const getAlbum = /* GraphQL */ `
   query GetAlbum($id: ID!) {
     getAlbum(id: $id) {
@@ -86,6 +57,35 @@ export const getAlbum = /* GraphQL */ `
         }
         nextToken
       }
+    }
+  }
+`;
+export const listAlbums = /* GraphQL */ `
+  query ListAlbums(
+    $filter: ModelAlbumFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        spaceId
+        space {
+          id
+          name
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
+      nextToken
     }
   }
 `;
@@ -131,19 +131,6 @@ export const getPhoto = /* GraphQL */ `
     getPhoto(id: $id) {
       id
       albumId
-      bucket
-      fullsize {
-        key
-        width
-        height
-      }
-      thumbnail {
-        key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       album {
         id
         name
@@ -162,6 +149,19 @@ export const getPhoto = /* GraphQL */ `
           nextToken
         }
       }
+      bucket
+      fullsize {
+        s3key
+        width
+        height
+      }
+      thumbnail {
+        s3key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -176,19 +176,6 @@ export const listPhotos = /* GraphQL */ `
       items {
         id
         albumId
-        bucket
-        fullsize {
-          key
-          width
-          height
-        }
-        thumbnail {
-          key
-          width
-          height
-        }
-        createdAt
-        updatedAt
         album {
           id
           name
@@ -197,6 +184,19 @@ export const listPhotos = /* GraphQL */ `
           updatedAt
           owner
         }
+        bucket
+        fullsize {
+          s3key
+          width
+          height
+        }
+        thumbnail {
+          s3key
+          width
+          height
+        }
+        createdAt
+        updatedAt
         owner
       }
       nextToken
@@ -221,19 +221,6 @@ export const listPhotosByAlbum = /* GraphQL */ `
       items {
         id
         albumId
-        bucket
-        fullsize {
-          key
-          width
-          height
-        }
-        thumbnail {
-          key
-          width
-          height
-        }
-        createdAt
-        updatedAt
         album {
           id
           name
@@ -242,6 +229,19 @@ export const listPhotosByAlbum = /* GraphQL */ `
           updatedAt
           owner
         }
+        bucket
+        fullsize {
+          s3key
+          width
+          height
+        }
+        thumbnail {
+          s3key
+          width
+          height
+        }
+        createdAt
+        updatedAt
         owner
       }
       nextToken

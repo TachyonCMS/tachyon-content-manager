@@ -8,7 +8,7 @@ type Space
 type Album 
 @model 
 @key(name: "bySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]},{allow: private, provider: iam}]) {
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
     id: ID!
     name: String!
     photos: [Photo] @connection(keyName: "byAlbum", fields: ["id"])
@@ -29,7 +29,7 @@ type Photo
 }
 
 type PhotoS3Info {
-    key: String!
+    s3key: String!
     width: Int!
     height: Int!
 }
@@ -44,7 +44,7 @@ input CreatePhotoInput {
 }
 
 input PhotoS3InfoInput {
-	key: String!
+	s3key: String!
 	width: Int!
 	height: Int!
 }

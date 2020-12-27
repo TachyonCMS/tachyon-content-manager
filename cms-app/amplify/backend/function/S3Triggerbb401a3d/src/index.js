@@ -1,3 +1,4 @@
+
 /* Amplify Params - DO NOT EDIT
 	API_CMSAPP_GRAPHQLAPIENDPOINTOUTPUT
 	API_CMSAPP_GRAPHQLAPIIDOUTPUT
@@ -32,19 +33,14 @@ async function storePhotoInfo(item) {
         owner
         bucket
         fullsize {
-          key
+          s3key
           width
           height
         }
         thumbnail {
-          key
+          s3key
           width
           height
-        }
-        album {
-          id
-          name
-          owner
         }
       }
     }
@@ -103,13 +99,13 @@ async function resize(photoBody, bucketName, key) {
 		photoId: originalPhotoName,
 		
 		thumbnail: {
-			key: thumbnailKey(keyPrefix, originalPhotoName),
+			s3key: thumbnailKey(keyPrefix, originalPhotoName),
 			width: THUMBNAIL_WIDTH,
 			height: THUMBNAIL_HEIGHT
 		},
 
 		fullsize: {
-			key: fullsizeKey(keyPrefix, originalPhotoName),
+			s3key: fullsizeKey(keyPrefix, originalPhotoName),
 			width: originalPhotoDimensions.width,
 			height: originalPhotoDimensions.height
 		}
@@ -144,12 +140,12 @@ async function processRecord(record) {
     thumbnail: {
       width: sizes.thumbnail.width,
       height: sizes.thumbnail.height, 
-      key: sizes.thumbnail.key,
+      s3key: sizes.thumbnail.s3key,
     },
     fullsize: {
       width: sizes.fullsize.width,
       height: sizes.fullsize.height,
-      key: sizes.fullsize.key,
+      s3key: sizes.fullsize.s3key,
     }
   }
 
