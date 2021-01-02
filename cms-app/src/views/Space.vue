@@ -47,10 +47,10 @@ export default {
     async created() {
         this.subscribeAlbums()
 
-        const spaceId = this.$route.params.id
+        const spaceId = this.$route.params.spaceId
+        console.log(spaceId)
         this.spaceId = spaceId
         this.getSpace(spaceId)
-
         this.getAlbumsBySpace(spaceId)
 
     },
@@ -92,10 +92,10 @@ export default {
         async getAlbumsBySpace(spaceId) {
             const albums = await API.graphql({
                 query: listAlbumsBySpace,
-                variables: { spaceId: spaceId }
+                variables: { id: spaceId }
             });
-            console.log(albums)
-            this.albums = albums.data.listAlbumsBySpace.items;
+console.log(albums)
+            //this.albums = albums.data.listAlbumsBySpace.items;
         },
         async subscribeAlbums() {
             const owner = await Auth.currentAuthenticatedUser()

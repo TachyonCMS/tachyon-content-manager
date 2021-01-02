@@ -59,12 +59,84 @@ const routes = [
     meta: { requiresAuth: true}
   },
   {
-    path: '/spaces/:id',
+    path: '/spaces/:spaceId',
     name: 'Space',
     // route level code-splitting
     // this generates a separate chunk (space.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "space" */ '../views/Space.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/locales',
+    name: 'Locales',
+    component: () => import(/* webpackChunkName: "locales" */ '../views/Locales.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/models',
+    name: 'Models',
+    component: () => import(/* webpackChunkName: "models" */ '../views/Models.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/entries',
+    name: 'Entries',
+    component: () => import(/* webpackChunkName: "contentList" */ '../views/Entries.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/photos',
+    name: 'Photos',
+    component: () => import(/* webpackChunkName: "photos" */ '../views/Photos.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/files',
+    name: 'Files',
+    component: () => import(/* webpackChunkName: "files" */ '../views/Files.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/videos',
+    name: 'Videos',
+    component: () => import(/* webpackChunkName: "videos" */ '../views/Videos.vue'),
+    meta: { requiresAuth: true}
+  },
+
+  {
+    path: '/spaces/:spaceId/locales/:localeId',
+    name: 'Locale',
+    component: () => import(/* webpackChunkName: "locales" */ '../views/Locale.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/models/:modelId',
+    name: 'Model',
+    component: () => import(/* webpackChunkName: "model" */ '../views/Model.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/entries/:entryId',
+    component: () => import(/* webpackChunkName: "entry" */ '../views/Entry.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/photos/:photoId',
+    name: 'Photo',
+    component: () => import(/* webpackChunkName: "photo" */ '../views/Photo.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/files/:fileId',
+    name: 'File',
+    component: () => import(/* webpackChunkName: "file" */ '../views/File.vue'),
+    meta: { requiresAuth: true}
+  },
+  {
+    path: '/spaces/:spaceId/videos/:videoId',
+    name: 'Video',
+    component: () => import(/* webpackChunkName: "video" */ '../views/Video.vue'),
     meta: { requiresAuth: true}
   },
   {

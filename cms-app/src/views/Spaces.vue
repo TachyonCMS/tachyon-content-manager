@@ -26,7 +26,7 @@
         </div>
     </div>
     <div v-for="space in spaces" :key="space.id">
-        <h3><router-link :to="{ name: 'Space' ,  params: { id: space.id }}">{{ space.name }}</router-link></h3>
+        <h3><router-link :to="{ name: 'Space' ,  params: { spaceId: space.id }}">{{ space.name }}</router-link></h3>
     </div>
 </div>
 </template>

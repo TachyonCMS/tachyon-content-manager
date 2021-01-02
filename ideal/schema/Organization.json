@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Organization",
+    "description": "An organization such as a school, NGO, corporation, club, etc.",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "title": "Name",
+            "attrs": {
+                "placeholder": "Common Name",
+                "title": "Please enter the name you want displayed"
+            }
+        },
+        "people": {
+            "type": "array",
+            "items": {"$ref": "Person.json"}
+        },
+        "spaces": {
+            "type": "array",
+            "items": {"$ref": "Space.json"}
+        }
+    },
+    "required": [
+        "name"
+    ]
+}

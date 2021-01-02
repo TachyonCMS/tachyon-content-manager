@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Comment",
+    "description": "A comment can be made on any object type",
+    "properties": {
+        "txt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2500,
+            "title": "Comment",
+            "attrs": {
+                "placeholder": "Comment",
+                "title": "Enter a comment"
+            }
+        }
+    },
+    "required": [
+        "txt"
+    ]
+}

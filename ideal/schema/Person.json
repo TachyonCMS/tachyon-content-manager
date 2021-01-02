@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Person",
+    "description": "A person (alive, dead, undead, or fictional).",
+    "properties": {
+        "givenName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "title": "First Name",
+            "attrs": {
+                "placeholder": "Given Name",
+                "title": "Please enter given name"
+            }
+        },
+        "familyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "title": "Last Name",
+            "attrs": {
+                "placeholder": "Family Name",
+                "title": "Please enter family name"
+            }
+        },
+        "spaces": {
+            "type": "array",
+            "items": {"$ref": "Space.json"}
+        },
+        "organizations": {
+            "type": "array",
+            "items": {"$ref": "Organization.json"}
+        }
+    },
+    "anyOf": [
+        { "required":
+          [ "familyName" ] },
+        { "required":
+          [ "givenName" ] }
+      ]
+}

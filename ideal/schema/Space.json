@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Space",
+    "description": "A collection of content, content types, media, files and comments.",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "title": "Name",
+            "attrs": {
+                "placeholder": "Space Name",
+                "title": "Please enter a name for the space"
+            }
+        },
+        "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "title": "Description",
+            "attrs": {
+                "placeholder": "Description",
+                "title": "Enter a description"
+            }
+        },
+        "billingId": {
+            "type": "string"
+        },
+        "billingEntityType": {
+            "type": "string",
+            "enum": ["Person", "Organization"]
+        },
+        "comments": {
+            "type": "array",
+            "items": {"$ref": "Comment.json"}
+        },
+        "contentTypes": {
+            "type": "array",
+            "items": {"$ref": "ContentTypes.json"}
+        },
+        "entries": {
+            "type": "array",
+            "items": {"$ref": "Entry.json"}
+        },
+        "events": {
+            "type": "array",
+            "items": {"$ref": "Event.json"}
+        },
+        "files": {
+            "type": "array",
+            "items": {"$ref": "File.json"}
+        },
+        "users": {
+            "type": "array",
+            "items": {"$ref": "Person.json"}
+        },
+        "photos": {
+            "type": "array",
+            "items": {"$ref": "Photo.json"}
+        },
+        "videos": {
+            "type": "array",
+            "items": {"$ref": "Video.json"}
+        }
+    },
+    "required": [
+        "name", "organizationId"
+    ]
+}

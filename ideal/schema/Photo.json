@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "Comment",
+    "description": "A comment can be made on any object type",
+    "properties": {
+        "spaceId": {
+            "type": "string"
+        },
+        "region": {
+            "type": "string"
+        },
+        "bucket": {
+            "type": "string"
+        },
+        "fullsize": { "$refs": "#/definitions/PhotoMeta" },
+        "thumbnail": { "$refs": "#/definitions/PhotoMeta" },
+        "ext": {
+            "type": "string",
+            "enum": ["png", "jpg", "gif", "svg", "jpeg"]
+        }
+    },
+    "storage": {
+        "table": "content",
+        "entity": "Photo",
+        "attributes": {
+            "id": { "partitionKey": true },
+            "sk": { "sortKey": true },
+            "space": ["sk", 0],
+            "region": { "type": "string" },
+            "bucket": { "type": "string" },
+            "fullsize": { "type": "object" },
+            "thumbnail": { "type": "object" },
+            "ext": {
+                "type": "string",
+                "enum": ["png", "jpg", "gif", "svg", "jpeg"]
+            }
+        }
+    },
+    "required": [
+        "spaceId", "region", "bucket", "sizes"
+    ],
+    "definitions": {
+        "PhotoMeta": {
+            "type": "object",
+            "properties": {
+                "height": {
+                    "type": "number"
+                },
+                "width": {
+                    "type": "number"
+                },
+                "s3path": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
