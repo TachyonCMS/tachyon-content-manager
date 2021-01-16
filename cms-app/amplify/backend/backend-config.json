@@ -46,20 +46,9 @@
     }
   },
   "storage": {
-    "cmsphotos": {
+    "uploads": {
       "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "S3Triggerbb401a3d",
-          "attributes": [
-            "Name",
-            "Arn",
-            "LambdaExecutionRole"
-          ]
-        }
-      ]
+      "providerPlugin": "awscloudformation"
     }
   },
   "hosting": {

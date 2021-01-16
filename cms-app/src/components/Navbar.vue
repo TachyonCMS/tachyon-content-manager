@@ -28,6 +28,9 @@
                     <mdb-dropdown-item router :to="{ name: 'Videos', params: {spaceId: this.spaceId }}">Videos</mdb-dropdown-item>
                 </mdb-dropdown-menu>
             </mdb-dropdown>
+            <mdb-nav-item>
+                <router-link :to="{ name: 'Import' }" v-bind:class="{disabled: isDisabled}">Import</router-link>
+            </mdb-nav-item>
         </mdb-navbar-nav>
     </mdb-navbar-toggler>
 </mdb-navbar>

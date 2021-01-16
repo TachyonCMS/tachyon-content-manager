@@ -103,7 +103,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "videos" */ '../views/Videos.vue'),
     meta: { requiresAuth: true}
   },
-
+  {
+    path: '/spaces/:spaceId/import',
+    name: 'Import',
+    component: () => import(/* webpackChunkName: "import" */ '../views/Import.vue'),
+    meta: { requiresAuth: true}
+  },
   {
     path: '/spaces/:spaceId/locales/:localeId',
     name: 'Locale',
