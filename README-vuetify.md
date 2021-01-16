@@ -24,14 +24,17 @@ npm run serve
 ### Install Vuetify
 
 ```bash
-vue install vuetify
+vue add vuetify
 ```
+
+Use the default Vuetify install for the best functionality.
+
 
 ## Install Vue Router
 
 
 ```bash
-vue install router
+vue add router
 ```
 
 
