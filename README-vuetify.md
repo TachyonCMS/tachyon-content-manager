@@ -37,6 +37,11 @@ Use the default Vuetify install for the best functionality.
 vue add router
 ```
 
+Don't use history mode
+
+```bash
+Use history mode for router? (Requires proper server setup for index fallback in production) No
+```
 
 
 ## Create an Amplify TypeScript application
