@@ -1,27 +1,57 @@
+/**
+ * Vuetify Vue CLI Preset
+ *
+ * router/index.js
+ *
+ * vue-router documentation: https://router.vuejs.org/
+ */
+
+// Imports
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Router from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
+export default new Router({
+  mode: 'hash',
+  base: process.env.BASE_URL,
+  scrollBehavior: (to, _, savedPosition) => {
+    if (to.hash) return { selector: to.hash }
+    if (savedPosition) return savedPosition
+
+    return { x: 0, y: 0 }
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
-  routes
+  routes: [
+    {
+      path: '/',
+      // Layouts allow you to define different
+      // structures for different view
+      // https://router.vuejs.org/guide/essentials/nested-routes.html#nested-routes
+      component: () => import('@/layouts/default'),
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: () => import('@/views/Home')
+        },
+        // Create a new Vue template for an About page
+        // and uncomment this entry to enable the route
+        {
+          path: 'about',
+          name: 'About',
+          component: () => import('@/views/About')
+        },
+        {
+          path: 'spaces/recent',
+          name: 'Recent Spaces',
+          component: () => import('@/views/RecentSpaces')
+        },
+        {
+          path: 'spaces/create',
+          name: 'Spaces',
+          component: () => import('@/views/CreateSpace')
+        }
+      ]
+    }
+  ]
 })
-
-export default router
