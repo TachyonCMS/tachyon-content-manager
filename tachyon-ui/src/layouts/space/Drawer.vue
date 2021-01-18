@@ -3,17 +3,18 @@
 
     v-model="drawer"
     app
-    temporary
+
+    mini-variant=true
+    expand-on-hover
   >
     <!-- -->
-        <v-list-item>
+        <v-list-item
+          link
+          :to="{name:'ListSpaces'}">
           <v-list-item-content>
             <v-list-item-title class="title">
-              TachyonCMS
+              <v-icon>mdi-arrow-left-bold</v-icon>  Back to Spaces
             </v-list-item-title>
-            <v-list-item-subtitle>
-              Manage Spaces
-            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
   
@@ -52,9 +53,11 @@ export default {
   data () {
     return {
       items: [
-          { title: 'Recent', icon: 'mdi-history', route: '/spaces/activity'},
-          { title: 'Create', icon: 'mdi-plus', route: '/spaces/create' },
-          { title: 'Search', icon: 'mdi-magnify', route: "/spaces/search"},
+          { title: 'Entries', icon: 'mdi-text-box-outline', route: {name: 'SpaceEntries'} },
+          { title: 'Files', icon: 'mdi-file-multiple', route: {name: 'SpaceFiles'} },
+          { title: 'Images', icon: 'mdi-file-image', route: {name: 'SpaceImages'} },
+          { title: 'Locales', icon: 'mdi-web', route: {name: 'SpaceLocales'} },
+          { title: 'Environments', icon: 'mdi-cog-box', route: {name: 'SpaceEnvironments'} }
         ]
     }
 

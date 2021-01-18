@@ -24,9 +24,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      // Layouts allow you to define different
-      // structures for different view
-      // https://router.vuejs.org/guide/essentials/nested-routes.html#nested-routes
       component: () => import('@/layouts/default'),
       children: [
         {
@@ -34,22 +31,72 @@ export default new Router({
           name: 'Home',
           component: () => import('@/views/Home')
         },
-        // Create a new Vue template for an About page
-        // and uncomment this entry to enable the route
+      ]
+    },
+    {
+      path: '/spaces',
+      component: () => import('@/layouts/default'),
+      children: [
         {
-          path: 'about',
-          name: 'About',
-          component: () => import('@/views/About')
+          path: '',
+          name: 'ListSpaces',
+          component: () => import('@/views/space/ListSpaces')
         },
         {
-          path: 'spaces/recent',
-          name: 'Recent Spaces',
-          component: () => import('@/views/RecentSpaces')
+          path: 'activity',
+          name: 'SpaceActivity',
+          component: () => import('@/views/space/Activity')
         },
         {
-          path: 'spaces/create',
-          name: 'Spaces',
-          component: () => import('@/views/CreateSpace')
+          path: 'create',
+          name: 'SpaceCreate',
+          component: () => import('@/views/space/Create')
+        },
+        {
+          path: 'search',
+          name: 'SearchSpaces',
+          component: () => import('@/views/space/ListSpaces')
+        }
+      ]
+    },
+    {
+      path: '/spaces/:spaceId',
+      component: () => import('@/layouts/space'),
+      children: [
+        {
+          path: '',
+          name: 'SpaceHome',
+          component: () => import('@/views/space/Home')
+        },
+        {
+          path: 'models',
+          name: 'SpaceModels',
+          component: () => import('@/views/space/Models')
+        },
+        {
+          path: 'entries',
+          name: 'SpaceEntries',
+          component: () => import('@/views/space/Entries')
+        },
+        {
+          path: 'files',
+          name: 'SpaceFiles',
+          component: () => import('@/views/space/Files')
+        },
+        {
+          path: 'image',
+          name: 'SpaceImages',
+          component: () => import('@/views/space/Images')
+        },
+        {
+          path: 'environment',
+          name: 'SpaceEnvironments',
+          component: () => import('@/views/space/Environments')
+        },
+        {
+          path: 'locale',
+          name: 'SpaceLocales',
+          component: () => import('@/views/space/Locales')
         }
       ]
     }
