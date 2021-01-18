@@ -1,1 +1,10 @@
-{}
+{
+  "auth": {
+    "tachyonui2986a4b7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
