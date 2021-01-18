@@ -97,6 +97,11 @@ export default new Router({
           path: 'locale',
           name: 'SpaceLocales',
           component: () => import('@/views/space/Locales')
+        },
+        {
+          path: 'import',
+          name: 'SpaceImport',
+          component: () => import('@/views/space/Import')
         }
       ]
     }

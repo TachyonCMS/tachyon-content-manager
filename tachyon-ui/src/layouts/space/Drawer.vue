@@ -57,7 +57,8 @@ export default {
           { title: 'Files', icon: 'mdi-file-multiple', route: {name: 'SpaceFiles'} },
           { title: 'Images', icon: 'mdi-file-image', route: {name: 'SpaceImages'} },
           { title: 'Locales', icon: 'mdi-web', route: {name: 'SpaceLocales'} },
-          { title: 'Environments', icon: 'mdi-cog-box', route: {name: 'SpaceEnvironments'} }
+          { title: 'Environments', icon: 'mdi-cog-box', route: {name: 'SpaceEnvironments'} },
+          { title: 'Import', icon: 'mdi-upload', route: {name: 'SpaceImport'} }
         ]
     }
 
