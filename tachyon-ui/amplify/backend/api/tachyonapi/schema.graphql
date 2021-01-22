@@ -1,0 +1,163 @@
+type Space
+@model
+@auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
+    id: ID!
+    name: String!
+    description: String
+}
+
+type Locale
+@model
+@key(name: "localeBySpace", fields: ["spaceId"], queryField: "listLocalesBySpace")
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+    name: String!
+    code: String!
+    spaceId: ID!
+    fallbackCode: String
+    default: Boolean
+    contentManagementApi: Boolean
+    contentDeliveryApi: Boolean
+    optional: Boolean
+    sys: LocaleSys!
+}
+
+type ContentSchema
+@model
+@key(name: "contentSchemaBySpace", fields: ["spaceId"], queryField: "listContentSchemaBySpace")
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+    id: ID!
+    spaceId: ID!
+    name: String!
+    displayField: String!
+    description: String
+    sys: ContentSchemaSys
+    fields: ContentSchemaFields
+    space: Space @connection(fields: ["spaceId"])
+}
+
+type Entry
+@model
+@key(name: "entryBySpace", fields: ["spaceId"], queryField: "listEntriesBySpace")
+@key(name: "entryByContentSchema", fields: ["contentSchema"], queryField: "listEntriesByContentSchema")
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+    id: ID!
+    name: String!
+    spaceId: ID!
+    space: Space @connection(fields: ["spaceId"])
+    contentSchema: String!
+    sys: EntrySys
+    fields: AWSJSON
+}
+
+type Album
+@model
+@key(name: "albumBySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+    id: ID!
+    name: String!
+    description: String
+    photos: [Photo] @connection(keyName: "photoByAlbum", fields: ["id"])
+    spaceId: ID!
+    space: Space @connection(fields: ["spaceId"])
+}
+
+type Photo
+@model
+@key(name: "photoByAlbum", fields: ["albumId"], queryField: "listPhotosByAlbum")
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]},{allow: private}]) {
+    id: ID!
+    albumId: ID!
+    album: Album @connection(fields: ["albumId"])
+    bucket: String!
+    fullsize: PhotoS3Info!
+    thumbnail: PhotoS3Info!
+}
+
+type PhotoS3Info {
+    s3key: String!
+    width: Int!
+    height: Int!
+}
+
+input CreatePhotoInput {
+	id: ID
+  owner: String
+	albumId: ID!
+	bucket: String!
+	fullsize: PhotoS3InfoInput!
+	thumbnail: PhotoS3InfoInput!
+}
+
+input PhotoS3InfoInput {
+	s3key: String!
+	width: Int!
+	height: Int!
+}
+
+type LocaleSys {
+  type: String!
+  version: Int
+  space: SysLink!
+  environment: SysLink
+  createdBy: SysLink
+  createdAt: AWSDateTime
+  updatedBy: SysLink
+  updatedAt: AWSDateTime
+}
+
+type ContentSchemaSys {
+  space: SysLink!
+  id: String!
+  type: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  environment: SysLink!
+  publishedVersion: Int
+  publishedAt: AWSDateTime
+  firstPublishedAt: AWSDateTime
+  createdBy: SysLink!
+  updatedBy: SysLink
+  publishedCounter: Int
+  version: Int
+  publishedBy: SysLink
+}
+
+type EntrySys {
+  space: SysLink!
+  id: String!
+  type: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  environment: SysLink!
+  publishedVersion: Int
+  publishedAt: AWSDateTime
+  firstPublishedAt: AWSDateTime
+  createdBy: SysLink!
+  updatedBy: SysLink
+  publishedCounter: Int
+  version: Int
+  publishedBy: SysLink
+  contentType: SysLink!
+}
+
+
+type ContentSchemaFields {
+  id: String
+  name: String!
+  type: String!
+  localized: Boolean
+  required: Boolean
+  validations: AWSJSON
+  disabled: Boolean
+  omitted: Boolean
+}
+
+type SysLink {
+  sys: SysLinkDef!
+}
+
+type SysLinkDef {
+  type: String!
+  linkType: String!
+  id: String!
+}

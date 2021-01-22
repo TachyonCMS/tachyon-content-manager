@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "tachyonapi",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authtachyonui2986a4b7",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

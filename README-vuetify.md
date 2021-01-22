@@ -95,4 +95,24 @@ amplify add storage
 
 #### Do NOT add a trigger Lambda
 
+## Integrate Amplify with Vue
+
+```bash
+npm install aws-amplify @aws-amplify/ui-vue
+```
+
+```bash
+? Please select from one of the below mentioned services: GraphQL
+? Provide API name: tachyonapi
+? Choose the default authorization type for the API Amazon Cognito User Pool
+Use a Cognito user pool configured as a part of this project.
+? Do you want to configure advanced settings for the GraphQL API No, I am done.
+? Do you have an annotated GraphQL schema? No
+? Choose a schema template: Objects with fine-grained access control (e.g., a project management app with owner-based authorization)
+
+GraphQL schema compiled successfully.
+
+Edit your schema at /home/brian/sandbox/tachyon-content-manager/tachyon-ui/amplify/backend/api/tachyonapi/schema.graphql or place .graphql files in a directory at /home/brian/sandbox/tachyon-content-manager/tachyon-ui/amplify/backend/api/tachyonapi/schema
+? Do you want to edit the schema now? (y/N)
+```
 
