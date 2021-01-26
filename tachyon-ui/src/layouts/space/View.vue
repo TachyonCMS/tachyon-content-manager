@@ -7,5 +7,5 @@
 </template>
 
 <script>
-export default { name: 'DefaultView' }
+export default { name: 'SpaceView' }
 </script>

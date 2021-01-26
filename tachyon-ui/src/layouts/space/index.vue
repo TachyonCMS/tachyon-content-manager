@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'DefaultLayout',
+  name: 'SpaceLayout',
 
   components: {
     DefaultAppBar: () => import('./AppBar'),

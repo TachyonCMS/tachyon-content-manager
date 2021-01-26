@@ -41,7 +41,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'ListSpaces',
+        name: 'SpacesHome',
         component: () => import('@/views/space/ListSpaces')
       },
       {

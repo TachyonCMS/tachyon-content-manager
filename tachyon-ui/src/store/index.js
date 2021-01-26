@@ -9,10 +9,13 @@
 // Vue
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 // Utilities
 // https://davestewart.github.io/vuex-pathify/#/
 import pathify from '@/plugins/vuex-pathify'
+pathify.options.mapping = 'standard'
+pathify.options.deep = 2
 
 // Modules
 // https://vuex.vuejs.org/guide/modules.html
@@ -22,7 +25,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules,
-  plugins: [pathify.plugin]
+  plugins: [pathify.plugin, createPersistedState()]
 })
 
 // A reusable const for making root commits and dispatches

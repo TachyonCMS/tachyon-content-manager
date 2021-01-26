@@ -1,16 +1,14 @@
 <template>
   <v-navigation-drawer
-
     v-model="drawer"
     app
-
-    mini-variant=true
+    v-bind:mini-variant=true
     expand-on-hover
   >
     <!-- -->
         <v-list-item
           link
-          :to="{name:'ListSpaces'}">
+          :to="{name:'SpacesHome'}">
           <v-list-item-content>
             <v-list-item-title class="title">
               <v-icon>mdi-arrow-left-bold</v-icon>  Back to Spaces
@@ -48,7 +46,7 @@
 import { sync } from 'vuex-pathify'
 
 export default {
-  name: 'DefaultDrawer',
+  name: 'SpaceDrawer',
   computed: { drawer: sync('app/drawer') },
   data () {
     return {

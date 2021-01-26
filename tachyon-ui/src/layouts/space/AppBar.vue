@@ -2,7 +2,7 @@
   <v-app-bar app>
     <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-    <v-toolbar-title>TachyonCMS</v-toolbar-title>
+    <v-toolbar-title>{{ space.name }} - TachyonCMS</v-toolbar-title>
   </v-app-bar>
 </template>
 
@@ -11,7 +11,14 @@
 import { sync } from 'vuex-pathify'
 
 export default {
-  name: 'DefaultAppBar',
-  computed: { drawer: sync('app/drawer') }
+  name: 'SpaceAppBar',
+  computed: { 
+    drawer: sync('app/drawer'),
+    space () {
+      let space = this.$store.get('app/space')
+
+      return space
+    }
+  }
 }
 </script>
