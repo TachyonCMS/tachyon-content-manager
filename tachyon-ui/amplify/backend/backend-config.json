@@ -23,5 +23,11 @@
         }
       }
     }
+  },
+  "storage": {
+    "userUploadBucket": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }
