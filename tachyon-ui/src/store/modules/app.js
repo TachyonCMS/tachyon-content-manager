@@ -4,6 +4,11 @@ import { make } from 'vuex-pathify'
 // Data
 const state = {
   drawer: null,
+  calendarDrawer: null,
+  contactDrawer: null,
+  spaceDrawer: null,
+  commerceDrawer: null,
+  complianceDrawer: null,
   space: {},
   spaceId: null
 }

@@ -1,10 +1,18 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app temporary>
+  <v-navigation-drawer
+    v-model="calendarDrawer"
+    app
+    v-bind:mini-variant="true"
+    expand-on-hover
+    v-bind:permanent="true"
+  >
     <!-- -->
-    <v-list-item>
+    <v-list-item link :to="{ name: 'Home' }">
       <v-list-item-content>
-        <v-list-item-title class="title"> TachyonCMS </v-list-item-title>
-       </v-list-item-content>
+        <v-list-item-title class="title">
+          <v-icon>mdi-arrow-left-bold</v-icon> Home
+        </v-list-item-title>
+      </v-list-item-content>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -28,16 +36,17 @@
 import { sync } from "vuex-pathify";
 
 export default {
-  name: "DefaultDrawer",
-  computed: { drawer: sync("app/drawer") },
+  name: "CalendarDrawer",
+  computed: { calendarDrawer: sync("app/calendarDrawer") },
   data() {
     return {
       items: [
-        { title: "Content", icon: "mdi-text-box-multiple", route: "/spaces" },
-        { title: "Calendar", icon: "mdi-calendar", route: "/calendar" },
-        { title: "Contacts", icon: "mdi-contacts", route: "/contacts" },
-        { title: "Commerce", icon: "mdi-currency-usd", route: "/commerce" },
-        { title: "Compliance", icon: "mdi-security", route: "/compliance" },
+        { title: "Add Event", icon: "mdi-plus", route: { name: "CalendarCreateEvent" } },
+        {
+          title: "Search Events",
+          icon: "mdi-magnify",
+          route: { name: "CalendarSearch" },
+        },
       ],
     };
   },

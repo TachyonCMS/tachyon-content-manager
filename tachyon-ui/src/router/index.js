@@ -35,6 +35,105 @@ const routes = [
     meta: { requiresAuth: true}
   },
   {
+    path: '/commerce',
+    component: () => import('@/layouts/commerce'),
+    meta: { requiresAuth: true},
+    children: [
+      {
+        path: '',
+        name: 'CommerceHome',
+        component: () => import('@/views/commerce/Home.vue')
+      },
+      {
+        path: 'reports',
+        name: 'CommerceReports',
+        component: () => import('@/views/commerce/Reports.vue')
+      },
+      {
+        path: 'config',
+        name: 'CommerceConfig',
+        component: () => import('@/views/commerce/Configure.vue')
+      },
+    ]
+  },   
+  {
+    path: '/calendar',
+    component: () => import('@/layouts/calendar'),
+    meta: { requiresAuth: true},
+    children: [
+      {
+        path: '',
+        name: 'CalendarHome',
+        component: () => import('@/views/calendar/Home.vue')
+      },
+      {
+        path: 'create',
+        name: 'CalendarCreateEvent',
+        component: () => import('@/views/calendar/Create.vue')
+      },
+      {
+        path: 'search',
+        name: 'CalendarSearch',
+        component: () => import('@/views/calendar/Search.vue')
+      },
+    ]
+  },
+  {
+    path: '/compliance',
+    component: () => import('@/layouts/compliance'),
+    meta: { requiresAuth: true},
+    children: [
+      {
+        path: '',
+        name: 'ComplianceHome',
+        component: () => import('@/views/compliance/Home.vue')
+      },
+      {
+        path: 'register',
+        name: 'ComplianceRegister',
+        component: () => import('@/views/compliance/Create.vue')
+      },
+      {
+        path: 'search',
+        name: 'ComplianceSearch',
+        component: () => import('@/views/compliance/Search.vue')
+      },
+    ]
+  },
+  {
+    path: '/contacts',
+    component: () => import('@/layouts/contact'),
+    meta: { requiresAuth: true},
+    children: [
+      {
+        path: '',
+        name: 'ContactsHome',
+        component: () => import('@/views/contact/Home.vue')
+      },
+      {
+        path: 'create',
+        name: 'ContactCreate',
+        component: () => import('@/views/contact/Create.vue')
+      },
+      {
+        path: 'search',
+        name: 'ContactSearch',
+        component: () => import('@/views/contact/Search.vue')
+      },
+    ]
+  },
+  {
+    path: '/contacts/:contactId',
+    component: () => import('@/layouts/contact'),
+    children: [
+      {
+        path: '',
+        name: 'ContactHome',
+        component: () => import('@/views/contact/Home')
+      }
+    ]
+  },
+  {
     path: '/spaces',
     component: () => import('@/layouts/default'),
     meta: { requiresAuth: true},
@@ -86,7 +185,7 @@ const routes = [
         component: () => import('@/views/space/Files')
       },
       {
-        path: 'image',
+        path: 'images',
         name: 'SpaceImages',
         component: () => import('@/views/space/Images')
       },

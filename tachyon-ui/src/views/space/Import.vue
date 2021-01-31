@@ -1,12 +1,21 @@
 <template>
   <div class="about">
-    <h1>Import a Contentful Export</h1>
-    
+    <h1>Import Contentful Data</h1>
+    <SpaceImportForm />
   </div>
 </template>
 
 <script>
 
-//import SpaceForm from '@/views/space/forms/ImportForm.vue'
+import SpaceImportForm from '@/views/space/forms/ImportForm.vue'
+
+export default {
+  name: "SpaceImport",
+  components: {
+    SpaceImportForm
+  }
+};
 
 </script>
+
+

@@ -1,122 +1,93 @@
 <template>
   <div class="form">
-    <v-form ref="form" v-model="valid">
+    <v-form ref="form">
       <v-container>
         <v-row>
-          <v-col
-            cols="12"
-            md="12"
-          >
-
-          <v-card>
-            <v-card-title>Create new space</v-card-title>
-            <v-card-text>
-              <v-text-field
-                v-model="form['name']"
-                :rules="nameRules"
-                label="Space name"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="form['description']"
-                label="Description of space"
-              ></v-text-field>
-            </v-card-text>
-            <v-card-actions  class="justify-center">
-              <v-btn
-                class="mr-4"
-                @click="createSpace"
-              >
-                submit
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-            
+          <v-col cols="12" md="12">
+            <v-card>
+              <v-card-title>Select your export file</v-card-title>
+              <v-card-text>
+                <v-file-input
+                  chips
+                  truncate-length="35"
+                  ref="uploadfile"
+                  v-model="files"
+                ></v-file-input>
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <v-btn class="mr-4" text @click="uploadFilesToS3"> submit </v-btn>
+              </v-card-actions>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
     </v-form>
-
-
   </div>
 </template>
 
 <script>
-import {
-    Auth, API, graphqlOperation
-} from 'aws-amplify'
+//import S3Uploader from '@/components/app/S3AmplifyUploader.vue'
+import { Auth, Storage } from "aws-amplify";
 
-import { createSpace } from '@/graphql/mutations'
-import { onCreateSpace } from '@/graphql/subscriptions'
+import { v4 as uuidv4 } from "uuid";
 
 export default {
-  name: 'SpaceForm',
-  
-  data: () => ({
-    valid: false,
-    form: {},
-    spaceName: '',
-    spaceDescription: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-    ],
-    user: {},
-    spaces: [],
-  }),
-  async created() {
-      this.subscribe();
+  name: "SpaceImportForm",
+  components: {
+    //S3Uploader
   },
-    beforeCreate() {
-        Auth.currentAuthenticatedUser()
-            .then(user => {
-                this.user = user
-            })
-            .catch(() => console.log('not signed in...'))
+  data() {
+    return {
+      files: [],
+    };
+  },
+  methods: {
+    async uploadFilesToS3() {
+      const files = this.files;
+      console.log("Selected files: ");
+      console.table(files);
+      if (Array.isArray(files)) {
+        files.forEach((file) => {
+          this.uploadToS3(file);
+        });
+      } else {
+        this.uploadToS3(files);
+      }
     },
-    methods: {
-      validate () {
-        console.log(this.$refs.form.validate())
-      },
-        async createSpace () {
+    async uploadToS3(file, progress, error, options) {
+      const user = await Auth.currentAuthenticatedUser();
+      console.log(user);
+      console.log("made it" + file + progress + error + options);
+      const uid = await uuidv4();
+      console.log(uid);
 
-          const valid = this.$refs.form.validate()
-            if(valid) {
-              const response = await API.graphql({
-                query: createSpace,
-                variables: {input: this.form},
-            });
+      const space = this.$store.get("app/space");
 
-            const space = {}
-            space.id = response.data.createSpace.id
-            space.name = response.data.createSpace.name
+      const metadata = {
+        spaceId: space.id,
+        owner: user.username,
+      };
 
-            console.log(response.data.createSpace.id)
-            this.$store.set('app/space', space)
-            this.$store.set('spaceId', response.data.createSpace.id)
-            console.log(this.$store)
-            this.$router.push({ name: 'SpaceHome', params: { spaceId: space.id } })
+      console.log(metadata);
 
-            //this.$formulate.reset('create-space')
-            }
+      const fileName = "upload/photo/" + uid;
 
-        },
-        async subscribe() {
-            const owner = await Auth.currentAuthenticatedUser()
-            API.graphql(
-                graphqlOperation(onCreateSpace,
-                    {
-                    owner: owner.username
-                    }
-                )
-            )
-                .subscribe({
-                next: (eventData) => {
-                    let space = eventData.value.data.onCreateSpace;
-                    if (this.spaces.some(item => item.name === space.name)) return; // remove duplications
-                    this.spaces = [...this.spaces, space];
-                }
-            });
-    }
-    }
-}
+      await Storage.vault
+        .put(fileName, file, {
+          progressCallback(progress) {
+            console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+          },
+          metadata: metadata,
+        })
+        .then((result) => {
+          console.log(result);
+          return [{ path: "test" }];
+        })
+        .catch((err) => {
+          console.log(err);
+          error("Unable to upload to S3");
+        });
+    },
+  },
+};
 </script>

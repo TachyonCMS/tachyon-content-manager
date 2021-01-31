@@ -1,5 +1,50 @@
 <template>
-  <div class="about">
-    <h1>Space image page</h1>
+  <div>
+    <v-tabs
+        v-model="tab"
+        fixed-tabs
+      >
+        <v-tab
+          v-for="item in items"
+          :key="item.tab"
+        >
+          {{ item.tab }}
+        </v-tab>
+      </v-tabs>
+  
+      <v-tabs-items v-model="tab">
+        <v-tab-item
+          v-for="item in items"
+          :key="item.tab"
+        >
+          <Component :is="item.component"></Component>
+        </v-tab-item>
+      </v-tabs-items>
   </div>
 </template>
+
+<script>
+
+import Uploader from '@/components/S3FileUploader.vue'
+import Camera from '@/components/S3CameraUploader.vue'
+import Screenshot from '@/components/S3ScreenshotUploader.vue'
+
+export default {
+  name: "ImagesView",
+  components: {
+    Uploader,
+    Camera,
+    Screenshot
+  },
+  data () {
+    return {
+      tab: null,
+      items: [
+        { tab: 'Files', component: 'Uploader' },
+        { tab: 'Camera', component: 'Camera' },
+        { tab: 'Screen', component: 'Screenshot' }
+      ]
+    }
+  },
+};
+</script>

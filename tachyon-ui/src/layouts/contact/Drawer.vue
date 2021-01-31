@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="spaceDrawer"
+    v-model="contactDrawer"
     app
     v-bind:mini-variant=true
     expand-on-hover
@@ -9,10 +9,10 @@
     <!-- -->
         <v-list-item
           link
-          :to="{name:'SpacesHome'}">
+          :to="{name:'Home'}">
           <v-list-item-content>
             <v-list-item-title class="title">
-              <v-icon>mdi-arrow-left-bold</v-icon>  Back to Spaces
+              <v-icon>mdi-arrow-left-bold</v-icon>  Home
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -47,17 +47,13 @@
 import { sync } from 'vuex-pathify'
 
 export default {
-  name: 'SpaceDrawer',
-  computed: { spaceDrawer: sync('app/spaceDrawer') },
+  name: 'ContactDrawer',
+  computed: { contactDrawer: sync('app/contactDrawer') },
   data () {
     return {
       items: [
-          { title: 'Entries', icon: 'mdi-text-box-outline', route: {name: 'SpaceEntries'} },
-          { title: 'Files', icon: 'mdi-file-multiple', route: {name: 'SpaceFiles'} },
-          { title: 'Images', icon: 'mdi-file-image', route: {name: 'SpaceImages'} },
-          { title: 'Locales', icon: 'mdi-web', route: {name: 'SpaceLocales'} },
-          { title: 'Environments', icon: 'mdi-cog-box', route: {name: 'SpaceEnvironments'} },
-          { title: 'Import', icon: 'mdi-upload', route: {name: 'SpaceImport'} }
+          { title: 'Add Contact', icon: 'mdi-plus', route: {name: 'ContactCreate'} },
+          { title: 'Search Contacts', icon: 'mdi-magnify', route: {name: 'ContactSearch'} }
         ]
     }
 
