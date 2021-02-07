@@ -27,18 +27,17 @@
 
 <script>
 //import S3Uploader from '@/components/app/S3AmplifyUploader.vue'
-import { Auth, Storage } from "aws-amplify";
-
-import { v4 as uuidv4 } from "uuid";
+import { Auth, Storage } from "aws-amplify"
 
 export default {
   name: "SpaceImportForm",
   components: {
     //S3Uploader
   },
+  props: ['uploadPath'],
   data() {
     return {
-      files: [],
+      files: []
     };
   },
   methods: {
@@ -48,18 +47,16 @@ export default {
       console.table(files);
       if (Array.isArray(files)) {
         files.forEach((file) => {
-          this.uploadToS3(file);
-        });
+          this.uploadToS3(file)
+        })
       } else {
-        this.uploadToS3(files);
+        this.uploadToS3(files)
       }
     },
     async uploadToS3(file, progress, error, options) {
-      const user = await Auth.currentAuthenticatedUser();
-      console.log(user);
-      console.log("made it" + file + progress + error + options);
-      const uid = await uuidv4();
-      console.log(uid);
+      const user = await Auth.currentAuthenticatedUser()
+      console.log(user)
+      console.log("made it" + file + progress + error + options)
 
       const space = this.$store.get("app/space");
 
@@ -70,22 +67,22 @@ export default {
 
       console.log(metadata);
 
-      const fileName = "upload/photo/" + uid;
+      const fileName = this.uploadPath + space.id + '/' + file.name
 
       await Storage.vault
         .put(fileName, file, {
           progressCallback(progress) {
-            console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+            console.log(`Uploading: ${progress.loaded}/${progress.total}`)
           },
           metadata: metadata,
         })
         .then((result) => {
-          console.log(result);
-          return [{ path: "test" }];
+          console.log(result)
+          this.$refs. form. reset() 
         })
         .catch((err) => {
           console.log(err);
-          error("Unable to upload to S3");
+          error("Unable to upload to S3")
         });
     },
   },

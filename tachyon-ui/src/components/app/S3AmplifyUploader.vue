@@ -1,57 +1,87 @@
 <template>
-  <div>
-    <v-file-input chips truncate-length="35"></v-file-input>
+  <div class="form">
+    <v-form ref="form">
+      <v-container>
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-card>
+              <v-card-title>Select your export file</v-card-title>
+              <v-card-text>
+                <v-file-input
+                  chips
+                  truncate-length="35"
+                  ref="uploadfile"
+                  v-model="files"
+                ></v-file-input>
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <v-btn class="mr-4" text @click="uploadFilesToS3"> submit </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-form>
   </div>
 </template>
 
 <script>
-import Amplify, { Auth, Storage } from "aws-amplify";
-import awsconfig from "@/aws-exports";
-Amplify.configure(awsconfig);
-
-import { v4 as uuidv4 } from "uuid";
+//import S3Uploader from '@/components/app/S3AmplifyUploader.vue'
+import { Auth, Storage } from "aws-amplify"
 
 export default {
-  name: "S3AmplifyUploader",
-
+  name: "SpaceImportForm",
+  components: {
+    //S3Uploader
+  },
+  props: ['uploadPath'],
+  data() {
+    return {
+      files: []
+    };
+  },
   methods: {
-    async uploadFilesToS3(files) {
+    async uploadFilesToS3() {
+      const files = this.files;
       console.log("Selected files: ");
       console.table(files);
-      files.forEach((file) => {
-        this.uploadToS3(file);
-      });
+      if (Array.isArray(files)) {
+        files.forEach((file) => {
+          this.uploadToS3(file)
+        })
+      } else {
+        this.uploadToS3(files)
+      }
     },
     async uploadToS3(file, progress, error, options) {
-      const user = await Auth.currentAuthenticatedUser();
-      console.log(user);
-      console.log("made it" + file + progress + error + options);
-      const uid = await uuidv4();
-      console.log(uid);
+      const user = await Auth.currentAuthenticatedUser()
+      console.log(user)
+      console.log("made it" + file + progress + error + options)
+
+
 
       const metadata = {
-        albumId: this.albumId,
         owner: user.username,
       };
 
       console.log(metadata);
 
-      const fileName = "upload/photo/" + uid;
+      const fileName = this.uploadPath + file.name
 
       await Storage.vault
         .put(fileName, file, {
           progressCallback(progress) {
-            console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+            console.log(`Uploading: ${progress.loaded}/${progress.total}`)
           },
           metadata: metadata,
         })
         .then((result) => {
-          console.log(result);
-          return [{ path: "test" }];
+          console.log(result)
+          this.$refs. form. reset() 
         })
         .catch((err) => {
           console.log(err);
-          error("Unable to upload to S3");
+          error("Unable to upload to S3")
         });
     },
   },

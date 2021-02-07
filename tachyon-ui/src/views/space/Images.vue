@@ -14,10 +14,19 @@
   
       <v-tabs-items v-model="tab">
         <v-tab-item
-          v-for="item in items"
-          :key="item.tab"
+          key="Files"
         >
-          <Component :is="item.component"></Component>
+          <Uploader instructions='Choose a file'/>
+        </v-tab-item>
+        <v-tab-item
+          key="Camera"
+        >
+          <Camera />
+        </v-tab-item>
+        <v-tab-item
+          key="Screen"
+        >
+          <Screenshot />
         </v-tab-item>
       </v-tabs-items>
   </div>

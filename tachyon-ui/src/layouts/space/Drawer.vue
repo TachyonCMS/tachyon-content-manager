@@ -28,6 +28,7 @@
             :key="item.title"
             link
             :to="item.route"
+            @click="spaceDrawer = false"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>

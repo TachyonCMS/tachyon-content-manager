@@ -1,5 +1,8 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app temporary>
+  <v-navigation-drawer 
+    v-model="drawer" 
+    app 
+    temporary>
     <!-- -->
     <v-list-item>
       <v-list-item-content>
