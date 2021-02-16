@@ -3,7 +3,7 @@
     <mdb-modal :show="modal" @close="modal = false" fullHeight  position="top" >
         <mdb-modal-body>
             <figure class="figure">
-                <img :src="img" class="img-fluid" />
+                <img :src="img" class="img" />
             </figure>
         </mdb-modal-body>
         <mdb-modal-footer>

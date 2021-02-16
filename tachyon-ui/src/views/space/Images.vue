@@ -21,12 +21,12 @@
         <v-tab-item
           key="Camera"
         >
-          <Camera />
+          <Camera instructions='Take a snapshot'/>
         </v-tab-item>
         <v-tab-item
           key="Screen"
         >
-          <Screenshot />
+          <Screenshot instructions='Enable screensharing'/>
         </v-tab-item>
       </v-tabs-items>
   </div>
