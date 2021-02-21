@@ -1,144 +1,154 @@
 <template>
   <v-container>
-    <v-dialog
-      v-model="dialog"
-      scrollable
-    >
-      <template v-slot:activator="">
-       <v-row>
+    <v-row>
       <v-col cols="12" md="12">
-        <v-card>
-          <v-card-title>{{instructions}}</v-card-title>
-          <v-img  class="img-fluid">
-          <video ref="video" id="video" autoplay class="img-fluid"></video>
-          </v-img>
-           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" text @click="onStart">Enable Sharing</v-btn>
-            <v-btn class="mr-4" text @click="onClip">Save Screen</v-btn>
+        <v-card v-show="startMedia">
+          <v-card-title>{{ instructions }}</v-card-title>
+          <v-card-actions class="justify-center">
+            <v-btn class="mr-4" text @click="onStart" elevation="2">Enable Sharing</v-btn>
           </v-card-actions>
         </v-card>
-      </v-col>
-    </v-row>
-      </template>
+        <v-card v-show="captureImage">
+          <v-card-title>Take a snapshot</v-card-title>
+          <video width="100%" ref="video" id="video" autoplay />
+          <v-card-actions class="justify-center">
+            <v-btn class="mr-4" text @click="onVideoClose" elevation="2" color="red">Stop Sharing</v-btn>
+            <v-btn class="mr-4" text @click="onSnapshot" elevation="2">Snapshot</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card v-show="imageOptions">
+          <v-card-title>Upload or Discard</v-card-title>
 
-      <v-row>
-      <v-col cols="12" md="12">
-        <v-card>
-          <v-card-title>{{instructions}}</v-card-title>
-         <v-img :src="img" class="img-fluid">
-          </v-img>
-          
-           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" text @click="uploadFilesToS3">Upload</v-btn>
+          <v-img :src="img" class="img-fit"> </v-img>
+
+          <v-card-actions class="justify-center">
+            <v-btn class="mr-4" text @click="onImageClose" elevation="2" color="red">Discard</v-btn>
+            <v-btn class="mr-4" text @click="uploadToS3" elevation="2" >Upload</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
-
 import { Auth, Storage } from "aws-amplify"
+
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: "S3ScreenshotUploader",
-  props: ['uploadPath', 'instructions'],
-   data() {
+  props: ["uploadPath", "instructions"],
+  mounted() {
+    this.initStartMedia();
+  },
+  data() {
     return {
       files: [],
       video: null,
-      dialog: false,
       img: null,
-      scrollable: null
+      currentInstructions: null,
+      imageOptions: false,
+      captureImage: false,
+      startMedia: false,
+      currentView: null,
     };
   },
   methods: {
-    onCapture() {
-            console.log('made it')
-            //this.img = this.$refs.webcam.capture()
-            //this.modal = true
-            //console.log(this.img)
-            //this.uploadToS3 (this.img)
-        },
-        onStarted(stream) {
-            console.log("On Started Event", stream)
-        },
-        onStopped(stream) {
-            console.log("On Stopped Event", stream)
-        },
-        onStop() {
-            this.cameraOn = false
-            this.$refs.webcam.stop()
-        },
-        async onStart(displayMediaOptions) {
-            console.log('Starting screen capture')
+    async initStartMedia() {
+      this.captureImage = false;
+      this.imageOptions = false;
+      this.startMedia = true;
+    },
+    async initCaptureImage() {
+      this.startMedia = false;
+      this.imageOptions = false;
+      this.captureImage = true;
+    },
+    async initImageOptions() {
+      this.startMedia = false;
+      this.captureImage = false;
+      this.imageOptions = true;
+    },
+    async onStart(displayMediaOptions) {
+      console.log("Starting live screen capture");
 
-            let mediaStream = null
+      let mediaStream = null;
 
-            try {
-                mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+      try {
+        mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+      } catch (err) {
+        console.error("Error: " + err);
+      }
 
-            } catch(err) {
-                console.error("Error: " + err)
-            }
-            //const video = document.body.getElementById('video')
-            const video = this.$refs.video
-            video.srcObject = mediaStream
+      const video = this.$refs.video;
+      video.srcObject = mediaStream;
 
-            //await this.onClip()
+      this.initCaptureImage();
+    },
+    async onVideoClose() {
+      const video = this.$refs.video;
 
-        },
-        async onClip() {
-            console.log('Capturing Image')
+      const tracks = video.srcObject.getTracks();
+      console.log(tracks);
 
-            this.dialog = true
+      tracks.forEach((track) => track.stop());
+      video.srcObject = null;
 
-            const video = this.$refs.video
+      this.initStartMedia();
+    },
+    async onImageClose() {
+      this.initCaptureImage();
+    },
+    async onSnapshot() {
+      console.log("Capturing Image");
 
-            //const canvas = this.$refs.canvas
-            const canvas = document.createElement("canvas");
+      this.initImageOptions();
 
-            canvas.width = video.offsetWidth
-            canvas.height = video.offsetHeight
-            const context = canvas.getContext("2d");
+      const video = this.$refs.video;
 
-            context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);
-            this.img = canvas.toDataURL("image/png");
+      //const canvas = this.$refs.canvas
+      const canvas = document.createElement("canvas");
 
-            console.log(this.img)
-        },
-        async onSave() {
-            await this.uploadToS3(this.img)
-            this.modal = false
-        },
+      canvas.width = video.offsetWidth;
+      canvas.height = video.offsetHeight;
+      const context = canvas.getContext("2d");
+
+      context.drawImage(video, 0, 0, video.offsetWidth, video.offsetHeight);
+      this.img = canvas.toDataURL("image/png");
+
+      console.log(this.img);
+    },
+    async onSave() {
+      await this.uploadToS3(this.img);
+      this.initCaptureImage();
+    },
     async uploadFilesToS3() {
       const files = this.files;
-      console.log("Selected files: ");
+      console.log("Selected files: ")
       console.table(files);
       if (Array.isArray(files)) {
         files.forEach((file) => {
           this.uploadToS3(file)
-        })
+        });
       } else {
         this.uploadToS3(files)
       }
     },
-    async uploadToS3(file, progress, error, options) {
+    async uploadToS3(file) {
       const user = await Auth.currentAuthenticatedUser()
-      console.log(user)
-      console.log("made it" + file + progress + error + options)
-
-
 
       const metadata = {
         owner: user.username,
       };
 
-      console.log(metadata);
+      console.log(metadata)
 
-      const fileName = this.uploadPath + file.name
+      const uid = await uuidv4()      
+
+      const fileName = uid + '.png'
+
+      console.log(fileName);
 
       await Storage.vault
         .put(fileName, file, {
@@ -148,14 +158,14 @@ export default {
           metadata: metadata,
         })
         .then((result) => {
-          console.log(result)
-          this.$refs.form. reset() 
+          console.log(result);
         })
         .catch((err) => {
           console.log(err);
-          error("Unable to upload to S3")
         });
+
+      this.initCaptureImage();  
     },
-  }
-}
+  },
+};
 </script>
