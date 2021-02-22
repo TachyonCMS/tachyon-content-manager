@@ -2,18 +2,18 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="12">
-        <v-card v-show="startMedia">
+        <v-card v-show="startMedia" flat>
           <v-card-title>{{ instructions }}</v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" text @click="onStart" elevation="2">Enable Sharing</v-btn>
+            <v-btn class="mr-4" @click="onStart" color="primary">Enable Sharing</v-btn>
           </v-card-actions>
         </v-card>
-        <v-card v-show="captureImage">
+        <v-card v-show="captureImage" flat>
           <v-card-title>Take a snapshot</v-card-title>
           <video width="100%" ref="video" id="video" autoplay />
           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" text @click="onVideoClose" elevation="2" color="red">Stop Sharing</v-btn>
-            <v-btn class="mr-4" text @click="onSnapshot" elevation="2">Snapshot</v-btn>
+            <v-btn class="mr-4" @click="onVideoClose" elevation="1">Stop Sharing</v-btn>
+            <v-btn class="mr-4" @click="onSnapshot" color="primary">Snapshot</v-btn>
           </v-card-actions>
         </v-card>
         <v-card v-show="imageOptions">
@@ -22,8 +22,8 @@
           <v-img :src="img" class="img-fit"> </v-img>
 
           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" text @click="onImageClose" elevation="2" color="red">Discard</v-btn>
-            <v-btn class="mr-4" text @click="uploadToS3" elevation="2" >Upload</v-btn>
+            <v-btn class="mr-4" @click="onImageClose" elevation="1">Discard</v-btn>
+            <v-btn class="mr-4" @click="uploadToS3" color="primary">Upload</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>

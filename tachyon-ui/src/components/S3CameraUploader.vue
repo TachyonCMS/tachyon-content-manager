@@ -1,180 +1,216 @@
 <template>
-<div class="container">
-    <div>
-              <vue-web-cam
-                    ref="webcam"
-                    :device-id="deviceId"
-                    width="100%"
-                    autoplay="autoplay"
-                    @started="onStarted"
-                    @stopped="onStopped"
-                    @error="onError"
-                    @cameras="onCameras"
-                    @camera-change="onCameraChange"
-                />
-            </div>
+  <v-container>
+    <v-row align="center">
+      <v-col cols="12" md="12">
+        <v-card v-show="cameraView" flat>
+          <v-card-actions class="justify-center">
+            <v-card flat>
+              <v-row align="center">
+                <v-col class=" align-center justify-center">
+                  <v-select class="mr-4"
+                    v-model="deviceId"
+                    :items="devices"
+                    item-text="label"
+                    item-value="deviceId"
+                    label="Select camera"
+                    dense
+                  />
+                </v-col>
+              </v-row>
+              </v-card>
+               </v-card-actions>
+          <vue-web-cam
+            ref="webcam"
+            :device-id="deviceId"
+            width="100%"
+            height="auto"
+            autoplay="autoplay"
+            @started="onStarted"
+            @stopped="onStopped"
+            @error="onError"
+            @cameras="onCameras"
+            @camera-change="onCameraChange"
+          />
+          <v-card-actions class="justify-center">
+            <v-card flat>
+              <v-row align="center">
+                <v-col class="d-flex align-center justify-center">
+                  <v-switch v-model="cameraOn"></v-switch>
+                </v-col>
+                <v-col class="d-flex  align-center justify-center">
+                  <v-btn class="mr-4" @click="onCapture" color="primary">Snapshot</v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-card-actions>
+        </v-card>
 
-            <div >
-                <div>
-                    <select v-model="camera">
-                        <option>-- Select Device --</option>
-                        <option
-                            v-for="device in devices"
-                            :key="device.deviceId"
-                            :value="device.deviceId"
-                        >{{ device.label }}</option>
-                    </select>
-                </div>
-                <!-- Default switch -->
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="cameraToggle" checked="true" @change="onToggle" >
-                    <label class="custom-control-label" for="cameraToggle">ON</label>   
-                    <button type="button" class="btn btn-primary" @click="onCapture">Snap</button>
-                </div>
-            </div>
-       </div>
+        <v-card v-show="imageOptions">
+          <v-card-title>Upload or Discard</v-card-title>
+
+          <v-img :src="img" class="img-fit"> </v-img>
+
+          <v-card-actions class="justify-center">
+            <v-btn class="mr-4" @click="onImageClose" elevation="1">Discard</v-btn>
+            <v-btn class="mr-4" @click="uploadToS3" color="primary">Upload</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import { Auth, Storage } from 'aws-amplify'
+import { Auth, Storage } from "aws-amplify";
 
-import { WebCam } from "vue-web-cam"
+import { WebCam } from "vue-web-cam";
 
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 
 export default {
-    name: 'Camera',
-    beforeCreate() {
-        Auth.currentAuthenticatedUser()
-            .then(user => {
-                this.user = user
-            })
-            .catch(() => console.log('not signed in...'))
+  name: "Camera",
+  mounted() {
+    this.showCamera();
+  },
+  beforeCreate() {
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        this.user = user;
+      })
+      .catch(() => console.log("not signed in..."));
+  },
+  components: {
+    "vue-web-cam": WebCam,
+  },
+  data() {
+    return {
+      img: null,
+      cameraView: null,
+      deviceId: null,
+      devices: [],
+      user: {},
+      cameraOn: true,
+      autoplay: false,
+      modal: false,
+      imageOptions: false,
+    };
+  },
+  watch: {
+    camera: function (id) {
+      this.deviceId = id;
     },
-    async created() {
-        console.log(this.$route.params.id)
-        const albumId = this.$route.params.id
-        this.albumId = albumId
+    devices: function () {
+      // Once we have a list select the first one
+      const [first, ...tail] = this.devices;
+      console.log(tail);
+      if (first) {
+        //this.camera = first.deviceId;
+        this.deviceId = first.deviceId;
+      }
     },
-    components: {
-        'vue-web-cam': WebCam
+    cameraOn: function (newValue) {
+      //called whenever switch1 changes
+      newValue === false ? this.onStop() : this.onStart();
     },
-    data() {
-        return {
-            img: null,
-            camera: null,
-            deviceId: null,
-            devices: [],
-            user: {},
-            cameraOn: true,
-            autoplay: false,
-            modal: false
-        };
+  },
+  methods: {
+    async showCamera() {
+      this.imageOptions = false;
+      this.cameraView = true;
     },
-    computed: {
-        device: function() {
-            return this.devices.find(n => n.deviceId === this.deviceId);
-        }
+    async showImageOptions() {
+      this.cameraView = false;
+      this.imageOptions = true;
     },
-    watch: {
-        camera: function(id) {
-            this.deviceId = id;
-        },
-        devices: function() {
-            // Once we have a list select the first one
-            const [first, ...tail] = this.devices;
-            console.log(tail)
-            if (first) {
-                this.camera = first.deviceId;
-                this.deviceId = first.deviceId;
-            }
-        }
+    onCapture() {
+      this.img = this.$refs.webcam.capture();
+
+      this.showImageOptions()
+
+      //this.modal = true;
+      console.log(this.img)
+      //this.uploadToS3 (this.img)
     },
-    methods: {
-        onCapture() {
-            this.img = this.$refs.webcam.capture()
-            this.modal = true
-            //console.log(this.img)
-            //this.uploadToS3 (this.img)
-        },
-        onStarted(stream) {
-            console.log("On Started Event", stream)
-        },
-        onStopped(stream) {
-            console.log("On Stopped Event", stream)
-        },
-        onStop() {
-            this.cameraOn = false
-            this.$refs.webcam.stop()
-        },
-        onStart() {
-            this.cameraOn = true
-            this.$refs.webcam.start()
-        },
-        onError(error) {
-            console.log("On Error Event", error)
-        },
-        onCameras(cameras) {
-            this.devices = cameras;
-            console.log("On Cameras Event", cameras)
-        },
-        onCameraChange(deviceId) {
-            this.deviceId = deviceId;
-            this.camera = deviceId;
-            console.log("On Camera Change Event", deviceId)
-        },
-        onToggle() {
-            console.log(this.cameraOn)
-            this.cameraOn === true ?  this.onStop() : this.onStart()
-        },
-        async onSave() {
-            this.uploadToS3 (this.img)
-            this.modal = false
-        },
-        async uploadToS3 (file) {
-            const user = await Auth.currentAuthenticatedUser()
-            const uid = await uuidv4()
-            const image = await this.dataURItoBlob(file)
-            const fileName = 'upload/photo/' + uid + '.jpg'
+    onStarted(stream) {
+      console.log("On Started Event", stream);
+    },
+    onStopped(stream) {
+      console.log("On Stopped Event", stream);
+    },
+    onStop() {
+      this.cameraOn = false;
+      this.$refs.webcam.stop();
+    },
+    onStart() {
+      this.cameraOn = true;
+      this.$refs.webcam.start()
+    },
+    onError(error) {
+      console.log("On Error Event", error)
+    },
+    onCameras(cameras) {
+      this.devices = cameras
+      console.log("On Cameras Event", cameras)
+    },
+    onCameraChange(deviceId) {
+      this.deviceId = deviceId
+      //this.camera = deviceId;
+      console.log("On Camera Change Event", deviceId)
+    },
+    onImageClose() {
+      this.showCamera()
+    },
+    async onSave() {
+      this.uploadToS3(this.img)
+      this.modal = false
+    },
+    async uploadToS3() {
+      const user = await Auth.currentAuthenticatedUser()
+      const uid = await uuidv4();
+      const file = this.img
+      console.log(file)
+      const image = await this.dataURItoBlob(file)
+      const fileName = "upload/photo/" + uid + ".jpg"
 
-            console.log(user)
+      console.log(user)
 
-            const metadata = {
-                    albumId: this.albumId,
-                    ownerId: user.attributes.sub,
-                    owner: user.username
-                }
+      const metadata = {
+        ownerId: user.attributes.sub,
+        owner: user.username,
+      };
 
-            console.log(metadata)
+      console.log(metadata);
 
-            await Storage.vault.put(fileName, image, {
-                progressCallback(progress) {
-                    console.log(`Uploading: ${progress.loaded}/${progress.total}`)
-                },
-                metadata: metadata
-            })
-            .then (result => console.log(result))
-            .catch(err => console.log(err))
-        },
-        async dataURItoBlob(dataURI) {
-            // convert base64/URLEncoded data component to raw binary data held in a string
-            var byteString;
-            if (dataURI.split(',')[0].indexOf('base64') >= 0)
-                byteString = atob(dataURI.split(',')[1]);
-            else
-                byteString = unescape(dataURI.split(',')[1]);
- 
-            // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      await Storage.vault
+        .put(fileName, image, {
+          progressCallback(progress) {
+            console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+          },
+          metadata: metadata,
+        })
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err))
 
-            // write the bytes of the string to a typed array
-            var ia = new Uint8Array(byteString.length)
-            for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i)
-            }
+      this.showCamera()
+    },
+    async dataURItoBlob(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+      else byteString = unescape(dataURI.split(",")[1]);
 
-            return new Blob([ia], {type:mimeString})
-        }
-    }
-}
+      // separate out the mime component
+      var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], { type: mimeString });
+    },
+  },
+};
 </script>

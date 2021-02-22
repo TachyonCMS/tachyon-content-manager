@@ -16,7 +16,7 @@
         <v-tab-item
           key="Files"
         >
-          <Uploader instructions='Choose a file'/>
+          <Uploader instructions='Choose image files'  uploadPath='upload/photo/' />
         </v-tab-item>
         <v-tab-item
           key="Camera"
