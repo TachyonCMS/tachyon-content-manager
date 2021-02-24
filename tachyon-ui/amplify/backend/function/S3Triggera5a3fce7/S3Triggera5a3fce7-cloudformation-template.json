@@ -77,7 +77,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-tachyonui-dev-211934-deployment",
-          "S3Key": "amplify-builds/S3Triggera5a3fce7-674e542f4f325a37776e-build.zip"
+          "S3Key": "amplify-builds/S3Triggera5a3fce7-7039754d35347268734f-build.zip"
         }
       }
     },

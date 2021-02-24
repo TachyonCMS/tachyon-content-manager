@@ -373,111 +373,6 @@ export const deleteEntry = /* GraphQL */ `
     }
   }
 `;
-export const createAlbum = /* GraphQL */ `
-  mutation CreateAlbum(
-    $input: CreateAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    createAlbum(input: $input, condition: $condition) {
-      id
-      name
-      description
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-      owner
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const updateAlbum = /* GraphQL */ `
-  mutation UpdateAlbum(
-    $input: UpdateAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    updateAlbum(input: $input, condition: $condition) {
-      id
-      name
-      description
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-      owner
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const deleteAlbum = /* GraphQL */ `
-  mutation DeleteAlbum(
-    $input: DeleteAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    deleteAlbum(input: $input, condition: $condition) {
-      id
-      name
-      description
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-      owner
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-    }
-  }
-`;
 export const createPhoto = /* GraphQL */ `
   mutation CreatePhoto(
     $input: CreatePhotoInput!
@@ -485,7 +380,6 @@ export const createPhoto = /* GraphQL */ `
   ) {
     createPhoto(input: $input, condition: $condition) {
       id
-      albumId
       bucket
       fullsize {
         key
@@ -499,26 +393,6 @@ export const createPhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      album {
-        id
-        name
-        description
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-      }
       owner
     }
   }
@@ -530,7 +404,6 @@ export const updatePhoto = /* GraphQL */ `
   ) {
     updatePhoto(input: $input, condition: $condition) {
       id
-      albumId
       bucket
       fullsize {
         key
@@ -544,26 +417,6 @@ export const updatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      album {
-        id
-        name
-        description
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-      }
       owner
     }
   }
@@ -575,7 +428,6 @@ export const deletePhoto = /* GraphQL */ `
   ) {
     deletePhoto(input: $input, condition: $condition) {
       id
-      albumId
       bucket
       fullsize {
         key
@@ -589,26 +441,6 @@ export const deletePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      album {
-        id
-        name
-        description
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-      }
       owner
     }
   }

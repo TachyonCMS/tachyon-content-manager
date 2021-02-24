@@ -49,17 +49,6 @@ type Entry
     fields: AWSJSON
 }
 
-type Album
-@model
-@key(name: "albumBySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]}, {allow: private, provider: iam}]) {
-    id: ID!
-    name: String!
-    description: String
-    spaceId: ID!
-    space: Space @connection(fields: ["spaceId"])
-}
-
 type Photo
 @model
 @auth(rules: [
@@ -81,7 +70,6 @@ type PhotoS3Info {
 input CreatePhotoInput {
 	id: ID
   owner: String
-	albumId: ID!
 	bucket: String!
 	fullsize: PhotoS3InfoInput!
 	thumbnail: PhotoS3InfoInput!
