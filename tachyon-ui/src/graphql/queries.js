@@ -253,149 +253,6 @@ export const listEntrys = /* GraphQL */ `
     }
   }
 `;
-export const getAlbum = /* GraphQL */ `
-  query GetAlbum($id: ID!) {
-    getAlbum(id: $id) {
-      id
-      name
-      description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listAlbums = /* GraphQL */ `
-  query ListAlbums(
-    $filter: ModelAlbumFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        description
-        photos {
-          nextToken
-        }
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const getPhoto = /* GraphQL */ `
-  query GetPhoto($id: ID!) {
-    getPhoto(id: $id) {
-      id
-      albumId
-      album {
-        id
-        name
-        description
-        photos {
-          nextToken
-        }
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listPhotos = /* GraphQL */ `
-  query ListPhotos(
-    $filter: ModelPhotoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        albumId
-        album {
-          id
-          name
-          description
-          spaceId
-          createdAt
-          updatedAt
-          owner
-        }
-        bucket
-        fullsize {
-          s3key
-          width
-          height
-        }
-        thumbnail {
-          s3key
-          width
-          height
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
 export const listLocalesBySpace = /* GraphQL */ `
   query ListLocalesBySpace(
     $spaceId: ID
@@ -589,6 +446,69 @@ export const listEntriesByContentSchema = /* GraphQL */ `
     }
   }
 `;
+export const listAlbums = /* GraphQL */ `
+  query ListAlbums(
+    $filter: ModelAlbumFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getAlbum = /* GraphQL */ `
+  query GetAlbum($id: ID!) {
+    getAlbum(id: $id) {
+      id
+      name
+      description
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const listAlbumsBySpace = /* GraphQL */ `
   query ListAlbumsBySpace(
     $spaceId: ID
@@ -608,9 +528,6 @@ export const listAlbumsBySpace = /* GraphQL */ `
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -622,6 +539,89 @@ export const listAlbumsBySpace = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getPhoto = /* GraphQL */ `
+  query GetPhoto($id: ID!) {
+    getPhoto(id: $id) {
+      id
+      albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
+      album {
+        id
+        name
+        description
+        spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
+      owner
+    }
+  }
+`;
+export const listPhotos = /* GraphQL */ `
+  query ListPhotos(
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        albumId
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        createdAt
+        updatedAt
+        album {
+          id
+          name
+          description
+          spaceId
+          createdAt
+          updatedAt
+          owner
+        }
         owner
       }
       nextToken
@@ -646,6 +646,19 @@ export const listPhotosByAlbum = /* GraphQL */ `
       items {
         id
         albumId
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        createdAt
+        updatedAt
         album {
           id
           name
@@ -655,19 +668,6 @@ export const listPhotosByAlbum = /* GraphQL */ `
           updatedAt
           owner
         }
-        bucket
-        fullsize {
-          s3key
-          width
-          height
-        }
-        thumbnail {
-          s3key
-          width
-          height
-        }
-        createdAt
-        updatedAt
         owner
       }
       nextToken

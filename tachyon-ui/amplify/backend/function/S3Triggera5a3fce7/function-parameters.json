@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "tachyonapi": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

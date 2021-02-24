@@ -19,7 +19,11 @@
               "userPoolId": "authtachyonui2986a4b7"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }
@@ -45,7 +49,17 @@
     "S3Triggera5a3fce7": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
-      "build": true
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "tachyonapi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   }
 }

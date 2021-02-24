@@ -83,8 +83,8 @@ export default {
           metadata: metadata,
         })
         .then((result) => {
-          console.log(result);
-          this.$refs.form.reset();
+          console.log(result)
+          this.files = []
         })
         .catch((err) => {
           console.log(err);

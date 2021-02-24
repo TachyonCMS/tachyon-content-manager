@@ -144,7 +144,7 @@ export default {
 
       console.log(metadata)
 
-      const uid = await uuidv4()      
+      const uid = await uuidv4()
 
       const fileName = uid + '.png'
 

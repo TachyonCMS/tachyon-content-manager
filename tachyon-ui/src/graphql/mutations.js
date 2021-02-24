@@ -382,17 +382,6 @@ export const createAlbum = /* GraphQL */ `
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -405,6 +394,17 @@ export const createAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -417,17 +417,6 @@ export const updateAlbum = /* GraphQL */ `
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -440,6 +429,17 @@ export const updateAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -452,17 +452,6 @@ export const deleteAlbum = /* GraphQL */ `
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -475,6 +464,17 @@ export const deleteAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -486,13 +486,23 @@ export const createPhoto = /* GraphQL */ `
     createPhoto(input: $input, condition: $condition) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -505,20 +515,10 @@ export const createPhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }
@@ -531,13 +531,23 @@ export const updatePhoto = /* GraphQL */ `
     updatePhoto(input: $input, condition: $condition) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -550,20 +560,10 @@ export const updatePhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }
@@ -576,13 +576,23 @@ export const deletePhoto = /* GraphQL */ `
     deletePhoto(input: $input, condition: $condition) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -595,20 +605,10 @@ export const deletePhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }

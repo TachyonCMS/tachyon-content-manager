@@ -52,29 +52,28 @@ type Entry
 type Album
 @model
 @key(name: "albumBySpace", fields: ["spaceId"], queryField: "listAlbumsBySpace")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]}, {allow: private, provider: iam}]) {
     id: ID!
     name: String!
     description: String
-    photos: [Photo] @connection(keyName: "photoByAlbum", fields: ["id"])
     spaceId: ID!
     space: Space @connection(fields: ["spaceId"])
 }
 
 type Photo
 @model
-@key(name: "photoByAlbum", fields: ["albumId"], queryField: "listPhotosByAlbum")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]},{allow: private}]) {
+@auth(rules: [
+      {allow: owner, operations: [create, update, delete, read]},
+      {allow: private, provider: iam}
+      ]) {
     id: ID!
-    albumId: ID!
-    album: Album @connection(fields: ["albumId"])
     bucket: String!
     fullsize: PhotoS3Info!
     thumbnail: PhotoS3Info!
 }
 
 type PhotoS3Info {
-    s3key: String!
+    key: String!
     width: Int!
     height: Int!
 }
@@ -89,7 +88,7 @@ input CreatePhotoInput {
 }
 
 input PhotoS3InfoInput {
-	s3key: String!
+	key: String!
 	width: Int!
 	height: Int!
 }

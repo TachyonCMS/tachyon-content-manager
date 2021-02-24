@@ -4,6 +4,14 @@
   "Parameters": {
     "env": {
       "Type": "String"
+    },
+    "apitachyonapiGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apitachyonapiGraphQLAPIIdOutput"
+    },
+    "apitachyonapiGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apitachyonapiGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -47,6 +55,15 @@
           "Variables": {
             "ENV": {
               "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "API_TACHYONAPI_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apitachyonapiGraphQLAPIIdOutput"
+            },
+            "API_TACHYONAPI_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apitachyonapiGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -60,7 +77,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-tachyonui-dev-211934-deployment",
-          "S3Key": "amplify-builds/S3Triggera5a3fce7-67537650726661785a79-build.zip"
+          "S3Key": "amplify-builds/S3Triggera5a3fce7-674e542f4f325a37776e-build.zip"
         }
       }
     },
@@ -141,6 +158,59 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apitachyonapiGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

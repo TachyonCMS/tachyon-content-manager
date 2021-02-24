@@ -338,22 +338,11 @@ export const onDeleteEntry = /* GraphQL */ `
   }
 `;
 export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum($owner: String!) {
+  subscription OnCreateAlbum($owner: String) {
     onCreateAlbum(owner: $owner) {
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -366,26 +355,26 @@ export const onCreateAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
 export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum($owner: String!) {
+  subscription OnUpdateAlbum($owner: String) {
     onUpdateAlbum(owner: $owner) {
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -398,26 +387,26 @@ export const onUpdateAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
 export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum($owner: String!) {
+  subscription OnDeleteAlbum($owner: String) {
     onDeleteAlbum(owner: $owner) {
       id
       name
       description
-      photos {
-        items {
-          id
-          albumId
-          bucket
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       spaceId
       space {
         id
@@ -430,21 +419,42 @@ export const onDeleteAlbum = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          albumId
+          bucket
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
     }
   }
 `;
 export const onCreatePhoto = /* GraphQL */ `
-  subscription OnCreatePhoto {
-    onCreatePhoto {
+  subscription OnCreatePhoto($owner: String) {
+    onCreatePhoto(owner: $owner) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -457,36 +467,36 @@ export const onCreatePhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }
 `;
 export const onUpdatePhoto = /* GraphQL */ `
-  subscription OnUpdatePhoto {
-    onUpdatePhoto {
+  subscription OnUpdatePhoto($owner: String) {
+    onUpdatePhoto(owner: $owner) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -499,36 +509,36 @@ export const onUpdatePhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }
 `;
 export const onDeletePhoto = /* GraphQL */ `
-  subscription OnDeletePhoto {
-    onDeletePhoto {
+  subscription OnDeletePhoto($owner: String) {
+    onDeletePhoto(owner: $owner) {
       id
       albumId
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      createdAt
+      updatedAt
       album {
         id
         name
         description
-        photos {
-          nextToken
-        }
         spaceId
         space {
           id
@@ -541,20 +551,10 @@ export const onDeletePhoto = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
       }
-      bucket
-      fullsize {
-        s3key
-        width
-        height
-      }
-      thumbnail {
-        s3key
-        width
-        height
-      }
-      createdAt
-      updatedAt
       owner
     }
   }
