@@ -1,19 +1,43 @@
 {
-  "dev": {
+  "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-tachyonui-dev-211934-authRole",
-      "UnauthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-dev-211934-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-dev-211934-authRole",
+      "AuthRoleName": "amplify-tachyonui-prod-213958-authRole",
+      "UnauthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-prod-213958-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-prod-213958-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-tachyonui-dev-211934-deployment",
-      "UnauthRoleName": "amplify-tachyonui-dev-211934-unauthRole",
-      "StackName": "amplify-tachyonui-dev-211934",
-      "StackId": "arn:aws:cloudformation:us-east-1:934684196725:stack/amplify-tachyonui-dev-211934/c2e5d1c0-594c-11eb-9132-12dc156c2e93",
+      "DeploymentBucketName": "amplify-tachyonui-prod-213958-deployment",
+      "UnauthRoleName": "amplify-tachyonui-prod-213958-unauthRole",
+      "StackName": "amplify-tachyonui-prod-213958",
+      "StackId": "arn:aws:cloudformation:us-east-1:934684196725:stack/amplify-tachyonui-prod-213958/bccbd680-7662-11eb-949a-1254a8a4acf7",
       "AmplifyAppId": "d1x608p8hznmhr"
     },
     "categories": {
       "auth": {
         "tachyonui2986a4b7": {}
+      },
+      "function": {
+        "S3Triggera5a3fce7": {}
+      }
+    }
+  },
+  "production": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tachyonui-production-214733-authRole",
+      "UnauthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-production-214733-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::934684196725:role/amplify-tachyonui-production-214733-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tachyonui-production-214733-deployment",
+      "UnauthRoleName": "amplify-tachyonui-production-214733-unauthRole",
+      "StackName": "amplify-tachyonui-production-214733",
+      "StackId": "arn:aws:cloudformation:us-east-1:934684196725:stack/amplify-tachyonui-production-214733/cc330e30-7663-11eb-870b-0e4875d6c3bd",
+      "AmplifyAppId": "d1x608p8hznmhr"
+    },
+    "categories": {
+      "auth": {
+        "tachyonui2986a4b7": {}
+      },
+      "function": {
+        "S3Triggera5a3fce7": {}
       }
     }
   }
