@@ -19,12 +19,14 @@ const Sharp = require('sharp');
 const THUMBNAIL_WIDTH = parseInt(process.env.THUMBNAIL_WIDTH || 80, 10);
 const THUMBNAIL_HEIGHT = parseInt(process.env.THUMBNAIL_HEIGHT || 80, 10);
 
+const Photo = require('handlers/Photo')
+
 let client = null
 
 async function storePhotoInfo(item) {
   console.log('storePhotoItem', JSON.stringify(item))
   const createPhoto = gql`
-    mutation CreatePhoto(
+    mutation CreatePhoto( 
       $input: CreatePhotoInput!
       $condition: ModelPhotoConditionInput
     ) {
@@ -112,24 +114,17 @@ async function resize(photoBody, bucketName, key) {
 	};
 };
 
-async function processRecord(record) {
-	const bucketName = record.s3.bucket.name;
+async function processPhoto(record) {
+  const bucketName = record.s3.bucket.name;
   const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
-
-  console.log('processRecord', JSON.stringify(record))
-
-  if (record.eventName !== "ObjectCreated:Put") { console.log('Is not a new file'); return; }
-  if (! key.includes('upload/')) { console.log('Does not look like an upload from user'); return; }
-
 
   const originalPhoto = await S3.getObject({ Bucket: bucketName, Key: key }).promise()
   console.log(originalPhoto)
 
-    
 	const metadata = originalPhoto.Metadata
   console.log('metadata', JSON.stringify(metadata))
   console.log('resize')
-	const sizes = await resize(originalPhoto.Body, bucketName, key);    
+	const sizes = await resize(originalPhoto.Body, bucketName, key);
   console.log('sizes', JSON.stringify(sizes))
 	const id = uuidv4()
 	const item = {
@@ -150,9 +145,41 @@ async function processRecord(record) {
 
   console.log(JSON.stringify(metadata), JSON.stringify(sizes), JSON.stringify(item))
 	await storePhotoInfo(item);
+
 }
 
+async function processRecord(record) {
+	const bucketName = record.s3.bucket.name;
+  const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
 
+  console.log('processRecord', JSON.stringify(record))
+
+  if (record.eventName !== "ObjectCreated:Put") { console.log('Is not a new file'); return; }
+
+  // We need to ensure `/upload/` and other key segments are in their exact positions.
+  // We don't want matching sub folder or file names to cause problems.
+  // Example key: private/us-east-xxxxxx/upload/photo/my-vacation-photo.png
+  const keyParts = key.split('/')
+  console.log('keyParts', keyParts)
+
+  if (keyParts[2] != 'upload') { console.log('This is not a user uploaded file'); return; }
+  const uploadType = keyParts[3]
+
+  switch (uploadType) {
+      case 'photo':
+          { console.log('A photo was uploaded') }
+          Photo.processRecord(record)
+          break;
+      case 'contentful':
+          { console.log('A Contenful export was uploaded') }
+          break;
+      case 'file':
+          { console.log('A file was uploaded') }
+          break;
+      default:
+          { console.log('Unsupported upload type:' + uploadType); return; }
+  }
+}
 exports.handler = function(event, context, callback) {
   console.log('Received S3 event:', JSON.stringify(event, null, 2));
   // Get the object from the event and show its content type
