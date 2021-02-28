@@ -69,6 +69,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "Camera",
+  props: ["uploadPath", "instructions", "meta"],
   mounted() {
     this.showCamera();
   },
@@ -165,19 +166,10 @@ export default {
       this.modal = false
     },
     async uploadToS3() {
-      const user = await Auth.currentAuthenticatedUser()
       const uid = await uuidv4();
-      const file = this.img
-      console.log(file)
-      const image = await this.dataURItoBlob(file)
-      const fileName = "upload/photo/" + uid + ".jpg"
-
-      console.log(user)
-
-      const metadata = {
-        ownerId: user.attributes.sub,
-        owner: user.username,
-      };
+      const image = await this.dataURItoBlob(this.img)
+      const fileName = this.uploadPath + uid + ".jpg"
+      const metadata = this.meta
 
       console.log(metadata);
 

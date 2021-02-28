@@ -66,11 +66,12 @@ export default {
     },
     async uploadToS3(file, error) {
       const user = await Auth.currentAuthenticatedUser();
-
+      const spaceId = this.$route.params.spaceId;
       const metadata = {
+        ownerId: user.attributes.sub,
         owner: user.username,
+        spaceId: spaceId
       };
-
       console.log(metadata);
 
       const fileName = this.uploadPath + file.name;

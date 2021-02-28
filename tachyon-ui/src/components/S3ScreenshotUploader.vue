@@ -38,9 +38,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: "S3ScreenshotUploader",
-  props: ["uploadPath", "instructions"],
+  props: ["uploadPath", "instructions", "meta"],
   mounted() {
     this.initStartMedia();
+    console.log(this.meta)
   },
   data() {
     return {
@@ -51,7 +52,7 @@ export default {
       imageOptions: false,
       captureImage: false,
       startMedia: false,
-      currentView: null,
+      currentView: null
     };
   },
   methods: {
@@ -135,7 +136,7 @@ export default {
         this.uploadToS3(files)
       }
     },
-    async uploadToS3(file) {
+    async uploadToS3() {
       const user = await Auth.currentAuthenticatedUser()
 
       const metadata = {
@@ -143,19 +144,22 @@ export default {
       };
 
       console.log(metadata)
+      console.log(this.meta)
 
       const uid = await uuidv4()
 
-      const fileName = uid + '.png'
+      const fileName = this.uploadPath + uid + '.png'
 
       console.log(fileName);
 
+      const image = await this.dataURItoBlob(this.img)
+
       await Storage.vault
-        .put(fileName, file, {
+        .put(fileName, image, {
           progressCallback(progress) {
             console.log(`Uploading: ${progress.loaded}/${progress.total}`)
           },
-          metadata: metadata,
+          metadata: this.meta,
         })
         .then((result) => {
           console.log(result);
@@ -165,6 +169,24 @@ export default {
         });
 
       this.initCaptureImage();  
+    },
+    async dataURItoBlob(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+      else byteString = unescape(dataURI.split(",")[1]);
+
+      // separate out the mime component
+      var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], { type: mimeString });
     },
   },
 };
