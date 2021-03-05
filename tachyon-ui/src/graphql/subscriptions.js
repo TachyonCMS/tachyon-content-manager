@@ -341,6 +341,9 @@ export const onCreatePhoto = /* GraphQL */ `
   subscription OnCreatePhoto($owner: String) {
     onCreatePhoto(owner: $owner) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -354,7 +357,6 @@ export const onCreatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -362,6 +364,9 @@ export const onUpdatePhoto = /* GraphQL */ `
   subscription OnUpdatePhoto($owner: String) {
     onUpdatePhoto(owner: $owner) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -375,7 +380,6 @@ export const onUpdatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -383,6 +387,9 @@ export const onDeletePhoto = /* GraphQL */ `
   subscription OnDeletePhoto($owner: String) {
     onDeletePhoto(owner: $owner) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -396,7 +403,6 @@ export const onDeletePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;

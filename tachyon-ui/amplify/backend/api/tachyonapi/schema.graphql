@@ -56,6 +56,9 @@ type Photo
       {allow: private, provider: iam}
       ]) {
     id: ID!
+    spaceId: ID
+    ownerId: ID
+    owner: String
     bucket: String!
     fullsize: PhotoS3Info!
     thumbnail: PhotoS3Info!
@@ -69,6 +72,8 @@ type PhotoS3Info {
 
 input CreatePhotoInput {
 	id: ID
+  spaceId: ID
+  ownerId: ID
   owner: String
 	bucket: String!
 	fullsize: PhotoS3InfoInput!

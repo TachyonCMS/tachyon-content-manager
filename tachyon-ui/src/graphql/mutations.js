@@ -380,6 +380,9 @@ export const createPhoto = /* GraphQL */ `
   ) {
     createPhoto(input: $input, condition: $condition) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -393,7 +396,6 @@ export const createPhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -404,6 +406,9 @@ export const updatePhoto = /* GraphQL */ `
   ) {
     updatePhoto(input: $input, condition: $condition) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -417,7 +422,6 @@ export const updatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -428,6 +432,9 @@ export const deletePhoto = /* GraphQL */ `
   ) {
     deletePhoto(input: $input, condition: $condition) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -441,7 +448,6 @@ export const deletePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;

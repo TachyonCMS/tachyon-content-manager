@@ -450,6 +450,9 @@ export const getPhoto = /* GraphQL */ `
   query GetPhoto($id: ID!) {
     getPhoto(id: $id) {
       id
+      spaceId
+      ownerId
+      owner
       bucket
       fullsize {
         key
@@ -463,7 +466,6 @@ export const getPhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -476,6 +478,9 @@ export const listPhotos = /* GraphQL */ `
     listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        spaceId
+        ownerId
+        owner
         bucket
         fullsize {
           key
@@ -489,7 +494,6 @@ export const listPhotos = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }

@@ -76,8 +76,8 @@
         "Runtime": "nodejs12.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-tachyonui-production-214733-deployment",
-          "S3Key": "amplify-builds/S3Triggera5a3fce7-4f456373485764363279-build.zip"
+          "S3Bucket": "amplify-tachyonui-dev-234726-deployment",
+          "S3Key": "amplify-builds/S3Triggera5a3fce7-556f4b646e765a656351-build.zip"
         }
       }
     },

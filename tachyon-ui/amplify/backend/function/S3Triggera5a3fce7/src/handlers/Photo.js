@@ -41,6 +41,8 @@ async function storePhotoInfo(item) {
       createPhoto(input: $input, condition: $condition) {
         id
         owner
+        ownerId
+        spaceId
         bucket
         fullsize {
           key
@@ -140,6 +142,8 @@ Photo.prototype.processRecord = async function processRecord(record) {
     const item = {
         id: id,
         owner: metadata.owner,
+        ownerId: metadata.owner_id,
+        spaceId: metadata.space_id,
         bucket: bucketName,
         thumbnail: {
             width: sizes.thumbnail.width,

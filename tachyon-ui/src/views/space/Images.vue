@@ -50,8 +50,8 @@ export default {
     const space = this.$store.get("app/space");
     const user = await Auth.currentAuthenticatedUser();
     const meta = {};
-    meta.spaceid = space.id;
-    meta.ownerid = user.attributes.sub;
+    meta.space_id = space.id;
+    meta.owner_id = user.attributes.sub;
     meta.owner = user.username;
     this.meta = meta;
   },
