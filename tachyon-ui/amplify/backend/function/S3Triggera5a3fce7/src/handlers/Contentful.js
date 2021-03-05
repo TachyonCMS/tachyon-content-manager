@@ -23,6 +23,8 @@ class ContentfulImporter {
 
     // Process an S3 record representing an uploaded Contentful export  
     async processRecord(record) {
+        
+        console.log(record)
 
         console.log('Processing Contentful Import.')
     }

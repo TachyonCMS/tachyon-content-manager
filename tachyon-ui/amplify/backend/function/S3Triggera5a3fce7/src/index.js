@@ -12,6 +12,7 @@ const AUTH_TYPE = require('aws-appsync').AUTH_TYPE;
 const AWSAppSyncClient = require('aws-appsync').default;
 
 const Photo = require('handlers/Photo')
+const Contentful = require('handlers/Contentful')
 
 let client = null
 
