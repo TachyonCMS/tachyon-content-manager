@@ -406,3 +406,45 @@ export const onDeletePhoto = /* GraphQL */ `
     }
   }
 `;
+export const onCreateContentfulImport = /* GraphQL */ `
+  subscription OnCreateContentfulImport($owner: String) {
+    onCreateContentfulImport(owner: $owner) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateContentfulImport = /* GraphQL */ `
+  subscription OnUpdateContentfulImport($owner: String) {
+    onUpdateContentfulImport(owner: $owner) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteContentfulImport = /* GraphQL */ `
+  subscription OnDeleteContentfulImport($owner: String) {
+    onDeleteContentfulImport(owner: $owner) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;

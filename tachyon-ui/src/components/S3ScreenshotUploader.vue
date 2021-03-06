@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { Auth, Storage } from "aws-amplify"
+import { Storage } from "aws-amplify"
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -137,13 +137,7 @@ export default {
       }
     },
     async uploadToS3() {
-      const user = await Auth.currentAuthenticatedUser()
 
-      const metadata = {
-        owner: user.username,
-      };
-
-      console.log(metadata)
       console.log(this.meta)
 
       const uid = await uuidv4()

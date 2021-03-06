@@ -499,3 +499,42 @@ export const listPhotos = /* GraphQL */ `
     }
   }
 `;
+export const getContentfulImport = /* GraphQL */ `
+  query GetContentfulImport($id: ID!) {
+    getContentfulImport(id: $id) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listContentfulImports = /* GraphQL */ `
+  query ListContentfulImports(
+    $filter: ModelContentfulImportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContentfulImports(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        spaceId
+        ownerId
+        owner
+        bucket
+        key
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

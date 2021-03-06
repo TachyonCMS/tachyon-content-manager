@@ -33,7 +33,7 @@
 
 <script>
 //import S3Uploader from '@/components/app/S3AmplifyUploader.vue'
-import { Auth, Storage } from "aws-amplify";
+import { Storage } from "aws-amplify";
 
 export default {
   name: "SpaceImportForm",
@@ -45,7 +45,7 @@ export default {
       return this.files.length < 1;
     },
   },
-  props: ["uploadPath", "instructions", "acceptString"],
+  props: ["uploadPath", "instructions", "acceptString", "meta"],
   data() {
     return {
       files: [],
@@ -65,13 +65,8 @@ export default {
       }
     },
     async uploadToS3(file, error) {
-      const user = await Auth.currentAuthenticatedUser();
-      const spaceId = this.$route.params.spaceId;
-      const metadata = {
-        ownerId: user.attributes.sub,
-        owner: user.username,
-        spaceId: spaceId
-      };
+
+      const metadata = this.meta
       console.log(metadata);
 
       const fileName = this.uploadPath + file.name;

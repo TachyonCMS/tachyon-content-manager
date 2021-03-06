@@ -64,6 +64,20 @@ type Photo
     thumbnail: PhotoS3Info!
 }
 
+type ContentfulImport
+@model
+@auth(rules: [
+     { allow: owner, operations: [create, update, delete, read] },
+     {allow: private, provider: iam}
+    ]) {
+    id: ID!
+    spaceId: ID
+    ownerId: ID
+    owner: String
+    bucket: String!
+    key: String
+}
+
 type PhotoS3Info {
     key: String!
     width: Int!
@@ -78,6 +92,15 @@ input CreatePhotoInput {
 	bucket: String!
 	fullsize: PhotoS3InfoInput!
 	thumbnail: PhotoS3InfoInput!
+}
+
+input CreateContentfulImportInput {
+	id: ID
+  spaceId: ID
+  ownerId: ID
+  owner: String
+	bucket: String!
+  key: String
 }
 
 input PhotoS3InfoInput {

@@ -451,3 +451,54 @@ export const deletePhoto = /* GraphQL */ `
     }
   }
 `;
+export const createContentfulImport = /* GraphQL */ `
+  mutation CreateContentfulImport(
+    $input: CreateContentfulImportInput!
+    $condition: ModelContentfulImportConditionInput
+  ) {
+    createContentfulImport(input: $input, condition: $condition) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateContentfulImport = /* GraphQL */ `
+  mutation UpdateContentfulImport(
+    $input: UpdateContentfulImportInput!
+    $condition: ModelContentfulImportConditionInput
+  ) {
+    updateContentfulImport(input: $input, condition: $condition) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteContentfulImport = /* GraphQL */ `
+  mutation DeleteContentfulImport(
+    $input: DeleteContentfulImportInput!
+    $condition: ModelContentfulImportConditionInput
+  ) {
+    deleteContentfulImport(input: $input, condition: $condition) {
+      id
+      spaceId
+      ownerId
+      owner
+      bucket
+      key
+      createdAt
+      updatedAt
+    }
+  }
+`;

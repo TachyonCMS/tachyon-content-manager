@@ -19,8 +19,6 @@ const Sharp = require('sharp');
 const THUMBNAIL_WIDTH = parseInt(process.env.THUMBNAIL_WIDTH || 80, 10);
 const THUMBNAIL_HEIGHT = parseInt(process.env.THUMBNAIL_HEIGHT || 80, 10);
 
-const Photo = function () {};
-
 let client = new AWSAppSyncClient({
     url: process.env.API_TACHYONAPI_GRAPHQLAPIENDPOINTOUTPUT,
     region: process.env.REGION,
@@ -123,6 +121,7 @@ async function resize(photoBody, bucketName, key) {
         }
     };
 };
+const Photo = function () {};
 
 Photo.prototype.processRecord = async function processRecord(record) {
     const bucketName = record.s3.bucket.name;
