@@ -51,6 +51,7 @@ type Entry
 
 type Photo
 @model
+@key(name: "photosBySpace", fields: ["spaceId"], queryField: "listPhotosBySpace")
 @auth(rules: [
       {allow: owner, operations: [create, update, delete, read]},
       {allow: private, provider: iam}
@@ -66,6 +67,7 @@ type Photo
 
 type ContentfulImport
 @model
+@key(name: "contentfulImportBySpace", fields: ["spaceId"], queryField: "listContentfulImportsBySpace")
 @auth(rules: [
      { allow: owner, operations: [create, update, delete, read] },
      {allow: private, provider: iam}
@@ -75,7 +77,7 @@ type ContentfulImport
     ownerId: ID
     owner: String
     bucket: String!
-    key: String
+    key: String!
 }
 
 type PhotoS3Info {

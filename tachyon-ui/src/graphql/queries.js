@@ -499,6 +499,44 @@ export const listPhotos = /* GraphQL */ `
     }
   }
 `;
+export const listPhotosBySpace = /* GraphQL */ `
+  query ListPhotosBySpace(
+    $spaceId: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhotosBySpace(
+      spaceId: $spaceId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        spaceId
+        ownerId
+        owner
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getContentfulImport = /* GraphQL */ `
   query GetContentfulImport($id: ID!) {
     getContentfulImport(id: $id) {
@@ -520,6 +558,35 @@ export const listContentfulImports = /* GraphQL */ `
     $nextToken: String
   ) {
     listContentfulImports(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        spaceId
+        ownerId
+        owner
+        bucket
+        key
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listContentfulImportsBySpace = /* GraphQL */ `
+  query ListContentfulImportsBySpace(
+    $spaceId: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelContentfulImportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContentfulImportsBySpace(
+      spaceId: $spaceId
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
