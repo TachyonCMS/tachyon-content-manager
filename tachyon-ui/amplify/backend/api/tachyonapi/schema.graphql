@@ -4,6 +4,8 @@ type Space
     id: ID!
     name: String!
     description: String
+    photos: [Photo] @connection(keyName: "photosBySpace", fields: ["id"])
+    contentfulImports: [ContentfulImport] @connection(keyName: "contentfulImportsBySpace", fields: ["id"])
 }
 
 type Locale
@@ -57,7 +59,8 @@ type Photo
       {allow: private, provider: iam}
       ]) {
     id: ID!
-    spaceId: ID
+    spaceId: ID!
+    space: Space @connection(fields: ["spaceId"])
     ownerId: ID
     owner: String
     bucket: String!
@@ -67,13 +70,14 @@ type Photo
 
 type ContentfulImport
 @model
-@key(name: "contentfulImportBySpace", fields: ["spaceId"], queryField: "listContentfulImportsBySpace")
+@key(name: "contentfulImportsBySpace", fields: ["spaceId"], queryField: "listContentfulImportsBySpace")
 @auth(rules: [
      { allow: owner, operations: [create, update, delete, read] },
      {allow: private, provider: iam}
     ]) {
     id: ID!
-    spaceId: ID
+    spaceId: ID!
+    space: Space @connection(fields: ["spaceId"])
     ownerId: ID
     owner: String
     bucket: String!

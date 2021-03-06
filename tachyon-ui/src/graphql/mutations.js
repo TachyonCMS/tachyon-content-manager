@@ -13,6 +13,31 @@ export const createSpace = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contentfulImports {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          key
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -28,6 +53,31 @@ export const updateSpace = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contentfulImports {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          key
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -43,6 +93,31 @@ export const deleteSpace = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contentfulImports {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          key
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -166,6 +241,12 @@ export const createContentSchema = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       createdAt
       updatedAt
@@ -212,6 +293,12 @@ export const updateContentSchema = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       createdAt
       updatedAt
@@ -258,6 +345,12 @@ export const deleteContentSchema = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       createdAt
       updatedAt
@@ -281,6 +374,12 @@ export const createEntry = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       contentSchema
       sys {
@@ -317,6 +416,12 @@ export const updateEntry = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       contentSchema
       sys {
@@ -353,6 +458,12 @@ export const deleteEntry = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       contentSchema
       sys {
@@ -381,6 +492,20 @@ export const createPhoto = /* GraphQL */ `
     createPhoto(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -407,6 +532,20 @@ export const updatePhoto = /* GraphQL */ `
     updatePhoto(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -433,6 +572,20 @@ export const deletePhoto = /* GraphQL */ `
     deletePhoto(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -459,6 +612,20 @@ export const createContentfulImport = /* GraphQL */ `
     createContentfulImport(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -476,6 +643,20 @@ export const updateContentfulImport = /* GraphQL */ `
     updateContentfulImport(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -493,6 +674,20 @@ export const deleteContentfulImport = /* GraphQL */ `
     deleteContentfulImport(input: $input, condition: $condition) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket

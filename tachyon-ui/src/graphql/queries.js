@@ -10,6 +10,31 @@ export const getSpace = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      photos {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      contentfulImports {
+        items {
+          id
+          spaceId
+          ownerId
+          owner
+          bucket
+          key
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -27,6 +52,12 @@ export const listSpaces = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       nextToken
     }
@@ -123,6 +154,12 @@ export const getContentSchema = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       createdAt
       updatedAt
@@ -193,6 +230,12 @@ export const getEntry = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
       }
       contentSchema
       sys {
@@ -451,6 +494,20 @@ export const getPhoto = /* GraphQL */ `
     getPhoto(id: $id) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -479,6 +536,14 @@ export const listPhotos = /* GraphQL */ `
       items {
         id
         spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
         ownerId
         owner
         bucket
@@ -517,6 +582,14 @@ export const listPhotosBySpace = /* GraphQL */ `
       items {
         id
         spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
         ownerId
         owner
         bucket
@@ -542,6 +615,20 @@ export const getContentfulImport = /* GraphQL */ `
     getContentfulImport(id: $id) {
       id
       spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       ownerId
       owner
       bucket
@@ -565,6 +652,14 @@ export const listContentfulImports = /* GraphQL */ `
       items {
         id
         spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
         ownerId
         owner
         bucket
@@ -594,6 +689,14 @@ export const listContentfulImportsBySpace = /* GraphQL */ `
       items {
         id
         spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
         ownerId
         owner
         bucket
