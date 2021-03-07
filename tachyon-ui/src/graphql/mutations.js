@@ -121,243 +121,6 @@ export const deleteSpace = /* GraphQL */ `
     }
   }
 `;
-export const createLocale = /* GraphQL */ `
-  mutation CreateLocale(
-    $input: CreateLocaleInput!
-    $condition: ModelLocaleConditionInput
-  ) {
-    createLocale(input: $input, condition: $condition) {
-      id
-      name
-      code
-      spaceId
-      fallbackCode
-      default
-      contentManagementApi
-      contentDeliveryApi
-      optional
-      sys {
-        type
-        version
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateLocale = /* GraphQL */ `
-  mutation UpdateLocale(
-    $input: UpdateLocaleInput!
-    $condition: ModelLocaleConditionInput
-  ) {
-    updateLocale(input: $input, condition: $condition) {
-      id
-      name
-      code
-      spaceId
-      fallbackCode
-      default
-      contentManagementApi
-      contentDeliveryApi
-      optional
-      sys {
-        type
-        version
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteLocale = /* GraphQL */ `
-  mutation DeleteLocale(
-    $input: DeleteLocaleInput!
-    $condition: ModelLocaleConditionInput
-  ) {
-    deleteLocale(input: $input, condition: $condition) {
-      id
-      name
-      code
-      spaceId
-      fallbackCode
-      default
-      contentManagementApi
-      contentDeliveryApi
-      optional
-      sys {
-        type
-        version
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const createContentSchema = /* GraphQL */ `
-  mutation CreateContentSchema(
-    $input: CreateContentSchemaInput!
-    $condition: ModelContentSchemaConditionInput
-  ) {
-    createContentSchema(input: $input, condition: $condition) {
-      id
-      spaceId
-      name
-      displayField
-      description
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields {
-        id
-        name
-        type
-        localized
-        required
-        validations
-        disabled
-        omitted
-      }
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateContentSchema = /* GraphQL */ `
-  mutation UpdateContentSchema(
-    $input: UpdateContentSchemaInput!
-    $condition: ModelContentSchemaConditionInput
-  ) {
-    updateContentSchema(input: $input, condition: $condition) {
-      id
-      spaceId
-      name
-      displayField
-      description
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields {
-        id
-        name
-        type
-        localized
-        required
-        validations
-        disabled
-        omitted
-      }
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteContentSchema = /* GraphQL */ `
-  mutation DeleteContentSchema(
-    $input: DeleteContentSchemaInput!
-    $condition: ModelContentSchemaConditionInput
-  ) {
-    deleteContentSchema(input: $input, condition: $condition) {
-      id
-      spaceId
-      name
-      displayField
-      description
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields {
-        id
-        name
-        type
-        localized
-        required
-        validations
-        disabled
-        omitted
-      }
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const createEntry = /* GraphQL */ `
   mutation CreateEntry(
     $input: CreateEntryInput!
@@ -478,6 +241,219 @@ export const deleteEntry = /* GraphQL */ `
         version
       }
       fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createLocale = /* GraphQL */ `
+  mutation CreateLocale(
+    $input: CreateLocaleInput!
+    $condition: ModelLocaleConditionInput
+  ) {
+    createLocale(input: $input, condition: $condition) {
+      id
+      name
+      code
+      spaceId
+      fallbackCode
+      default
+      contentManagementApi
+      contentDeliveryApi
+      optional
+      sys {
+        id
+        type
+        version
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateLocale = /* GraphQL */ `
+  mutation UpdateLocale(
+    $input: UpdateLocaleInput!
+    $condition: ModelLocaleConditionInput
+  ) {
+    updateLocale(input: $input, condition: $condition) {
+      id
+      name
+      code
+      spaceId
+      fallbackCode
+      default
+      contentManagementApi
+      contentDeliveryApi
+      optional
+      sys {
+        id
+        type
+        version
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteLocale = /* GraphQL */ `
+  mutation DeleteLocale(
+    $input: DeleteLocaleInput!
+    $condition: ModelLocaleConditionInput
+  ) {
+    deleteLocale(input: $input, condition: $condition) {
+      id
+      name
+      code
+      spaceId
+      fallbackCode
+      default
+      contentManagementApi
+      contentDeliveryApi
+      optional
+      sys {
+        id
+        type
+        version
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createContentSchema = /* GraphQL */ `
+  mutation CreateContentSchema(
+    $input: CreateContentSchemaInput!
+    $condition: ModelContentSchemaConditionInput
+  ) {
+    createContentSchema(input: $input, condition: $condition) {
+      id
+      spaceId
+      name
+      displayField
+      description
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateContentSchema = /* GraphQL */ `
+  mutation UpdateContentSchema(
+    $input: UpdateContentSchemaInput!
+    $condition: ModelContentSchemaConditionInput
+  ) {
+    updateContentSchema(input: $input, condition: $condition) {
+      id
+      spaceId
+      name
+      displayField
+      description
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteContentSchema = /* GraphQL */ `
+  mutation DeleteContentSchema(
+    $input: DeleteContentSchemaInput!
+    $condition: ModelContentSchemaConditionInput
+  ) {
+    deleteContentSchema(input: $input, condition: $condition) {
+      id
+      spaceId
+      name
+      displayField
+      description
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
       createdAt
       updatedAt
       owner

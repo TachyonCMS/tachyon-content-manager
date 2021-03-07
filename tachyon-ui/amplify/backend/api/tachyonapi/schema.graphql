@@ -11,7 +11,10 @@ type Space
 type Locale
 @model
 @key(name: "localeBySpace", fields: ["spaceId"], queryField: "listLocalesBySpace")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+@auth(rules: [
+    {allow: owner, operations: [create, update, delete, read]},
+    {allow: private, provider: iam}
+    ]) {
     name: String!
     code: String!
     spaceId: ID!
@@ -26,14 +29,15 @@ type Locale
 type ContentSchema
 @model
 @key(name: "contentSchemaBySpace", fields: ["spaceId"], queryField: "listContentSchemaBySpace")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+@auth(rules: [{allow: owner, operations: [create, update, delete, read]},
+      {allow: private, provider: iam}]) {
     id: ID!
     spaceId: ID!
     name: String!
     displayField: String!
     description: String
     sys: ContentSchemaSys
-    fields: ContentSchemaFields
+    fields: AWSJSON
     space: Space @connection(fields: ["spaceId"])
 }
 
@@ -109,6 +113,16 @@ input CreateContentfulImportInput {
   key: String
 }
 
+input CreateContentSchemaInput {
+  id: ID!
+  spaceId: ID!
+  name: String!
+  displayField: String!
+  description: String
+  sys: ContentSchemaSysInput!
+  fields: AWSJSON
+}
+
 input PhotoS3InfoInput {
 	key: String!
 	width: Int!
@@ -116,6 +130,7 @@ input PhotoS3InfoInput {
 }
 
 type LocaleSys {
+  id: ID
   type: String!
   version: Int
   space: SysLink!
@@ -123,6 +138,18 @@ type LocaleSys {
   createdBy: SysLink
   createdAt: AWSDateTime
   updatedBy: SysLink
+  updatedAt: AWSDateTime
+}
+
+input LocaleSysInput {
+  id: ID
+  type: String!
+  version: Int
+  space: SysLinkInput!
+  environment: SysLinkInput
+  createdBy: SysLinkInput
+  createdAt: AWSDateTime
+  updatedBy: SysLinkInput
   updatedAt: AWSDateTime
 }
 
@@ -143,6 +170,23 @@ type ContentSchemaSys {
   publishedBy: SysLink
 }
 
+input ContentSchemaSysInput {
+  space: SysLinkInput!
+  id: String!
+  type: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  environment: SysLinkInput!
+  publishedVersion: Int
+  publishedAt: AWSDateTime
+  firstPublishedAt: AWSDateTime
+  createdBy: SysLinkInput!
+  updatedBy: SysLinkInput
+  publishedCounter: Int
+  version: Int
+  publishedBy: SysLinkInput
+}
+
 type EntrySys {
   space: SysLink!
   id: String!
@@ -161,8 +205,37 @@ type EntrySys {
   contentType: SysLink!
 }
 
+input EntrySysInput {
+  space: SysLinkInput!
+  id: String!
+  type: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+  environment: SysLinkInput!
+  publishedVersion: Int
+  publishedAt: AWSDateTime
+  firstPublishedAt: AWSDateTime
+  createdBy: SysLinkInput!
+  updatedBy: SysLinkInput
+  publishedCounter: Int
+  version: Int
+  publishedBy: SysLinkInput
+  contentType: SysLinkInput!
+}
+
 
 type ContentSchemaFields {
+  id: String
+  name: String!
+  type: String!
+  localized: Boolean
+  required: Boolean
+  validations: AWSJSON
+  disabled: Boolean
+  omitted: Boolean
+}
+
+input ContentSchemaFieldsInput {
   id: String
   name: String!
   type: String!
@@ -177,7 +250,17 @@ type SysLink {
   sys: SysLinkDef!
 }
 
+input SysLinkInput {
+  sys: SysLinkDefInput!
+}
+
 type SysLinkDef {
+  type: String!
+  linkType: String!
+  id: String!
+}
+
+input SysLinkDefInput {
   type: String!
   linkType: String!
   id: String!
