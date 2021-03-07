@@ -121,132 +121,6 @@ export const deleteSpace = /* GraphQL */ `
     }
   }
 `;
-export const createEntry = /* GraphQL */ `
-  mutation CreateEntry(
-    $input: CreateEntryInput!
-    $condition: ModelEntryConditionInput
-  ) {
-    createEntry(input: $input, condition: $condition) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateEntry = /* GraphQL */ `
-  mutation UpdateEntry(
-    $input: UpdateEntryInput!
-    $condition: ModelEntryConditionInput
-  ) {
-    updateEntry(input: $input, condition: $condition) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteEntry = /* GraphQL */ `
-  mutation DeleteEntry(
-    $input: DeleteEntryInput!
-    $condition: ModelEntryConditionInput
-  ) {
-    deleteEntry(input: $input, condition: $condition) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const createLocale = /* GraphQL */ `
   mutation CreateLocale(
     $input: CreateLocaleInput!
@@ -454,6 +328,129 @@ export const deleteContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createEntry = /* GraphQL */ `
+  mutation CreateEntry(
+    $input: CreateEntryInput!
+    $condition: ModelEntryConditionInput
+  ) {
+    createEntry(input: $input, condition: $condition) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateEntry = /* GraphQL */ `
+  mutation UpdateEntry(
+    $input: UpdateEntryInput!
+    $condition: ModelEntryConditionInput
+  ) {
+    updateEntry(input: $input, condition: $condition) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteEntry = /* GraphQL */ `
+  mutation DeleteEntry(
+    $input: DeleteEntryInput!
+    $condition: ModelEntryConditionInput
+  ) {
+    deleteEntry(input: $input, condition: $condition) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
       createdAt
       updatedAt
       owner

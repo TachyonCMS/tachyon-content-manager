@@ -16,6 +16,48 @@ const gql = require('graphql-tag')
 
 const oboe = require('oboe')
 
+async function processEntry(item, spaceId) {
+  const id = await uuidv4()
+  item.id = id
+  item.spaceId = spaceId
+  item.contentSchema = item.sys.contentType.sys.id
+  item.fields = JSON.stringify(item.fields)
+  
+  const createEntry = gql`
+  mutation CreateEntry( 
+    $input: CreateEntryInput!
+    $condition: ModelEntryConditionInput
+  ) {
+    createEntry(input: $input, condition: $condition) {
+          id
+          spaceId
+          contentSchema
+          sys {
+            id
+          }
+          fields
+      }
+    }
+  `;
+
+  const result = await client.mutate({
+      mutation: createEntry,
+      variables: { input: item },
+      fetchPolicy: 'no-cache'
+  })
+
+  const log = {
+    eventName: 'entryImported',
+    spaceId: spaceId,
+    entryId: id,
+    contentSchema: item.contentSchema
+  }
+
+  console.log(JSON.stringify(log));
+
+  return result
+}
+
 async function processLocale(item, spaceId) {
   const id = await uuidv4()
   item.id = id
@@ -40,22 +82,28 @@ async function processLocale(item, spaceId) {
             id
           }
       }
-  }
-`;
+    }
+  `;
 
-  console.log('trying to create Locale with input', JSON.stringify(item))
   const result = await client.mutate({
       mutation: createLocale,
       variables: { input: item },
       fetchPolicy: 'no-cache'
   })
 
-  console.log('result', JSON.stringify(result))
+  const log = {
+    eventName: 'localeImported',
+    spaceId: spaceId,
+    localeId: id,
+    locale: item.code
+  }
+
+  console.log(JSON.stringify(log));
+
   return result
 }
 
 async function storeContentfulImportInfo(item) {
-    console.log('ContentfulImportItem', JSON.stringify(item))
     const createContentfulImport = gql`
     mutation CreateContentfulImport( 
       $input: CreateContentfulImportInput!
@@ -72,14 +120,19 @@ async function storeContentfulImportInfo(item) {
     }
   `;
 
-    console.log('trying to create contentful import with input', JSON.stringify(item))
     const result = await client.mutate({
         mutation: createContentfulImport,
         variables: { input: item },
         fetchPolicy: 'no-cache'
     })
 
-    console.log('result', JSON.stringify(result))
+    const log = {
+      eventName: 'contentfulFileImported',
+      spaceId: spaceId
+    }
+  
+    console.log(JSON.stringify(log));
+
     return result
 }
 
@@ -91,7 +144,7 @@ async function processContentSchema(item, spaceId) {
   if(item.description === null) {
     delete item.description
   }
-  //console.log('ContentSchema', JSON.stringify(item))
+
   const createContentSchema = gql`
   mutation CreateContentSchema( 
     $input: CreateContentSchemaInput!
@@ -108,17 +161,24 @@ async function processContentSchema(item, spaceId) {
       }
       fields
       }
-  }
-`;
+    }
+  `;
 
-  console.log('trying to create ContentSchema with input', JSON.stringify(item))
   const result = await client.mutate({
       mutation: createContentSchema,
       variables: { input: item },
       fetchPolicy: 'no-cache'
   })
 
-  console.log('result', JSON.stringify(result))
+  const log = {
+    eventName: 'contentSchemaImported',
+    spaceId: spaceId,
+    schemaId: id,
+    schemaName: item.name
+  }
+
+  console.log(JSON.stringify(log));
+
   return result
 }
 
@@ -138,11 +198,7 @@ Contentful.prototype.processRecord = async function processRecord(record) {
     const bucketName = record.s3.bucket.name
     const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "))
 
-    console.log('processRecord', JSON.stringify(record))
-
     const contentfulUpload = await S3.headObject({ Bucket: bucketName, Key: key }).promise()
-
-    console.log(contentfulUpload)
 
     const metadata = contentfulUpload.Metadata
     const spaceId = metadata.space_id
@@ -157,7 +213,6 @@ Contentful.prototype.processRecord = async function processRecord(record) {
         key: key
     }
 
-    console.log(JSON.stringify(metadata), JSON.stringify(item))
     await storeContentfulImportInfo(item)
 
     const readStream = await S3.getObject({ Bucket: bucketName, Key: key }).createReadStream()
@@ -166,31 +221,27 @@ Contentful.prototype.processRecord = async function processRecord(record) {
     .node('roles', oboe.drop)
     .node('webhooks', oboe.drop)
     .node('contentTypes.*', function(data){
-      console.log(data)
       processContentSchema(data, spaceId)
       return oboe.drop
     })
     .node('tags.*', function(data){
-      console.log(data)
       // Ignore Space level tags coming from Contenful
       return oboe.drop
     })
     .node('assets.*', async function(data){
-      console.log(data)
       // We need to find an export with assets
       return oboe.drop
     })
     .node('locales.*', function(data){
-      console.log(data)
       processLocale(data, spaceId)
       return oboe.drop
     })
     .node('entries.*', function(data){
-      console.log(data)
+      processEntry(data, spaceId)
       return oboe.drop
     })
     .done(function( finalJson ){
-      console.log('done')  
+      //console.log('Done processing upload')  
     })
 }
 

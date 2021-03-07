@@ -30,7 +30,6 @@ let client = new AWSAppSyncClient({
   });
 
 async function storePhotoInfo(item) {
-    console.log('storePhotoItem', JSON.stringify(item))
     const createPhoto = gql`
     mutation CreatePhoto( 
       $input: CreatePhotoInput!
@@ -56,14 +55,12 @@ async function storePhotoInfo(item) {
     }
   `;
 
-    console.log('trying to createphoto with input', JSON.stringify(item))
     const result = await client.mutate({
         mutation: createPhoto,
         variables: { input: item },
         fetchPolicy: 'no-cache'
     })
 
-    console.log('result', JSON.stringify(result))
     return result
 }
 
@@ -127,16 +124,10 @@ Photo.prototype.processRecord = async function processRecord(record) {
     const bucketName = record.s3.bucket.name;
     const key = decodeURIComponent(record.s3.object.key.replace(/\+/g, " "));
 
-    console.log('processRecord', JSON.stringify(record))
-
     const originalPhoto = await S3.getObject({ Bucket: bucketName, Key: key }).promise()
-    console.log(originalPhoto)
 
     const metadata = originalPhoto.Metadata
-    console.log('metadata', JSON.stringify(metadata))
-    console.log('resize')
     const sizes = await resize(originalPhoto.Body, bucketName, key);
-    console.log('sizes', JSON.stringify(sizes))
     const id = uuidv4()
     const item = {
         id: id,
@@ -156,8 +147,15 @@ Photo.prototype.processRecord = async function processRecord(record) {
         }
     }
 
-    console.log(JSON.stringify(metadata), JSON.stringify(sizes), JSON.stringify(item))
     await storePhotoInfo(item);
+
+    const log = {
+        eventName: 'uploadedPhotoProcessed',
+        spaceId: spaceId,
+        photoId: id
+    }
+
+    console.log(JSON.stringify(log));
 }
 
 module.exports = exports = new Photo();

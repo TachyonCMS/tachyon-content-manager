@@ -44,10 +44,11 @@ type ContentSchema
 type Entry
 @model
 @key(name: "entryBySpace", fields: ["spaceId"], queryField: "listEntriesBySpace")
-@key(name: "entryByContentSchema", fields: ["contentSchema"], queryField: "listEntriesByContentSchema")
-@auth(rules: [{allow: owner, operations: [create, update, delete, read]}]) {
+@auth(rules: [
+      {allow: owner, operations: [create, update, delete, read]},
+      {allow: private, provider: iam}
+      ]) {
     id: ID!
-    name: String!
     spaceId: ID!
     space: Space @connection(fields: ["spaceId"])
     contentSchema: String!
@@ -121,6 +122,14 @@ input CreateContentSchemaInput {
   description: String
   sys: ContentSchemaSysInput!
   fields: AWSJSON
+}
+
+input CreateEntryInput {
+  id: ID!
+  spaceId: ID!
+  sys: EntrySysInput!
+  fields: AWSJSON
+  contentSchema: String!
 }
 
 input PhotoS3InfoInput {

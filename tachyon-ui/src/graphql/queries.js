@@ -63,181 +63,6 @@ export const listSpaces = /* GraphQL */ `
     }
   }
 `;
-export const getEntry = /* GraphQL */ `
-  query GetEntry($id: ID!) {
-    getEntry(id: $id) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listEntrys = /* GraphQL */ `
-  query ListEntrys(
-    $filter: ModelEntryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEntrys(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        contentSchema
-        sys {
-          id
-          type
-          createdAt
-          updatedAt
-          publishedVersion
-          publishedAt
-          firstPublishedAt
-          publishedCounter
-          version
-        }
-        fields
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const listEntriesBySpace = /* GraphQL */ `
-  query ListEntriesBySpace(
-    $spaceId: ID
-    $sortDirection: ModelSortDirection
-    $filter: ModelEntryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEntriesBySpace(
-      spaceId: $spaceId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        contentSchema
-        sys {
-          id
-          type
-          createdAt
-          updatedAt
-          publishedVersion
-          publishedAt
-          firstPublishedAt
-          publishedCounter
-          version
-        }
-        fields
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const listEntriesByContentSchema = /* GraphQL */ `
-  query ListEntriesByContentSchema(
-    $contentSchema: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelEntryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEntriesByContentSchema(
-      contentSchema: $contentSchema
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
-        contentSchema
-        sys {
-          id
-          type
-          createdAt
-          updatedAt
-          publishedVersion
-          publishedAt
-          firstPublishedAt
-          publishedCounter
-          version
-        }
-        fields
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
 export const getLocale = /* GraphQL */ `
   query GetLocale($id: ID!) {
     getLocale(id: $id) {
@@ -457,6 +282,130 @@ export const listContentSchemaBySpace = /* GraphQL */ `
           updatedAt
           owner
         }
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getEntry = /* GraphQL */ `
+  query GetEntry($id: ID!) {
+    getEntry(id: $id) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listEntrys = /* GraphQL */ `
+  query ListEntrys(
+    $filter: ModelEntryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEntrys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
+        contentSchema
+        sys {
+          id
+          type
+          createdAt
+          updatedAt
+          publishedVersion
+          publishedAt
+          firstPublishedAt
+          publishedCounter
+          version
+        }
+        fields
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listEntriesBySpace = /* GraphQL */ `
+  query ListEntriesBySpace(
+    $spaceId: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelEntryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEntriesBySpace(
+      spaceId: $spaceId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        spaceId
+        space {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+          owner
+        }
+        contentSchema
+        sys {
+          id
+          type
+          createdAt
+          updatedAt
+          publishedVersion
+          publishedAt
+          firstPublishedAt
+          publishedCounter
+          version
+        }
+        fields
         createdAt
         updatedAt
         owner

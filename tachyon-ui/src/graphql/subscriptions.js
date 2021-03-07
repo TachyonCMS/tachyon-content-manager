@@ -112,123 +112,6 @@ export const onDeleteSpace = /* GraphQL */ `
     }
   }
 `;
-export const onCreateEntry = /* GraphQL */ `
-  subscription OnCreateEntry($owner: String!) {
-    onCreateEntry(owner: $owner) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateEntry = /* GraphQL */ `
-  subscription OnUpdateEntry($owner: String!) {
-    onUpdateEntry(owner: $owner) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteEntry = /* GraphQL */ `
-  subscription OnDeleteEntry($owner: String!) {
-    onDeleteEntry(owner: $owner) {
-      id
-      name
-      spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
-      contentSchema
-      sys {
-        id
-        type
-        createdAt
-        updatedAt
-        publishedVersion
-        publishedAt
-        firstPublishedAt
-        publishedCounter
-        version
-      }
-      fields
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const onCreateLocale = /* GraphQL */ `
   subscription OnCreateLocale($owner: String) {
     onCreateLocale(owner: $owner) {
@@ -418,6 +301,120 @@ export const onDeleteContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateEntry = /* GraphQL */ `
+  subscription OnCreateEntry($owner: String) {
+    onCreateEntry(owner: $owner) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateEntry = /* GraphQL */ `
+  subscription OnUpdateEntry($owner: String) {
+    onUpdateEntry(owner: $owner) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteEntry = /* GraphQL */ `
+  subscription OnDeleteEntry($owner: String) {
+    onDeleteEntry(owner: $owner) {
+      id
+      spaceId
+      space {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+        contentfulImports {
+          nextToken
+        }
+      }
+      contentSchema
+      sys {
+        id
+        type
+        createdAt
+        updatedAt
+        publishedVersion
+        publishedAt
+        firstPublishedAt
+        publishedCounter
+        version
+      }
+      fields
       createdAt
       updatedAt
       owner
