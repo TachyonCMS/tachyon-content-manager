@@ -151,8 +151,10 @@ Photo.prototype.processRecord = async function processRecord(record) {
 
     const log = {
         eventName: 'uploadedPhotoProcessed',
-        spaceId: spaceId,
-        photoId: id
+        spaceId: metadata.space_id,
+        userId: metadata.owner_id,
+        photoId: id,
+        s3Key: key
     }
 
     console.log(JSON.stringify(log));

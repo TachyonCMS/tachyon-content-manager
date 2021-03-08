@@ -16,7 +16,7 @@ const gql = require('graphql-tag')
 
 const oboe = require('oboe')
 
-async function processEntry(item, spaceId) {
+async function processEntry(item, spaceId, userId) {
   const id = await uuidv4()
   item.id = id
   item.spaceId = spaceId
@@ -50,7 +50,8 @@ async function processEntry(item, spaceId) {
     eventName: 'entryImported',
     spaceId: spaceId,
     entryId: id,
-    contentSchema: item.contentSchema
+    contentSchema: item.contentSchema,
+    userId: userId
   }
 
   console.log(JSON.stringify(log));
@@ -58,7 +59,7 @@ async function processEntry(item, spaceId) {
   return result
 }
 
-async function processLocale(item, spaceId) {
+async function processLocale(item, spaceId, userId) {
   const id = await uuidv4()
   item.id = id
   item.spaceId = spaceId
@@ -94,6 +95,7 @@ async function processLocale(item, spaceId) {
   const log = {
     eventName: 'localeImported',
     spaceId: spaceId,
+    userId: userId,
     localeId: id,
     locale: item.code
   }
@@ -128,7 +130,8 @@ async function storeContentfulImportInfo(item) {
 
     const log = {
       eventName: 'contentfulFileImported',
-      spaceId: spaceId
+      spaceId: item.spaceId,
+      userId: item.ownerId
     }
   
     console.log(JSON.stringify(log));
@@ -136,7 +139,7 @@ async function storeContentfulImportInfo(item) {
     return result
 }
 
-async function processContentSchema(item, spaceId) {
+async function processContentSchema(item, spaceId, userId) {
   const id = await uuidv4()
   item.id = id
   item.spaceId = spaceId
@@ -173,6 +176,7 @@ async function processContentSchema(item, spaceId) {
   const log = {
     eventName: 'contentSchemaImported',
     spaceId: spaceId,
+    userId: userId,
     schemaId: id,
     schemaName: item.name
   }
@@ -202,12 +206,13 @@ Contentful.prototype.processRecord = async function processRecord(record) {
 
     const metadata = contentfulUpload.Metadata
     const spaceId = metadata.space_id
+    const userId = metadata.owner_id
 
     const id = uuidv4()
     const item = {
         id: id,
         owner: metadata.owner,
-        ownerId: metadata.owner_id,
+        ownerId: userId,
         spaceId: spaceId,
         bucket: bucketName,
         key: key
@@ -221,7 +226,7 @@ Contentful.prototype.processRecord = async function processRecord(record) {
     .node('roles', oboe.drop)
     .node('webhooks', oboe.drop)
     .node('contentTypes.*', function(data){
-      processContentSchema(data, spaceId)
+      processContentSchema(data, spaceId, userId)
       return oboe.drop
     })
     .node('tags.*', function(data){
@@ -233,11 +238,11 @@ Contentful.prototype.processRecord = async function processRecord(record) {
       return oboe.drop
     })
     .node('locales.*', function(data){
-      processLocale(data, spaceId)
+      processLocale(data, spaceId, userId)
       return oboe.drop
     })
     .node('entries.*', function(data){
-      processEntry(data, spaceId)
+      processEntry(data, spaceId, userId)
       return oboe.drop
     })
     .done(function( finalJson ){
