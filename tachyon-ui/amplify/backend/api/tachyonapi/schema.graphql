@@ -10,50 +10,63 @@ type Space
 
 type Locale
 @model
+@key(fields: ["id", "environment", "code"])
 @key(name: "localeBySpace", fields: ["spaceId"], queryField: "listLocalesBySpace")
 @auth(rules: [
     {allow: owner, operations: [create, update, delete, read]},
     {allow: private, provider: iam}
     ]) {
+    id: ID!
     name: String!
     code: String!
     spaceId: ID!
+    ownerId: ID
+    owner: String
     fallbackCode: String
     default: Boolean
     contentManagementApi: Boolean
     contentDeliveryApi: Boolean
     optional: Boolean
     sys: LocaleSys!
+    environment: String!
 }
 
 type ContentSchema
 @model
+@key(fields: ["id", "environment", "code"])
 @key(name: "contentSchemaBySpace", fields: ["spaceId"], queryField: "listContentSchemaBySpace")
 @auth(rules: [{allow: owner, operations: [create, update, delete, read]},
       {allow: private, provider: iam}]) {
     id: ID!
     spaceId: ID!
+    ownerId: ID
+    owner: String
     name: String!
     displayField: String!
     description: String
     sys: ContentSchemaSys
     fields: AWSJSON
     space: Space @connection(fields: ["spaceId"])
+    environment: String!
+    code: String!
 }
 
 type Entry
 @model
-@key(name: "entryBySpace", fields: ["spaceId"], queryField: "listEntriesBySpace")
+@key(fields: ["id", "environment"])
+@key(name: "entrysBySpace", fields: ["spaceId"], queryField: "listEntrysBySpace")
 @auth(rules: [
       {allow: owner, operations: [create, update, delete, read]},
       {allow: private, provider: iam}
       ]) {
     id: ID!
     spaceId: ID!
-    space: Space @connection(fields: ["spaceId"])
+    ownerId: ID
+    owner: String
     contentSchema: String!
     sys: EntrySys
     fields: AWSJSON
+    environment: String!
 }
 
 type Photo
@@ -114,22 +127,45 @@ input CreateContentfulImportInput {
   key: String
 }
 
+input CreateLocaleInput {
+    id: ID!
+    name: String!
+    code: String!
+    spaceId: ID!
+    ownerId: ID
+    owner: String
+    fallbackCode: String
+    default: Boolean
+    contentManagementApi: Boolean
+    contentDeliveryApi: Boolean
+    optional: Boolean
+    sys: LocaleSysInput!
+    environment: String!
+}
+
 input CreateContentSchemaInput {
   id: ID!
   spaceId: ID!
+  ownerId: ID!
+  owner: String!
   name: String!
   displayField: String!
   description: String
   sys: ContentSchemaSysInput!
   fields: AWSJSON
+  environment: String!
+  code: String!
 }
 
 input CreateEntryInput {
   id: ID!
-  spaceId: ID!
+  spaceId: ID
+  ownerId: ID
+  owner: String
   sys: EntrySysInput!
   fields: AWSJSON
   contentSchema: String!
+  environment: String!
 }
 
 input PhotoS3InfoInput {

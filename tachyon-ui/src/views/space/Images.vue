@@ -7,6 +7,11 @@
     </v-tabs>
 
     <v-tabs-items v-model="tab">
+      <v-tab-item key="Gallery">
+        <Gallery
+          instructions="Available images"
+        />
+      </v-tab-item>
       <v-tab-item key="Files">
         <Uploader
           instructions="Choose image files"
@@ -33,6 +38,7 @@
 </template>
 
 <script>
+import Gallery from "@/components/Gallery.vue";
 import Uploader from "@/components/S3FileUploader.vue";
 import Camera from "@/components/S3CameraUploader.vue";
 import Screenshot from "@/components/S3ScreenshotUploader.vue";
@@ -45,6 +51,7 @@ export default {
     Uploader,
     Camera,
     Screenshot,
+    Gallery
   },
   async created() {
     const space = this.$store.get("app/space");
@@ -59,7 +66,8 @@ export default {
     return {
       tab: null,
       items: [
-        { tab: "Files", component: "Uploader" },
+        { tab: "Gallery", component: "S3Gallery" },
+        { tab: "Upload", component: "Uploader" },
         { tab: "Camera", component: "Camera" },
         { tab: "Screen", component: "Screenshot" },
       ],

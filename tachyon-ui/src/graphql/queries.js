@@ -64,12 +64,14 @@ export const listSpaces = /* GraphQL */ `
   }
 `;
 export const getLocale = /* GraphQL */ `
-  query GetLocale($id: ID!) {
-    getLocale(id: $id) {
+  query GetLocale($id: ID!, $environment: String!, $code: String!) {
+    getLocale(id: $id, environment: $environment, code: $code) {
       id
       name
       code
       spaceId
+      ownerId
+      owner
       fallbackCode
       default
       contentManagementApi
@@ -82,24 +84,36 @@ export const getLocale = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const listLocales = /* GraphQL */ `
   query ListLocales(
+    $id: ID
+    $environmentCode: ModelLocalePrimaryCompositeKeyConditionInput
     $filter: ModelLocaleFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listLocales(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listLocales(
+      id: $id
+      environmentCode: $environmentCode
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         name
         code
         spaceId
+        ownerId
+        owner
         fallbackCode
         default
         contentManagementApi
@@ -112,9 +126,9 @@ export const listLocales = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        environment
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -140,6 +154,8 @@ export const listLocalesBySpace = /* GraphQL */ `
         name
         code
         spaceId
+        ownerId
+        owner
         fallbackCode
         default
         contentManagementApi
@@ -152,19 +168,21 @@ export const listLocalesBySpace = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        environment
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
   }
 `;
 export const getContentSchema = /* GraphQL */ `
-  query GetContentSchema($id: ID!) {
-    getContentSchema(id: $id) {
+  query GetContentSchema($id: ID!, $environment: String!, $code: String!) {
+    getContentSchema(id: $id, environment: $environment, code: $code) {
       id
       spaceId
+      ownerId
+      owner
       name
       displayField
       description
@@ -194,22 +212,35 @@ export const getContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      environment
+      code
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const listContentSchemas = /* GraphQL */ `
   query ListContentSchemas(
+    $id: ID
+    $environmentCode: ModelContentSchemaPrimaryCompositeKeyConditionInput
     $filter: ModelContentSchemaFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listContentSchemas(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listContentSchemas(
+      id: $id
+      environmentCode: $environmentCode
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         spaceId
+        ownerId
+        owner
         name
         displayField
         description
@@ -233,9 +264,10 @@ export const listContentSchemas = /* GraphQL */ `
           updatedAt
           owner
         }
+        environment
+        code
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -259,6 +291,8 @@ export const listContentSchemaBySpace = /* GraphQL */ `
       items {
         id
         spaceId
+        ownerId
+        owner
         name
         displayField
         description
@@ -282,33 +316,22 @@ export const listContentSchemaBySpace = /* GraphQL */ `
           updatedAt
           owner
         }
+        environment
+        code
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
   }
 `;
 export const getEntry = /* GraphQL */ `
-  query GetEntry($id: ID!) {
-    getEntry(id: $id) {
+  query GetEntry($id: ID!, $environment: String!) {
+    getEntry(id: $id, environment: $environment) {
       id
       spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
+      ownerId
+      owner
       contentSchema
       sys {
         id
@@ -322,30 +345,34 @@ export const getEntry = /* GraphQL */ `
         version
       }
       fields
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const listEntrys = /* GraphQL */ `
   query ListEntrys(
+    $id: ID
+    $environment: ModelStringKeyConditionInput
     $filter: ModelEntryFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listEntrys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listEntrys(
+      id: $id
+      environment: $environment
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
+        ownerId
+        owner
         contentSchema
         sys {
           id
@@ -359,23 +386,23 @@ export const listEntrys = /* GraphQL */ `
           version
         }
         fields
+        environment
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
   }
 `;
-export const listEntriesBySpace = /* GraphQL */ `
-  query ListEntriesBySpace(
+export const listEntrysBySpace = /* GraphQL */ `
+  query ListEntrysBySpace(
     $spaceId: ID
     $sortDirection: ModelSortDirection
     $filter: ModelEntryFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listEntriesBySpace(
+    listEntrysBySpace(
       spaceId: $spaceId
       sortDirection: $sortDirection
       filter: $filter
@@ -385,14 +412,8 @@ export const listEntriesBySpace = /* GraphQL */ `
       items {
         id
         spaceId
-        space {
-          id
-          name
-          description
-          createdAt
-          updatedAt
-          owner
-        }
+        ownerId
+        owner
         contentSchema
         sys {
           id
@@ -406,9 +427,9 @@ export const listEntriesBySpace = /* GraphQL */ `
           version
         }
         fields
+        environment
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }

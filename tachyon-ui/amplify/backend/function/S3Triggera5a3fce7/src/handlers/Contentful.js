@@ -7,6 +7,7 @@ Amplify Params - DO NOT EDIT */// eslint-disable-next-line
 
 'use strict'
 
+
 const AWS = require('aws-sdk')
 const S3 = new AWS.S3({ signatureVersion: 'v4' })
 const AUTH_TYPE = require('aws-appsync').AUTH_TYPE
@@ -16,12 +17,16 @@ const gql = require('graphql-tag')
 
 const oboe = require('oboe')
 
-async function processEntry(item, spaceId, userId) {
-  const id = await uuidv4()
+// Process Entry
+async function processEntry(item, spaceId, user, userId) {
+  const id = spaceId + '#' + item.sys.id
   item.id = id
   item.spaceId = spaceId
+  item.ownerId = userId
+  item.owner = user
   item.contentSchema = item.sys.contentType.sys.id
   item.fields = JSON.stringify(item.fields)
+  item.environment = item.sys.environment.sys.id
   
   const createEntry = gql`
   mutation CreateEntry( 
@@ -30,12 +35,15 @@ async function processEntry(item, spaceId, userId) {
   ) {
     createEntry(input: $input, condition: $condition) {
           id
+          owner
+          ownerId
           spaceId
           contentSchema
           sys {
             id
           }
           fields
+          environment
       }
     }
   `;
@@ -51,7 +59,8 @@ async function processEntry(item, spaceId, userId) {
     spaceId: spaceId,
     entryId: id,
     contentSchema: item.contentSchema,
-    userId: userId
+    userId: userId,
+    environment: item.environment
   }
 
   console.log(JSON.stringify(log));
@@ -59,10 +68,15 @@ async function processEntry(item, spaceId, userId) {
   return result
 }
 
-async function processLocale(item, spaceId, userId) {
-  const id = await uuidv4()
+
+// Process Locale
+async function processLocale(item, spaceId, user, userId) {
+  const id = spaceId
   item.id = id
   item.spaceId = spaceId
+  item.owner = user
+  item.ownerId = userId
+  item.environment = item.sys.environment.sys.id
   
   const createLocale = gql`
   mutation CreateLocale( 
@@ -72,6 +86,8 @@ async function processLocale(item, spaceId, userId) {
     createLocale(input: $input, condition: $condition) {
           id
           spaceId
+          owner
+          ownerId
           name
           code
           fallbackCode
@@ -82,6 +98,7 @@ async function processLocale(item, spaceId, userId) {
           sys {
             id
           }
+          environment
       }
     }
   `;
@@ -97,7 +114,8 @@ async function processLocale(item, spaceId, userId) {
     spaceId: spaceId,
     userId: userId,
     localeId: id,
-    locale: item.code
+    locale: item.code,
+    environment: item.environment
   }
 
   console.log(JSON.stringify(log));
@@ -105,6 +123,65 @@ async function processLocale(item, spaceId, userId) {
   return result
 }
 
+
+// Process ContentSchema
+async function processContentSchema(item, spaceId, user, userId) {
+  const id = spaceId 
+  item.id = id
+  item.spaceId = spaceId
+  item.owner = user
+  item.ownerId = userId
+  item.fields = JSON.stringify(item.fields)
+  if(item.description === null) {
+    delete item.description
+  }
+  item.environment = item.sys.environment.sys.id
+  item.code = item.sys.id
+
+  const createContentSchema = gql`
+  mutation CreateContentSchema( 
+    $input: CreateContentSchemaInput!
+    $condition: ModelContentSchemaConditionInput
+  ) {
+    createContentSchema(input: $input, condition: $condition) {
+      id
+      spaceId
+      owner
+      ownerId
+      name
+      displayField
+      description
+      sys {
+        id
+      }
+      fields
+      environment
+      code
+      }
+    }
+  `;
+
+  const result = await client.mutate({
+      mutation: createContentSchema,
+      variables: { input: item },
+      fetchPolicy: 'no-cache'
+  })
+
+  const log = {
+    eventName: 'contentSchemaImported',
+    spaceId: spaceId,
+    userId: userId,
+    schemaId: id,
+    schemaName: item.name,
+    environment: item.environment
+  }
+
+  console.log(JSON.stringify(log));
+
+  return result
+}
+
+// Record the import attempt
 async function storeContentfulImportInfo(item) {
     const createContentfulImport = gql`
     mutation CreateContentfulImport( 
@@ -139,52 +216,7 @@ async function storeContentfulImportInfo(item) {
     return result
 }
 
-async function processContentSchema(item, spaceId, userId) {
-  const id = await uuidv4()
-  item.id = id
-  item.spaceId = spaceId
-  item.fields = JSON.stringify(item.fields)
-  if(item.description === null) {
-    delete item.description
-  }
-
-  const createContentSchema = gql`
-  mutation CreateContentSchema( 
-    $input: CreateContentSchemaInput!
-    $condition: ModelContentSchemaConditionInput
-  ) {
-    createContentSchema(input: $input, condition: $condition) {
-      id
-      spaceId
-      name
-      displayField
-      description
-      sys {
-        id
-      }
-      fields
-      }
-    }
-  `;
-
-  const result = await client.mutate({
-      mutation: createContentSchema,
-      variables: { input: item },
-      fetchPolicy: 'no-cache'
-  })
-
-  const log = {
-    eventName: 'contentSchemaImported',
-    spaceId: spaceId,
-    userId: userId,
-    schemaId: id,
-    schemaName: item.name
-  }
-
-  console.log(JSON.stringify(log));
-
-  return result
-}
+// Main code
 
 let client = new AWSAppSyncClient({
     url: process.env.API_TACHYONAPI_GRAPHQLAPIENDPOINTOUTPUT,
@@ -207,11 +239,12 @@ Contentful.prototype.processRecord = async function processRecord(record) {
     const metadata = contentfulUpload.Metadata
     const spaceId = metadata.space_id
     const userId = metadata.owner_id
+    const user = metadata.owner
 
     const id = uuidv4()
     const item = {
         id: id,
-        owner: metadata.owner,
+        owner: user,
         ownerId: userId,
         spaceId: spaceId,
         bucket: bucketName,
@@ -226,7 +259,7 @@ Contentful.prototype.processRecord = async function processRecord(record) {
     .node('roles', oboe.drop)
     .node('webhooks', oboe.drop)
     .node('contentTypes.*', function(data){
-      processContentSchema(data, spaceId, userId)
+      processContentSchema(data, spaceId, user, userId)
       return oboe.drop
     })
     .node('tags.*', function(data){
@@ -238,11 +271,11 @@ Contentful.prototype.processRecord = async function processRecord(record) {
       return oboe.drop
     })
     .node('locales.*', function(data){
-      processLocale(data, spaceId, userId)
+      processLocale(data, spaceId, user, userId)
       return oboe.drop
     })
     .node('entries.*', function(data){
-      processEntry(data, spaceId, userId)
+      processEntry(data, spaceId, user, userId)
       return oboe.drop
     })
     .done(function( finalJson ){

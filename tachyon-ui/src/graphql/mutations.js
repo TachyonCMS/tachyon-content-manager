@@ -131,6 +131,8 @@ export const createLocale = /* GraphQL */ `
       name
       code
       spaceId
+      ownerId
+      owner
       fallbackCode
       default
       contentManagementApi
@@ -143,9 +145,9 @@ export const createLocale = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -159,6 +161,8 @@ export const updateLocale = /* GraphQL */ `
       name
       code
       spaceId
+      ownerId
+      owner
       fallbackCode
       default
       contentManagementApi
@@ -171,9 +175,9 @@ export const updateLocale = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -187,6 +191,8 @@ export const deleteLocale = /* GraphQL */ `
       name
       code
       spaceId
+      ownerId
+      owner
       fallbackCode
       default
       contentManagementApi
@@ -199,9 +205,9 @@ export const deleteLocale = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -213,6 +219,8 @@ export const createContentSchema = /* GraphQL */ `
     createContentSchema(input: $input, condition: $condition) {
       id
       spaceId
+      ownerId
+      owner
       name
       displayField
       description
@@ -242,9 +250,10 @@ export const createContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      environment
+      code
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -256,6 +265,8 @@ export const updateContentSchema = /* GraphQL */ `
     updateContentSchema(input: $input, condition: $condition) {
       id
       spaceId
+      ownerId
+      owner
       name
       displayField
       description
@@ -285,9 +296,10 @@ export const updateContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      environment
+      code
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -299,6 +311,8 @@ export const deleteContentSchema = /* GraphQL */ `
     deleteContentSchema(input: $input, condition: $condition) {
       id
       spaceId
+      ownerId
+      owner
       name
       displayField
       description
@@ -328,9 +342,10 @@ export const deleteContentSchema = /* GraphQL */ `
           nextToken
         }
       }
+      environment
+      code
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -342,20 +357,8 @@ export const createEntry = /* GraphQL */ `
     createEntry(input: $input, condition: $condition) {
       id
       spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
+      ownerId
+      owner
       contentSchema
       sys {
         id
@@ -369,9 +372,9 @@ export const createEntry = /* GraphQL */ `
         version
       }
       fields
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -383,20 +386,8 @@ export const updateEntry = /* GraphQL */ `
     updateEntry(input: $input, condition: $condition) {
       id
       spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
+      ownerId
+      owner
       contentSchema
       sys {
         id
@@ -410,9 +401,9 @@ export const updateEntry = /* GraphQL */ `
         version
       }
       fields
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -424,20 +415,8 @@ export const deleteEntry = /* GraphQL */ `
     deleteEntry(input: $input, condition: $condition) {
       id
       spaceId
-      space {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-        owner
-        photos {
-          nextToken
-        }
-        contentfulImports {
-          nextToken
-        }
-      }
+      ownerId
+      owner
       contentSchema
       sys {
         id
@@ -451,9 +430,9 @@ export const deleteEntry = /* GraphQL */ `
         version
       }
       fields
+      environment
       createdAt
       updatedAt
-      owner
     }
   }
 `;
