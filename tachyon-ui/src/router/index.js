@@ -180,6 +180,11 @@ const routes = [
         component: () => import('@/views/space/Entries')
       },
       {
+        path: 'recorder',
+        name: 'SpaceRecorder',
+        component: () => import('@/views/space/Recorder')
+      },
+      {
         path: 'files',
         name: 'SpaceFiles',
         component: () => import('@/views/space/Files')

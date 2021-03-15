@@ -49,7 +49,7 @@ export default {
       items: [
         { title: "Entries", icon: "mdi-text-box", route: { name: "SpaceEntries" } },
         { title: "Models", icon: "mdi-widgets", route: { name: "SpaceModels" } },
-
+        { title: "Recorder", icon: "mdi-file-video", route: { name: "SpaceRecorder" } },
         { title: "Images", icon: "mdi-file-image", route: { name: "SpaceImages" } },
         { title: "Files", icon: "mdi-file-multiple", route: { name: "SpaceFiles" } },
         { title: "Locales", icon: "mdi-web", route: { name: "SpaceLocales" } },
