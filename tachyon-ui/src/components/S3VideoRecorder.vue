@@ -125,9 +125,9 @@
               >
                 <td class="text-left">{{ index+1 }}</td>
                 <td class="text-left" >{{ item.name }}</td>
-                <td class="text-left">{{ item.caption }}</td>
+                <td class="text-left">{{ item.caption }}<v-icon @click="editRecordingCaption(index)">mdi-pencil</v-icon></td>
                 <td class="text-left" >{{ item.size }}</td>
-                <td class="text-left">{{ item.type }}</td>
+                <td class="text-left">{{ item.type.slice(0,5) }}</td>
                 <td class="text-left">
                   <v-icon medium color="green">mdi-download</v-icon>
                 </td>
@@ -144,6 +144,40 @@
             </tbody>
           </template>
         </v-simple-table>
+
+        
+
+      <v-dialog
+        v-model="captionDialog"
+        width="500"
+      >
+  
+        <v-card>
+
+          <input v-model="newCaption" placeholder="enter a caption">
+  
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="updateRecordingCaption"
+            >
+              Save
+            </v-btn>
+            <v-btn
+              color="grey"
+              text
+              class="text-darken-2"
+              @click="captionDialog = false"
+            >
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
 
 
         </v-card>
@@ -185,7 +219,9 @@ export default {
       recordings: [],
       recordingPaused: false,
       playerRecording: null,
-
+      captionDialog: false,
+      editedCaption: null,
+      newCaption: null,
       cameraOn: true,
       autoplay: false,
 
@@ -537,6 +573,20 @@ export default {
     onClosePlayer() {
       console.log('Closing player')
       this.showDeviceOptions()
+    },
+    editRecordingCaption(recordingIndex) {
+      console.log('Editing caption for recording index ' + recordingIndex)
+      this.editedCaption = recordingIndex
+      this.captionDialog = true
+    },
+
+    updateRecordingCaption() {
+      const index = this.editedCaption
+      console.log('Updating edited caption for recording index ' + index)
+      this.recordings[index].caption = this.newCaption
+      this.recordings.push({})
+      this.recordings.pop({})
+      this.captionDialog = false
     },
     onError(error) {
       console.log("On Error Event", error);
