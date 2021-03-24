@@ -24,14 +24,34 @@
           <v-card-actions class="justify-center">
             <v-card flat>
               <v-row align="center">
-                <v-col class="d-flex align-center justify-center">
-                  <v-switch v-model="cameraOn"></v-switch>
-                </v-col>
+
                 <v-col class="d-flex align-center justify-center">
                   <v-btn class="mr-4" @click="onRecord" color="primary">Record</v-btn>
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onStopRecording" color="primary">Stop Recording</v-btn>
+                </v-col>
+              </v-row>
+              <v-row align="center">
+                <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onTimedRecord" color="primary">Timed</v-btn>
+                </v-col>
+              </v-row>
+              <v-row align="center">
+                <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onPause" color="secondary">Pause</v-btn>
+                </v-col>
+                <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onResume" color="secondary">Resume</v-btn>
+                </v-col>
+                <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onCloseCamera" color="secondary">Close Camera</v-btn>
+                </v-col>
+                <v-col class="d-flex align-center justify-center">
                   <v-btn class="mr-4" @click="onSnapshot" color="primary">Snapshot</v-btn>
+                </v-col>
+                <v-col class="d-flex align-center justify-center">
+                  <v-switch v-model="cameraOn"></v-switch>
                 </v-col>
               </v-row>
             </v-card>
@@ -47,6 +67,85 @@
             <v-btn class="mr-4" @click="onDiscard" elevation="1">Discard</v-btn>
             <v-btn class="mr-4" @click="uploadToS3" color="primary">Upload</v-btn>
           </v-card-actions>
+        </v-card>
+
+        <v-card v-show="playerView">
+          <v-card-title>Play Recording</v-card-title>
+          
+          <video width="100%" ref="recordedClip" id="recordedClip" autoplay />
+
+          <v-card-actions class="justify-center">
+            <v-btn class="mr-4" @click="onPlayRecording" color="primary">Play</v-btn>
+            <v-btn class="mr-4" @click="onPauseRecording" color="primary">Pause</v-btn>
+            <v-btn class="mr-4" @click="onDeleteViewedRecording" color="primary">Delete</v-btn>
+            <v-btn class="mr-4" @click="onClosePlayer" color="primary">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <v-card>
+          <v-card-title>Recordings</v-card-title>
+
+          <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">
+                  
+                </th>
+                <th class="text-left">
+                  Name
+                </th>
+                <th class="text-left">
+                  Caption
+                </th>
+                <th class="text-left">
+                  Size
+                </th>
+                <th class="text-left">
+                  Type
+                </th>
+                <th class="text-left">
+                  Download
+                </th>
+                <th class="text-left">
+                  Upload
+                </th>
+                <th class="text-left">
+                  Play
+                </th>
+                <th class="text-left">
+                  Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in recordings"
+                :key="index"
+              >
+                <td class="text-left">{{ index+1 }}</td>
+                <td class="text-left" >{{ item.name }}</td>
+                <td class="text-left">{{ item.caption }}</td>
+                <td class="text-left" >{{ item.size }}</td>
+                <td class="text-left">{{ item.type }}</td>
+                <td class="text-left">
+                  <v-icon medium color="green">mdi-download</v-icon>
+                </td>
+                <td class="text-left">
+                  <v-icon medium color="green darken-2">mdi-upload</v-icon>
+                </td>
+                <td class="text-left">
+                  <v-icon medium color="green darken-2" @click="onLoadRecording(index)">mdi-play</v-icon>
+                </td>
+                <td class="text-left">
+                  <v-icon medium color="red lighten-1" @click="onDeleteRecording(index)">mdi-delete</v-icon>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+
+
         </v-card>
       </v-col>
     </v-row>
@@ -77,10 +176,15 @@ export default {
     return {
       deviceView: null,
       persistenceView: false,
+      playerView: false,
       cameras: [],
       deviceId: null,
       img: null,
       user: {},
+      recorder: null,
+      recordings: [],
+      recordingPaused: false,
+      playerRecording: null,
 
       cameraOn: true,
       autoplay: false,
@@ -102,17 +206,24 @@ export default {
     },
     cameraOn: function (newValue) {
       //called whenever switch1 changes
-      newValue === false ? this.onStop() : this.onStart();
+      newValue === false ? this.onCloseCamera() : this.onStart();
     },
   },
   methods: {
     async showDeviceOptions() {
       this.persistenceView = false;
+      this.playerView = false;
       this.deviceView = true;
     },
     async showPersistenceOptions() {
       this.deviceView = false;
+      this.playerView = false;
       this.persistenceView = true;
+    },
+    async showPlayer() {
+      this.deviceView = false;
+      this.persistenceView = false;
+      this.playerView = true;
     },
     async initMedia() {
       if (navigator.mediaDevices === undefined) {
@@ -122,6 +233,21 @@ export default {
         navigator.mediaDevices.getUserMedia = this.legacyGetUserMediaSupport();
       }
       this.testMediaAccess();
+    },
+    play(recordingIndex) {
+      this.video.src =
+        window.URL.createObjectURL(recordingIndex);
+    },
+    download(recordingIndex) {
+      var blob = this.recordings[recordingIndex]
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style = 'display: none';
+      a.href = url;
+      a.download = 'test.webm';
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     testMediaAccess() {
       let constraints = { video: true };
@@ -191,11 +317,6 @@ export default {
       this.$emit("camera-change", deviceId);
       this.loadCamera(deviceId);
     },
-    stop() {
-      if (this.$refs.video !== null && this.$refs.video.srcObject) {
-        this.stopStreamedVideo(this.$refs.video);
-      }
-    },
     loadCamera(device) {
       let constraints = { video: { deviceId: { exact: device } } };
       if (this.resolution) {
@@ -223,11 +344,8 @@ export default {
     },
     onSnapshot() {
       this.img = this.capture();
-
       this.showPersistenceOptions();
-
-      console.log(this.img);
-
+      // console.log(this.img);
     },
     capture() {
       return this.getCanvas().toDataURL(this.screenshotFormat);
@@ -251,34 +369,35 @@ export default {
     onStarted(stream) {
       console.log("On Started Event", stream);
     },
-    onStopped(stream) {
-      console.log("On Stopped Event", stream);
+    onPause() {
+      console.log('Recording Paused')
+      this.pause()
     },
-    onStop() {
-      this.cameraOn = false;
-      this.$refs.webcam.stop();
+    onResume() {
+      console.log('Recording Resumed')
+      this.resume()
     },
-
-    onError(error) {
-      console.log("On Error Event", error);
+    onCloseCamera() {
+      console.log('Camera and Recording Stopped')
+      //this.cameraOn = false;
+      this.stop();
     },
-    onCameras(cameras) {
-      this.devices = cameras;
-      console.log("On Cameras Event", cameras);
+    onStopRecording() {
+      console.log('Recording Stopped')
+      //this.cameraOn = false;
+      this.stopRecording();
     },
-    onCameraChange(deviceId) {
-      this.deviceId = deviceId;
-      //this.camera = deviceId;
-      console.log("On Camera Change Event", deviceId);
+    stop() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.stopStreamedVideo(this.$refs.video);
+      }
     },
-    onImageClose() {
-      this.showCamera();
+    async stopRecording() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.recorder.stop()
+        console.log(this.recordings)
+      }
     },
-    async onSave() {
-      this.uploadToS3(this.img);
-      this.modal = false;
-    },
-    async onRecord() {},
     async uploadToS3() {
       const uid = await uuidv4();
       const image = await this.dataURItoBlob(this.img);
@@ -297,7 +416,7 @@ export default {
         .then((result) => console.log(result))
         .catch((err) => console.log(err));
 
-      this.showCamera();
+      this.showDeviceOptions();
     },
     async dataURItoBlob(dataURI) {
       // convert base64/URLEncoded data component to raw binary data held in a string
@@ -317,6 +436,129 @@ export default {
 
       return new Blob([ia], { type: mimeString });
     },
+    async onRecord () {
+      const stream = this.$refs.video.srcObject
+      this.startRecording(stream)
+    },
+    async onTimedRecord () {
+      console.log('Starting Ttimed Recording')
+      const stream = this.$refs.video.srcObject
+      this.startTimedRecording(stream, 10000)
+    },
+    async startTimedRecording(stream, lengthInMS) {
+      let recorder = new MediaRecorder(stream);
+
+      recorder.ondataavailable = event => this.recordings.push(event.data);
+      recorder.start();
+      console.log(recorder.state + " for " + (lengthInMS/1000) + " seconds...");
+
+      let stopped = new Promise((resolve, reject) => {
+        recorder.onstop = resolve;
+        recorder.onerror = event => reject(event.name);
+      });
+
+      let recorded = this.wait(lengthInMS).then(
+        () => recorder.state == "recording" && recorder.stop()
+      );
+
+      return Promise.all([
+        stopped,
+        recorded
+      ])
+    },
+    async startRecording(stream) {
+      const recorder = new MediaRecorder(stream);
+      this.recorder = recorder
+
+      this.recorder.ondataavailable = event => this.pushVideoData(event.data);
+      this.recorder.start();
+      console.log(this.recorder.state);
+    },
+    async pushVideoData(data) {
+      if(data.size > 0) {
+        const uid = await uuidv4()
+        data.name = 'clip-' + uid
+        console.log('pushing video...')
+        this.recordings.push(data);
+      }
+    },
+    wait(delayInMS) {
+      return new Promise(resolve => setTimeout(resolve, delayInMS));
+    },
+    stopStreamedVideo(videoElem) {
+      let stream = videoElem.srcObject
+      let tracks = stream.getTracks()
+      tracks.forEach(track => {
+        track.stop()
+        this.$emit("stopped", stream)
+        this.$refs.video.srcObject = null
+        this.source = null;
+      })
+    },
+    pause() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.$refs.video.pause();
+        this.recorder.pause();
+      }
+    },
+    resume() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.$refs.video.play();
+        this.recorder.resume();
+      }
+    },
+    onDeleteRecording(index) {
+      this.recordings.splice(index, 1)
+    },
+    onLoadRecording(index) {
+      console.log('Loading recording number ' + (index + 1))
+      this.showPlayer()
+      const recording = this.recordings[index]
+      this.playerRecording = index
+
+      const clip  = window.URL.createObjectURL(recording)
+
+      this.$refs.recordedClip.src = clip
+
+      console.log(recording)
+    },
+    onPlayRecording() {
+      this.$refs.recordedClip.play()
+    },
+    onPauseRecording() {
+      console.log('Paused recording replay')
+      this.$refs.recordedClip.pause()
+    },
+    onDeleteViewedRecording() {
+      console.log('Deleting video')
+      this.onDeleteRecording(this.playerRecording)    
+      this.onClosePlayer()
+    },
+    onClosePlayer() {
+      console.log('Closing player')
+      this.showDeviceOptions()
+    },
+    onError(error) {
+      console.log("On Error Event", error);
+    },
+    onCameras(cameras) {
+      this.devices = cameras;
+      console.log("On Cameras Event", cameras);
+    },
+    onCameraChange(deviceId) {
+      this.deviceId = deviceId;
+      //this.camera = deviceId;
+      console.log("On Camera Change Event", deviceId);
+    },
+    onImageClose() {
+      this.showDeviceOptions();
+    },
+    async onSave() {
+      this.uploadToS3(this.img);
+      this.modal = false;
+    },
+
+
   },
 };
 </script>
