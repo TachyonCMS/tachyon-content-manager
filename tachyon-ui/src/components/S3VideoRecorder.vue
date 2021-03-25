@@ -129,7 +129,7 @@
                 <td class="text-left" >{{ item.size }}</td>
                 <td class="text-left">{{ item.type.slice(0,5) }}</td>
                 <td class="text-left">
-                  <v-btn icon medium :href="downloadUrl" :download="downloadFilename" @click="onDownloadRecording(index)"><v-icon medium color="green darken-2">mdi-download</v-icon></v-btn>
+                  <v-btn icon medium @click="onDownloadRecording(index)"><v-icon medium color="green darken-2">mdi-download</v-icon></v-btn>
                 </td>
                 <td class="text-left">
                   <v-icon medium color="green darken-2" @click="onUploadRecording(index)">mdi-upload</v-icon>
@@ -218,8 +218,6 @@ export default {
       captionDialog: false,
       editedCaption: null,
       newCaption: null,
-      downloadFilename: null,
-      downloadUrl: null,
 
 
       cameraOn: true,
@@ -589,9 +587,12 @@ export default {
       const recording = this.recordings[recordingIndex]
       const url = URL.createObjectURL(recording)
       console.log(url)
-      this.downloadUrl = url
-      this.downloadFilename = recording.name
-
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = recording.name;
+      document.body.appendChild(a);
+      a.click();
       URL.revokeObjectURL(url);
     },
     updateRecordingCaption() {
