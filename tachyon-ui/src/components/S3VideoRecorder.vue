@@ -129,10 +129,10 @@
                 <td class="text-left" >{{ item.size }}</td>
                 <td class="text-left">{{ item.type.slice(0,5) }}</td>
                 <td class="text-left">
-                  <v-icon medium color="green">mdi-download</v-icon>
+                  <v-btn icon medium :href="downloadUrl" :download="downloadFilename" @click="onDownloadRecording(index)"><v-icon medium color="green darken-2">mdi-download</v-icon></v-btn>
                 </td>
                 <td class="text-left">
-                  <v-icon medium color="green darken-2">mdi-upload</v-icon>
+                  <v-icon medium color="green darken-2" @click="onUploadRecording(index)">mdi-upload</v-icon>
                 </td>
                 <td class="text-left">
                   <v-icon medium color="green darken-2" @click="onLoadRecording(index)">mdi-play</v-icon>
@@ -145,17 +145,13 @@
           </template>
         </v-simple-table>
 
-        
-
       <v-dialog
         v-model="captionDialog"
         width="500"
       >
-  
         <v-card>
 
           <input v-model="newCaption" placeholder="enter a caption">
-  
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -222,6 +218,10 @@ export default {
       captionDialog: false,
       editedCaption: null,
       newCaption: null,
+      downloadFilename: null,
+      downloadUrl: null,
+
+
       cameraOn: true,
       autoplay: false,
 
@@ -513,7 +513,7 @@ export default {
     async pushVideoData(data) {
       if(data.size > 0) {
         const uid = await uuidv4()
-        data.name = 'clip-' + uid
+        data.name = 'clip-' + uid + '.webm'
         console.log('pushing video...')
         this.recordings.push(data);
       }
@@ -579,7 +579,21 @@ export default {
       this.editedCaption = recordingIndex
       this.captionDialog = true
     },
+    onUploadRecording(recordingIndex) {
+      console.log('Upload recording ' + recordingIndex + ' to S3')
+    },
+    onDownloadRecording(recordingIndex) {
+      console.log('Download recording ' + recordingIndex + ' to local drive')
+      
 
+      const recording = this.recordings[recordingIndex]
+      const url = URL.createObjectURL(recording)
+      console.log(url)
+      this.downloadUrl = url
+      this.downloadFilename = recording.name
+
+      URL.revokeObjectURL(url);
+    },
     updateRecordingCaption() {
       const index = this.editedCaption
       console.log('Updating edited caption for recording index ' + index)
