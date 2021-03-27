@@ -585,10 +585,10 @@ export default {
       const fileName = recording.name
       const path = 'upload/video/'
 
-      let arrayBuffer = await new Response(recording).arrayBuffer();
-      let binary = new Uint8Array(arrayBuffer)
-      const content =  binary
-      const meta = {}
+      const arrayBuffer = await new Response(recording).arrayBuffer();
+      const content =  new Uint8Array(arrayBuffer)
+      const meta = this.meta
+      meta.caption = recording.caption
       this.upload(fileName, path, content, meta)
     },
     async upload(fileName, path, content, metadata) {
