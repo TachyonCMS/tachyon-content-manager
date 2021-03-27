@@ -577,8 +577,37 @@ export default {
       this.editedCaption = recordingIndex
       this.captionDialog = true
     },
-    onUploadRecording(recordingIndex) {
+    async onUploadRecording(recordingIndex) {
       console.log('Upload recording ' + recordingIndex + ' to S3')
+
+      const recording = this.recordings[recordingIndex]
+            console.log(recording)
+      const fileName = recording.name
+      const path = 'upload/video/'
+
+      let arrayBuffer = await new Response(recording).arrayBuffer();
+      let binary = new Uint8Array(arrayBuffer)
+      const content =  binary
+      const meta = {}
+      this.upload(fileName, path, content, meta)
+    },
+    async upload(fileName, path, content, metadata) {
+
+      console.log('Upload ' + fileName + ' content to S3 ' + path)
+      console.log(content)
+
+      const uploadFileName = path + fileName
+
+      await Storage.vault
+        .put(uploadFileName, content, {
+          progressCallback(progress) {
+            console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+          },
+          metadata: metadata,
+        })
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err));
+
     },
     onDownloadRecording(recordingIndex) {
       console.log('Download recording ' + recordingIndex + ' to local drive')
