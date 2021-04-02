@@ -2,7 +2,7 @@
   <v-container>
     <v-row align="center">
       <v-col cols="12" md="12">
-        <v-card v-show="deviceView" flat>
+        <v-card v-show="view == 'devices'" flat>
           <v-card-actions class="justify-center">
             <v-card flat>
               <v-row align="center">
@@ -24,31 +24,44 @@
           <v-card-actions class="justify-center">
             <v-card flat>
               <v-row align="center">
-
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onRecord" color="primary">Record</v-btn>
+                  <v-btn class="mr-4" @click="onRecord" color="primary"
+                    >Record</v-btn
+                  >
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onStopRecording" color="primary">Stop Recording</v-btn>
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onTimedRecord" color="primary">Timed</v-btn>
+                  <v-btn class="mr-4" @click="onStopRecording" color="primary"
+                    >Stop Recording</v-btn
+                  >
                 </v-col>
               </v-row>
               <v-row align="center">
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onPause" color="secondary">Pause</v-btn>
+                  <v-btn class="mr-4" @click="onTimedRecord" color="primary"
+                    >Timed</v-btn
+                  >
+                </v-col>
+              </v-row>
+              <v-row align="center">
+                <v-col class="d-flex align-center justify-center">
+                  <v-btn class="mr-4" @click="onPause" color="secondary"
+                    >Pause</v-btn
+                  >
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onResume" color="secondary">Resume</v-btn>
+                  <v-btn class="mr-4" @click="onResume" color="secondary"
+                    >Resume</v-btn
+                  >
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onCloseCamera" color="secondary">Close Camera</v-btn>
+                  <v-btn class="mr-4" @click="onCloseCamera" color="secondary"
+                    >Close Camera</v-btn
+                  >
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
-                  <v-btn class="mr-4" @click="onSnapshot" color="primary">Snapshot</v-btn>
+                  <v-btn class="mr-4" @click="onSnapshot" color="primary"
+                    >Snapshot</v-btn
+                  >
                 </v-col>
                 <v-col class="d-flex align-center justify-center">
                   <v-switch v-model="cameraOn"></v-switch>
@@ -65,20 +78,30 @@
 
           <v-card-actions class="justify-center">
             <v-btn class="mr-4" @click="onDiscard" elevation="1">Discard</v-btn>
-            <v-btn class="mr-4" @click="uploadToS3" color="primary">Upload</v-btn>
+            <v-btn class="mr-4" @click="uploadToS3" color="primary"
+              >Upload</v-btn
+            >
           </v-card-actions>
         </v-card>
 
         <v-card v-show="playerView">
           <v-card-title>Play Recording</v-card-title>
-          
+
           <video width="100%" ref="recordedClip" id="recordedClip" autoplay />
 
           <v-card-actions class="justify-center">
-            <v-btn class="mr-4" @click="onPlayRecording" color="primary">Play</v-btn>
-            <v-btn class="mr-4" @click="onPauseRecording" color="primary">Pause</v-btn>
-            <v-btn class="mr-4" @click="onDeleteViewedRecording" color="primary">Delete</v-btn>
-            <v-btn class="mr-4" @click="onClosePlayer" color="primary">Close</v-btn>
+            <v-btn class="mr-4" @click="onPlayRecording" color="primary"
+              >Play</v-btn
+            >
+            <v-btn class="mr-4" @click="onPauseRecording" color="primary"
+              >Pause</v-btn
+            >
+            <v-btn class="mr-4" @click="onDeleteViewedRecording" color="primary"
+              >Delete</v-btn
+            >
+            <v-btn class="mr-4" @click="onClosePlayer" color="primary"
+              >Close</v-btn
+            >
           </v-card-actions>
         </v-card>
 
@@ -86,96 +109,92 @@
           <v-card-title>Recordings</v-card-title>
 
           <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">
-                  
-                </th>
-                <th class="text-left">
-                  Name
-                </th>
-                <th class="text-left">
-                  Caption
-                </th>
-                <th class="text-left">
-                  Size
-                </th>
-                <th class="text-left">
-                  Type
-                </th>
-                <th class="text-left">
-                  Download
-                </th>
-                <th class="text-left">
-                  Upload
-                </th>
-                <th class="text-left">
-                  Play
-                </th>
-                <th class="text-left">
-                  Delete
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in recordings"
-                :key="index"
-              >
-                <td class="text-left">{{ index+1 }}</td>
-                <td class="text-left" >{{ item.name }}</td>
-                <td class="text-left">{{ item.caption }}<v-icon @click="editRecordingCaption(index)">mdi-pencil</v-icon></td>
-                <td class="text-left" >{{ item.size }}</td>
-                <td class="text-left">{{ item.type.slice(0,5) }}</td>
-                <td class="text-left">
-                  <v-btn icon medium @click="onDownloadRecording(index)"><v-icon medium color="green darken-2">mdi-download</v-icon></v-btn>
-                </td>
-                <td class="text-left">
-                  <v-icon medium color="green darken-2" @click="onUploadRecording(index)">mdi-upload</v-icon>
-                </td>
-                <td class="text-left">
-                  <v-icon medium color="green darken-2" @click="onLoadRecording(index)">mdi-play</v-icon>
-                </td>
-                <td class="text-left">
-                  <v-icon medium color="red lighten-1" @click="onDeleteRecording(index)">mdi-delete</v-icon>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left"></th>
+                  <th class="text-left">Name</th>
+                  <th class="text-left">Caption</th>
+                  <th class="text-left">Size</th>
+                  <th class="text-left">Type</th>
+                  <th class="text-left">Download</th>
+                  <th class="text-left">Upload</th>
+                  <th class="text-left">Play</th>
+                  <th class="text-left">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in recordings" :key="index">
+                  <td class="text-left">{{ index + 1 }}</td>
+                  <td class="text-left">{{ item.name }}</td>
+                  <td class="text-left">
+                    {{ item.caption
+                    }}<v-icon @click="editRecordingCaption(index)"
+                      >mdi-pencil</v-icon
+                    >
+                  </td>
+                  <td class="text-left">{{ item.size }}</td>
+                  <td class="text-left">{{ item.type.slice(0, 5) }}</td>
+                  <td class="text-left">
+                    <v-btn icon medium @click="onDownloadRecording(index)"
+                      ><v-icon medium color="green darken-2"
+                        >mdi-download</v-icon
+                      ></v-btn
+                    >
+                  </td>
+                  <td class="text-left">
+                    <v-icon
+                      medium
+                      color="green darken-2"
+                      @click="onUploadRecording(index)"
+                      >mdi-upload</v-icon
+                    >
+                  </td>
+                  <td class="text-left">
+                    <v-icon
+                      medium
+                      color="green darken-2"
+                      @click="onLoadRecording(index)"
+                      >mdi-play</v-icon
+                    >
+                  </td>
+                  <td class="text-left">
+                    <v-icon
+                      medium
+                      color="red lighten-1"
+                      @click="onDeleteRecording(index)"
+                      >mdi-delete</v-icon
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
 
-      <v-dialog
-        v-model="captionDialog"
-        width="500"
-      >
-        <v-card>
+          <v-dialog v-model="captionDialog" width="500">
+            <v-card>
+              <v-card-text>
+                <v-card-title>Enter text below</v-card-title>
+                <v-text-field
+                  v-model="newCaption"
+                  placeholder="enter a caption"
+                  outlined
+                ></v-text-field>
 
-          <input v-model="newCaption" placeholder="enter a caption">
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              text
-              @click="updateRecordingCaption"
-            >
-              Save
-            </v-btn>
-            <v-btn
-              color="grey"
-              text
-              class="text-darken-2"
-              @click="captionDialog = false"
-            >
-              Cancel
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-
-
+                <v-btn color="primary" text @click="updateRecordingCaption">
+                  Save
+                </v-btn>
+                <v-btn
+                  color="grey"
+                  text
+                  class="text-darken-2"
+                  @click="captionDialog = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
@@ -191,8 +210,8 @@ export default {
   name: "VideoRecorder",
   props: ["uploadPath", "instructions", "meta"],
   mounted() {
-    this.showDeviceOptions()
-    this.initMedia()
+    this.showDeviceOptions();
+    this.initMedia();
   },
   beforeCreate() {
     Auth.currentAuthenticatedUser()
@@ -217,12 +236,11 @@ export default {
       playerRecording: null,
       captionDialog: false,
       editedCaption: null,
-      newCaption: null,
-
+      newCaption: "",
+      view: "devices",
 
       cameraOn: true,
       autoplay: false,
-
     };
   },
   watch: {
@@ -269,17 +287,16 @@ export default {
       this.testMediaAccess();
     },
     play(recordingIndex) {
-      this.video.src =
-        window.URL.createObjectURL(recordingIndex);
+      this.video.src = window.URL.createObjectURL(recordingIndex);
     },
     download(recordingIndex) {
-      var blob = this.recordings[recordingIndex]
+      var blob = this.recordings[recordingIndex];
       var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
+      var a = document.createElement("a");
       document.body.appendChild(a);
-      a.style = 'display: none';
+      a.style = "display: none";
       a.href = url;
-      a.download = 'test.webm';
+      a.download = "test.webm";
       a.click();
       window.URL.revokeObjectURL(url);
     },
@@ -327,7 +344,7 @@ export default {
     loadCameras() {
       navigator.mediaDevices
         .enumerateDevices()
-        .then(deviceInfos => {
+        .then((deviceInfos) => {
           for (let i = 0; i !== deviceInfos.length; ++i) {
             let deviceInfo = deviceInfos[i];
             if (deviceInfo.kind === "videoinput") {
@@ -344,7 +361,7 @@ export default {
             this.camerasListEmitted = true;
           }
         })
-        .catch(error => this.$emit("notsupported", error));
+        .catch((error) => this.$emit("notsupported", error));
     },
     changeCamera(deviceId) {
       this.stop();
@@ -359,8 +376,8 @@ export default {
       }
       navigator.mediaDevices
         .getUserMedia(constraints)
-        .then(stream => this.loadSrcStream(stream))
-        .catch(error => this.$emit("error", error));
+        .then((stream) => this.loadSrcStream(stream))
+        .catch((error) => this.$emit("error", error));
     },
     loadSrcStream(stream) {
       if ("srcObject" in this.$refs.video) {
@@ -398,26 +415,26 @@ export default {
       return canvas;
     },
     onDiscard() {
-      this.showDeviceOptions()
+      this.showDeviceOptions();
     },
     onStarted(stream) {
       console.log("On Started Event", stream);
     },
     onPause() {
-      console.log('Recording Paused')
-      this.pause()
+      console.log("Recording Paused");
+      this.pause();
     },
     onResume() {
-      console.log('Recording Resumed')
-      this.resume()
+      console.log("Recording Resumed");
+      this.resume();
     },
     onCloseCamera() {
-      console.log('Camera and Recording Stopped')
+      console.log("Camera and Recording Stopped");
       //this.cameraOn = false;
       this.stop();
     },
     onStopRecording() {
-      console.log('Recording Stopped')
+      console.log("Recording Stopped");
       //this.cameraOn = false;
       this.stopRecording();
     },
@@ -428,8 +445,8 @@ export default {
     },
     async stopRecording() {
       if (this.$refs.video !== null && this.$refs.video.srcObject) {
-        this.recorder.stop()
-        console.log(this.recordings)
+        this.recorder.stop();
+        console.log(this.recordings);
       }
     },
     async uploadToS3() {
@@ -470,64 +487,61 @@ export default {
 
       return new Blob([ia], { type: mimeString });
     },
-    async onRecord () {
-      const stream = this.$refs.video.srcObject
-      this.startRecording(stream)
+    async onRecord() {
+      const stream = this.$refs.video.srcObject;
+      this.startRecording(stream);
     },
-    async onTimedRecord () {
-      console.log('Starting Ttimed Recording')
-      const stream = this.$refs.video.srcObject
-      this.startTimedRecording(stream, 10000)
+    async onTimedRecord() {
+      console.log("Starting Ttimed Recording");
+      const stream = this.$refs.video.srcObject;
+      this.startTimedRecording(stream, 10000);
     },
     async startTimedRecording(stream, lengthInMS) {
       let recorder = new MediaRecorder(stream);
 
-      recorder.ondataavailable = event => this.recordings.push(event.data);
+      recorder.ondataavailable = (event) => this.recordings.push(event.data);
       recorder.start();
-      console.log(recorder.state + " for " + (lengthInMS/1000) + " seconds...");
+      console.log(recorder.state + " for " + lengthInMS / 1000 + " seconds...");
 
       let stopped = new Promise((resolve, reject) => {
         recorder.onstop = resolve;
-        recorder.onerror = event => reject(event.name);
+        recorder.onerror = (event) => reject(event.name);
       });
 
       let recorded = this.wait(lengthInMS).then(
         () => recorder.state == "recording" && recorder.stop()
       );
 
-      return Promise.all([
-        stopped,
-        recorded
-      ])
+      return Promise.all([stopped, recorded]);
     },
     async startRecording(stream) {
       const recorder = new MediaRecorder(stream);
-      this.recorder = recorder
+      this.recorder = recorder;
 
-      this.recorder.ondataavailable = event => this.pushVideoData(event.data);
+      this.recorder.ondataavailable = (event) => this.pushVideoData(event.data);
       this.recorder.start();
       console.log(this.recorder.state);
     },
     async pushVideoData(data) {
-      if(data.size > 0) {
-        const uid = await uuidv4()
-        data.name = 'clip-' + uid + '.webm'
-        console.log('pushing video...')
+      if (data.size > 0) {
+        const uid = await uuidv4();
+        data.name = "clip-" + uid + ".webm";
+        console.log("pushing video...");
         this.recordings.push(data);
       }
     },
     wait(delayInMS) {
-      return new Promise(resolve => setTimeout(resolve, delayInMS));
+      return new Promise((resolve) => setTimeout(resolve, delayInMS));
     },
     stopStreamedVideo(videoElem) {
-      let stream = videoElem.srcObject
-      let tracks = stream.getTracks()
-      tracks.forEach(track => {
-        track.stop()
-        this.$emit("stopped", stream)
-        this.$refs.video.srcObject = null
+      let stream = videoElem.srcObject;
+      let tracks = stream.getTracks();
+      tracks.forEach((track) => {
+        track.stop();
+        this.$emit("stopped", stream);
+        this.$refs.video.srcObject = null;
         this.source = null;
-      })
+      });
     },
     pause() {
       if (this.$refs.video !== null && this.$refs.video.srcObject) {
@@ -542,61 +556,60 @@ export default {
       }
     },
     onDeleteRecording(index) {
-      this.recordings.splice(index, 1)
+      this.recordings.splice(index, 1);
     },
     onLoadRecording(index) {
-      console.log('Loading recording number ' + (index + 1))
-      this.showPlayer()
-      const recording = this.recordings[index]
-      this.playerRecording = index
+      console.log("Loading recording number " + (index + 1));
+      this.showPlayer();
+      const recording = this.recordings[index];
+      this.playerRecording = index;
 
-      const clip  = window.URL.createObjectURL(recording)
+      const clip = window.URL.createObjectURL(recording);
 
-      this.$refs.recordedClip.src = clip
+      this.$refs.recordedClip.src = clip;
 
-      console.log(recording)
+      console.log(recording);
     },
     onPlayRecording() {
-      this.$refs.recordedClip.play()
+      this.$refs.recordedClip.play();
     },
     onPauseRecording() {
-      console.log('Paused recording replay')
-      this.$refs.recordedClip.pause()
+      console.log("Paused recording replay");
+      this.$refs.recordedClip.pause();
     },
     onDeleteViewedRecording() {
-      console.log('Deleting video')
-      this.onDeleteRecording(this.playerRecording)    
-      this.onClosePlayer()
+      console.log("Deleting video");
+      this.onDeleteRecording(this.playerRecording);
+      this.onClosePlayer();
     },
     onClosePlayer() {
-      console.log('Closing player')
-      this.showDeviceOptions()
+      console.log("Closing player");
+      this.showDeviceOptions();
     },
     editRecordingCaption(recordingIndex) {
-      console.log('Editing caption for recording index ' + recordingIndex)
-      this.editedCaption = recordingIndex
-      this.captionDialog = true
+      console.log("Editing caption for recording index " + recordingIndex);
+      this.editedCaption = recordingIndex;
+      this.captionDialog = true;
     },
     async onUploadRecording(recordingIndex) {
-      console.log('Upload recording ' + recordingIndex + ' to S3')
+      console.log("Upload recording " + recordingIndex + " to S3");
 
-      const recording = this.recordings[recordingIndex]
-            console.log(recording)
-      const fileName = recording.name
-      const path = 'upload/video/'
+      const recording = this.recordings[recordingIndex];
+      console.log(recording);
+      const fileName = recording.name;
+      const path = "upload/video/";
 
       const arrayBuffer = await new Response(recording).arrayBuffer();
-      const content =  new Uint8Array(arrayBuffer)
-      const meta = this.meta
-      meta.caption = recording.caption
-      this.upload(fileName, path, content, meta)
+      const content = new Uint8Array(arrayBuffer);
+      const meta = this.meta;
+      meta.caption = recording.caption;
+      this.upload(fileName, path, content, meta);
     },
     async upload(fileName, path, content, metadata) {
+      console.log("Upload " + fileName + " content to S3 " + path);
+      console.log(content);
 
-      console.log('Upload ' + fileName + ' content to S3 ' + path)
-      console.log(content)
-
-      const uploadFileName = path + fileName
+      const uploadFileName = path + fileName;
 
       await Storage.vault
         .put(uploadFileName, content, {
@@ -607,17 +620,15 @@ export default {
         })
         .then((result) => console.log(result))
         .catch((err) => console.log(err));
-
     },
     onDownloadRecording(recordingIndex) {
-      console.log('Download recording ' + recordingIndex + ' to local drive')
-      
+      console.log("Download recording " + recordingIndex + " to local drive");
 
-      const recording = this.recordings[recordingIndex]
-      const url = URL.createObjectURL(recording)
-      console.log(url)
-      const a = document.createElement('a');
-      a.style.display = 'none';
+      const recording = this.recordings[recordingIndex];
+      const url = URL.createObjectURL(recording);
+      console.log(url);
+      const a = document.createElement("a");
+      a.style.display = "none";
       a.href = url;
       a.download = recording.name;
       document.body.appendChild(a);
@@ -625,12 +636,12 @@ export default {
       URL.revokeObjectURL(url);
     },
     updateRecordingCaption() {
-      const index = this.editedCaption
-      console.log('Updating edited caption for recording index ' + index)
-      this.recordings[index].caption = this.newCaption
-      this.recordings.push({})
-      this.recordings.pop({})
-      this.captionDialog = false
+      const index = this.editedCaption;
+      console.log("Updating edited caption for recording index " + index);
+      this.recordings[index].caption = this.newCaption;
+      this.recordings.push({});
+      this.recordings.pop({});
+      this.captionDialog = false;
     },
     onError(error) {
       console.log("On Error Event", error);
@@ -651,8 +662,6 @@ export default {
       this.uploadToS3(this.img);
       this.modal = false;
     },
-
-
   },
 };
 </script>
